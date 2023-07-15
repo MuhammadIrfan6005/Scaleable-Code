@@ -1,0 +1,6 @@
+var selectedvalue='';
+$('.givenowbtnsval').on('click', function(){
+     selectedvalue = $(this).val();
+//    alert("clicked"+selectedvalue );
+   $('#selectedDonation').val(selectedvalue); 
+});

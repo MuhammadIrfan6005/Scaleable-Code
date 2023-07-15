@@ -1,0 +1,366 @@
+//The following scripts must be referenced in web template/page HTML
+//https://jstest.authorize.net/v1/Accept.js
+//https://checkout.paymentspring.com/js/paymentspring-tokenizer.js
+
+let auth_token;
+$(document).ready(function () {
+    //$("input[required]").parent("label").addClass("required");
+    populateYearDropdown();
+    registerEventHandlers();
+});
+
+function registerEventHandlers() {
+    //Submit
+    $('#submitinput').click(function (event) {
+        event.preventDefault();
+        submitTokenRequest();
+    });
+    //get token for state/country event handlers
+    $.ajax({
+        type: 'get',
+        url: 'https://www.universal-tutorial.com/api/getaccesstoken',
+        success: function (data) {
+            console.log(data);
+            auth_token = data.auth_token;
+            getCountry(data.auth_token);
+
+        },
+        error: function (error) {
+            console.log(error);
+        },
+        headers: {
+            "Accept": "application/json",
+            "api-token": "VItqfLEdEIgzUQUUVxO1EUEGcnWNXHMMVKzt0Yujwswy9f0_mUZKVbbbUKa1mqX7M6Y",
+            "user-email": "testirfanmukhtiar@gmail.com"
+        }
+
+    });
+    //ON-CLICK
+    $('#billing_changeCountry_a').click(function () {
+        $('#billing_changeCountry_p').css('display', 'none')
+        $('#billing_country_row').css('display', 'block');
+    });
+    $('#organization_changeCountry_a').click(function () {
+        $('#organization_changeCountry_p').css('display', 'none')
+        $('#organization_country_row').css('display', 'block');
+    });
+    $('#behalf_changeCountry_a').click(function () {
+        $('#behalf_changeCountry_p').css('display', 'none')
+        $('#behalf_country_row').css('display', 'block');
+    });
+    $('#country_billing').change(function () {
+        let country_name = $('#country_billing').val();
+        $.ajax({
+            type: 'get',
+            url: "https://www.universal-tutorial.com/api/states/" + country_name,
+            success: function (data) {
+                $('#state_billing').empty();
+                data.forEach(element => {
+                    $('#state_billing').append('<option value="' + element.state_name + '">' + element.state_name + '</option>');
+                });
+            },
+            error: function (error) {
+                console.log(error);
+            },
+            headers: {
+                "Authorization": "Bearer " + auth_token,
+                "Accept": "application/json"
+            }
+
+        })
+    })
+    $('#country_organization').change(function () {
+        let country_name = $('#country_organization').val();
+        $.ajax({
+            type: 'get',
+            url: "https://www.universal-tutorial.com/api/states/" + country_name,
+            success: function (data) {
+                $('#state_organization').empty();
+                data.forEach(element => {
+                    $('#state_organization').append('<option value="' + element.state_name + '">' + element.state_name + '</option>');
+                });
+            },
+            error: function (error) {
+                console.log(error);
+            },
+            headers: {
+                "Authorization": "Bearer " + auth_token,
+                "Accept": "application/json"
+            }
+
+        })
+    })
+    $('#country_behalf').change(function () {
+        let country_name = $('#country_behalf').val();
+        $.ajax({
+            type: 'get',
+            url: "https://www.universal-tutorial.com/api/states/" + country_name,
+            success: function (data) {
+                $('#state_behalf').empty();
+                data.forEach(element => {
+                    $('#state_behalf').append('<option value="' + element.state_name + '">' + element.state_name + '</option>');
+                });
+            },
+            error: function (error) {
+                console.log(error);
+            },
+            headers: {
+                "Authorization": "Bearer " + auth_token,
+                "Accept": "application/json"
+            }
+
+        })
+    })
+}
+
+function getCountry(auth_token) {
+    $.ajax({
+        type: 'get',
+        url: "https://www.universal-tutorial.com/api/countries/",
+        success: function (data) {
+            // getstate(auth_token);
+            data.forEach(element => {
+                $('#country_billing').append('<option value="' + element.country_name + '">' + element.country_name + '</option>');
+                $('#country_organization').append('<option value="' + element.country_name + '">' + element.country_name + '</option>');
+                $('#country_behalf').append('<option value="' + element.country_name + '">' + element.country_name + '</option>');
+            });
+        },
+        error: function (error) {
+            console.log(error);
+        },
+        headers: {
+            "Authorization": "Bearer " + auth_token,
+            "Accept": "application/json"
+        }
+    })
+}
+//populates the year dropdown for CC expiry
+function populateYearDropdown() {
+    var now = new Date().getFullYear();
+    options = "";
+    for (var i = 0; i < 20; i++) {
+        options += ("<option value = " + (now + i).toString().slice(-2) + ">" + (now + i) + "</option>");
+    }
+    $("#expiration-year").append(options);
+}
+// Submits data to the server to for validation
+// response includes a payment or setup intent
+function submitTokenRequest() {
+    //the webhook URL that the token will be forwarded 
+    //to with donation information
+    let webhookUrl = setWebhookUrl();
+    let token;
+
+    console.log("pre-submit payment");
+
+    //PAYMENTSPRING > bank/ACH
+    if ($("input[name='payment']:checked").val() == 'bankdraft') {
+        token = psTokenizeBankAccount();
+    }
+    //AUTHORIZE.NET > Credit card
+    else {
+
+        token = aNetTokenizeCard();
+        console.log("ANet Token returned: " + token);
+    }
+    //pass the token so that it can be set in the body of the request
+    console.log(token);
+};
+// Gather the form <inputs> to create the AJAX request body for back end processing.
+function gatherFormData(token) {
+    console.log('in gatherFormData');
+    var requestBody = {};
+    requestBody.token = token;
+    console.log("token passed: " + JSON.stringify(token));
+    requestBody.textOptIn;
+    requestBody.recaptchaToken;
+    requestBody.contactId; //@TODO:Write if/else to pass blank contact if null
+
+    //BILLING INFO
+    var billingInfo = {};
+    billingInfo.firstName = $('#firstname_billing').val();
+    billingInfo.lastName = $('#lastname_billing').val();
+    billingInfo.email = $('#email_billing').val();
+    billingInfo.phone = $('#phonenumber_billing').val();
+    billingInfo.street1 = $('#streetaddress1_billing').val();
+    billingInfo.street2 = $('#streetaddress2_billing').val();
+    billingInfo.city = $('#city_billing').val();
+    billingInfo.state = $('#state_billing option:selected').text();
+    billingInfo.zipcode = $('#zippostalcode_billing').val();
+    billingInfo.country = $('#country_billing option:selected').text();
+    requestBody.billingInfo = billingInfo; //push to request body
+
+    //ORGANIZATION INFO
+    var orgInfo = {};
+    if ($('#radio-check-organization').is(':checked')) {
+        orgInfo.name = $('#organization_name').val();
+        orgInfo.email = $('#organization_email').val();
+        orgInfo.phone1 = $('#organization_phone1').val();
+        orgInfo.phone2 = $('#organization_phone2').val();
+        orgInfo.street1 = $('#organization_street1').val();
+        orgInfo.street2 = $('#organization_street2').val();
+        orgInfo.country = $('#country_organization option:selected').text();
+        orgInfo.city = $('#organization_city').val();
+        orgInfo.state = $('#state_organization option:selected').text();
+        orgInfo.zip = $('organization_zip').val();
+    }
+    requestBody.orgInfo = orgInfo; //push to request body
+
+    //TRIBUTE INFO
+    var tribute = {};
+    if ($('#radio-check-organization').is(':checked')) {
+
+        tribute.tributeType = $('#tribute_type option:selected').val();
+        tribute.title = $('#name_tribute').val();
+
+        //CARD DETAILS - only if checked
+        if ($('#radio-check-behalf').is(':checked')) {
+            tribute.recipientFirstName = $('#firstname_tribute').val();
+            tribute.recipientLastName = $('#lastname_tribute').val();
+            tribute.recipientEmail = $('#recepientemail_tribute').val();
+            tribute.recipientPhone = $('#phonenumber_tribute').val();
+            tribute.recipientStreet1 = $('#streetaddress1_tribute').val();
+            tribute.recipientStreet2 = $('#streetaddress2_tribute').val();
+            tribute.recipientCountry = $('#country_behalf option:selected').text();
+            tribute.recipientCity = $('#city_tribute').val();
+            tribute.recipientState = $('#state_behalf option:selected').text();
+            tribute.recipientZip = $('#zippostalcode_tribute').val();
+            tribute.note = $('#add-tribute-notes').val();
+
+        }
+
+    }
+    requestBody.tribute = tribute; //push to request body
+    //create object for eachitem in cart and push to array
+    var donationLines = [];
+    $("#cart-summary").children('.summary-row').each(function () {
+        var line = {};
+        line.donationType = "";
+        line.id = $(this).find('.hiddenchild_ID').text();
+        line.amount = $(this).find('.childamount').text() //get the donation amount
+        .substring(0, ($(this).find('.childamount').text().indexOf('.'))) //get the whole dollar value
+        .replace(/[.,$]/g, ''); //remove decimal, commas, and dollar signs
+        line.startDate = $("#datetimepicker").data('date');
+        line.recurrenceSchedule = $("input[name='cost']:checked").val();
+        donationLines.push(line);
+    }
+    );
+    requestBody.donationLines = donationLines; //push lines to request body
+    console.log("Full request body :\n" + JSON.stringify(requestBody));
+}
+//@@TODO: Update the functionality to splash or display error
+// After ajax request, show results.
+function showResult(result) {
+    // show errors
+    if (result == 'error') {
+        $('#processing-error').show();
+        $('#StripeButton').removeClass('disabled').attr('disabled', false);
+        $('#StripeButton').text($('#InsertButton').val());
+    }
+    // hide the form, hshow the thank you.
+    else {
+
+    }
+}
+////////////Paymentspring tokenizer/////////////
+function psTokenizeBankAccount() {
+    var publicKey = setPaymentSpringKey();
+    var paymentData = {};
+    paymentData.bank_account_number = $('#bank-account-number').val();
+    paymentData.bank_routing_number = $('#routing-number').val();
+    paymentData.bank_account_holder_first_name = $('#bank-first-name').val();
+    paymentData.bank_account_holder_last_name = $('#bank-last-name').val();
+    paymentData.token_type = 'bank_account'; //hardcoded, Paymentspring is only used for bank/ACH
+    paymentData.bank_account_type = $('#state_billing option:selected').val();
+
+    function callbackFunction(response) {
+        console.log("In the callback");
+        console.log(response);
+        return response;
+    }
+    var psToken = paymentspring.generateToken(publicKey, paymentData, callbackFunction);
+    //@@TODO: Handle Errors
+    gatherFormData(psToken);
+}
+////////////Authorize.Net tokenizer/////////////
+function aNetTokenizeCard() {
+    var authData = {};
+    authData.clientKey = setANetKey();
+    authData.apiLoginID = setANetLogin();
+    //collect CC data
+    var cardData = {};
+    cardData.cardNumber = $('#card-number').val();
+    cardData.month = $("#expiration-month").selected().val()
+    cardData.year = $('#expiration-year').val();
+    cardData.cardCode = $('#cvv-code').val();
+
+    var secureData = {};
+    secureData.authData = authData;
+    secureData.cardData = cardData;
+    console.log(JSON.stringify(secureData));
+    Accept.dispatchData(secureData, responseHandler);
+
+    function responseHandler(response) {
+        try {
+            //ERROR
+            if (response.messages.resultCode === "Error") {
+                var i = 0;
+                while (i < response.messages.message.length) {
+                    console.log(
+                        response.messages.message[i].code + ": " +
+                        response.messages.message[i].text
+                    );
+                    i = i + 1;
+                }
+            //SUCCESS
+            } else {
+                //collect data and pass to Flow
+                gatherFormData(response.opaqueData);
+            }
+        } catch (error) { console.log("Error Processing Payment: " + error) }
+    }
+    // function paymentFormUpdate(opaqueData) {
+    //     console.log("Descriptor: " + opaqueData.dataDescriptor);
+    //     console.log("Value: " + opaqueData.dataValue)
+    // }
+}
+//set payment processor API keys based on environment
+function setPaymentSpringKey() {
+    let devAPIkey = "test_bbfabdf65a5ed15330e8eab5d8515a476e0e9c721c32fe14248199554b";
+    let prodAPIkey;
+    //Look at URL from window to determine if dev or production site
+    if (window.location.hostname.contains('test') ||
+        window.location.hostname.contains('dev')) {
+
+    return devAPIkey;
+    } else return prodAPIkey;
+}
+function setANetKey() {
+    //boyer developer account key
+    let devApikey = "6BwuFQX7RcnhmdBA82B5Hj796gDpvHK7U86vZW97QnJA7v2VXGN2Bqpfmx8u3aa4";
+    //FL account key
+    let prodApikey = "";
+    //Look at URL from window to determine if dev or production site
+    if (window.location.hostname.contains('test') ||
+        window.location.hostname.contains('dev')) {
+
+    return devApikey;
+    } else return prodApikey;
+}
+function setANetLogin() {
+    //boyer developer login
+    let devApiLoginId = "4euNG398";
+    //FL account login
+    let prodApiLoginId = "";
+    if (window.location.hostname.contains('test') ||
+        window.location.hostname.contains('dev')) {
+
+        return devApiLoginId;
+    } else return prodApiLoginId;
+}
+//set the URL for the webhook called after card tokenization
+function setWebhookUrl() {
+    if (window.location.hostname.contains('test') || window.location.hostname.contains('dev')) {
+        paWebhookUrl = ''
+    } else paWebhookUrl = '';
+}

@@ -1,0 +1,69 @@
+<div class="container-fluid">
+    <div class="row" id="givemonthlyrow">
+      <div class="col-sm-12 col-md-6 col-lg-6">
+        <img src="https://childphotosdev.blob.core.windows.net/childphotosdev/GiveMonthly.png" alt="img not founds" style="margin-left:-15px;width:100%">
+        <div id="textovergivenowimg" style="text-align: center; width: 100%;"><span style="font-size: 42px; color: #ffffff; text-shadow: 0 2px 4px rgb(0 0 0 / 35%);">Monthly Giving Where Needed Most, Now.</span></div>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-6" style="zoom: 120%;">
+        <h1 class="tpl-title mt-4 mb-4" style="text-align: center !important">Give Monthly </h1>
+        <div class="tpl-body">
+          <span style="font-size: 16px;">Giving monthly means we can support our ministry's needs in areas that are
+            critical to the care of the children we serve—health, education, discipleship, and more. Monthly giving
+            ensures ongoing, predictable support for the ministry.<br><br>To give a monthly gift:<br>Enter the amount
+            below<br>Click Give<br>Select "<span>I would like to make this a recurring donation" on the next
+              page.</span>&nbsp;</span>
+
+          <div class="form-group row" style="margin-top: 30px !important;">
+          <div class="col-sm-5 col-lg-5 col-md-5"></div>
+            <div class="col-sm-2 col-lg-2 col-md-2">
+              <input class="form-control" id="selectedDonation" type="text" style="border-color: #00984d;" value="100.00">
+              <button type="button" class="btn btn-success givenowbtns" id="monthlyDonationGive" style="margin-top: 15px;">Give</button>
+            </div>
+           <div class="col-sm-5 col-lg-5 col-md-5"></div>
+          </div>
+
+          <div class="form-group row">
+           <div class="col-sm-4 col-lg-4 col-md-4"></div>
+            <div class="col-sm-2 col-lg-2 col-md-2">
+              <button type="button" class="btn btn-success givenowbtns givenowbtnsval" value="20.00">$20</button>
+          </div>
+          <div class="col-sm-2 col-lg-2 col-md-2">
+              <button type="button" class="btn btn-success givenowbtns givenowbtnsval" value="50.00">$50</button>
+          </div>
+          <div class="col-sm-4 col-lg-4 col-md-4"></div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-4 col-lg-4 col-md-4"></div>
+            <div class="col-sm-2 col-lg-2 col-md-2">
+              <button type="button" class="btn btn-success givenowbtns givenowbtnsval" value="100.00">$100</button>
+            </div>
+            <div class="col-sm-2 col-lg-2 col-md-2">
+              <button type="button" class="btn btn-success givenowbtns givenowbtnsval" value="200.00">$200</button>
+            </div>
+            <div class="col-sm-4 col-lg-4 col-md-4"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12" style="height: 400px; background-color: #00984D;">
+        <div id="tpl-summary">
+          <p class=""><span style="font-size: 20px;"><strong><span style="font-size: 36px; color: #ffffff;" class="">Every gift, no matter the size, makes a difference</span></strong><br><br>$100 = feeds a child for one year</span><br><span style="font-size: 20px;">$58 = monthly transportation for a college student</span><br><span style="font-size: 20px;">$250 =&nbsp;<span>helps restock our medicine supply at the Hill Wellness Center</span><br></span><span style="font-size: 20px;"><br></span></p>
+      </div>
+      </div>
+
+    </div>
+  </div>
+
+<script>
+$('#monthlyDonationGive').on('click', function(){
+  localStorage.setItem('parameterchild', ('true'));
+    localStorage.setItem('givemonthly', ('true'));
+    var donation = $('#selectedDonation').val();
+    localStorage.setItem('givemonthlyprice', (donation));
+
+   window.location.href = 'https://portaldev-familylegacy.powerappsportals.com/checkout/';
+})
+</script>

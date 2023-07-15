@@ -1,0 +1,48 @@
+Account/SignIn/PageCopy
+======================================
+
+<h3><strong><img alt="" src="/MetroMin.svg" style="width: 1140px; height: 68px;"><br>
+<br>
+Welcome to the Metropolitan Ministries client portal</strong></h3>
+&nbsp;
+
+<!-- <h4>To improve our services, we have recently moved to this new platform.&nbsp;</h4>
+&nbsp;
+
+<ul>
+	<li>
+	<h4><strong>New clients</strong>, please click <strong>Register above</strong> to create an account.&nbsp;</h4>
+	</li>
+	<li>
+	<h4><strong>Returning clients</strong>, with existing profiles please <strong>sign in below</strong>. You can update your profile after signing in.&nbsp;</h4>
+
+	<hr></li>
+</ul> -->
+
+<h4><strong>*Please avoid duplicate applications</strong>; that will only slowdown the process of serving you.&nbsp;</h4>
+
+<h4>**Please note, we are currently experiencing a great increase in applications, and we will be reaching out as soon as possible.&nbsp;</h4>
+
+<script>
+    onloadworking();
+    function onloadworking() {
+        $(window).load(function () {
+            localStorage.clear();
+
+            document.getElementsByClassName("xrm-attribute-value-encoded")[1].innerText = "Email";
+            $("#external-login-heading").hide();
+            
+            a =  $("#submit-signin-local").next();
+            $('<button id="new-client" style="margin-left:3px" class="btn btn-danger" title="New-Client"><a style = "color:white" href="https://metromin.powerappsportals.com/Account/Login/Register?returnUrl=%2FAccount%2FLogin%2FRegister">New Client</a></button>').insertAfter(a);
+   
+            $("#submit-signin-local").next().hide()
+            var forgetpage = $("#submit-signin-local").next();
+            $('<a class="btn btn-default" role="link" href="forget-password" title="Forgot your password?" style="">Forgot your password?</a>').insertAfter(forgetpage );
+
+           //onsignin button onclick, set local storage 
+           $("#submit-signin-local").on("click", function(){
+            localStorage.setItem('serviceApplication', 'true');
+           });
+        });
+    };
+</script>
