@@ -1,0 +1,116 @@
+<link rel="stylesheet" href="/style.css">
+
+{{ snippets["Desire/Breadcrumb"] }}
+
+<div class="px-1 pt-5 text-center">
+    <h2 class="mb-3" id="loginRecycle">Ready to recycle your gold?</h2>
+    <h3 class="mb-5">Please login below.</h3>
+    <p class="mb-3">Don’t have an account? &nbsp;&nbsp;<a href="/Account/Login/Register/" class="text-primary">Create one now</a></p>
+</div>
+<style>
+    #loginRecycle {
+        background: linear-gradient(107.3deg, #D1B984 0%, #C8A259 102.64%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    #content-container {
+    min-width: 100%;
+    }
+  
+    #submit-signin-local {
+        background: #734B1A;
+        border-radius: 4px;
+        border: none
+    }
+    .text-primary {
+     --bs-text-opacity: 0.;
+     }
+    .login-heading-section {
+        display: none;
+    }
+
+    .nav-account {
+        display: none;
+    }
+
+    form {
+        padding: 8px;
+    }
+
+    .control-label {
+        margin-bottom: 12px;
+    }
+
+    .form-control {
+        padding: 16px;
+        Height: 48px;
+        border-radius: 4px;
+    }
+
+    .form-group {
+        margin-bottom: 12px;
+    }
+
+    .breadcrumb {
+        margin-left: 12px;
+        margin-right: -12px;
+    }
+
+     @media screen and (min-device-width: 1285px) { 
+       #submit-signin-local{
+        width:382px !important;
+         }
+
+        #mainContent > div:nth-child(2) .col-md-6 {
+         margin : 0 auto;
+         flex-basis: content;
+        }
+
+       input.form-control{
+        width:380px;
+         }
+       div#loginValidationSummary {
+         width: 350px;
+        }
+    }
+    /* from desktop to tablet */
+    @media screen and (min-device-width: 768px) and (max-device-width: 1285px)  { 
+        input.form-control{
+        width:380px;
+         }
+
+        #submit-signin-local{
+        width:382px !important;
+         }
+
+        #mainContent > div:nth-child(2) .col-md-6 {
+             margin : 0 auto;
+             flex-basis: content;
+        }
+      div#loginValidationSummary {
+       width: 200px;
+      }
+    }
+    
+</style>
+<script>
+    $(document).ready(function () {
+        $('#RememberMe').parent().parent().parent().parent().hide();
+        $('a[title="Forgot your password?"]').hide();
+        $('#PasswordValue').parent().parent().after('<div class="text-primary mt-3 mb-4"><a style="color:white" href="/Account/Login/ForgotPassword" title="Forgot your password">Forgot password</a></div>')
+        $('#Username').attr("placeholder", "Enter Email");
+        $('#PasswordValue').attr("placeholder", "Enter Password");
+        $("#submit-signin-local").attr('value', 'Login');
+        $("#submit-signin-local").html('Login');
+        $("#submit-signin-local").addClass('w-100');
+        $(".control-label").removeClass('required');
+        $($($($("#Username").parent().parent().children()[0]).children()[0]).children()[0]).text('Email');
+        const intervalID = setInterval(tryHideAlert, 100);
+    });
+    function tryHideAlert() {
+        if ($("a[href='#Username']").first().html().trim() !== 'Invalid sign-in attempt.') {
+            $("a[href='#Username']").first().html('Email is a required field.');
+        }
+    }
+</script>

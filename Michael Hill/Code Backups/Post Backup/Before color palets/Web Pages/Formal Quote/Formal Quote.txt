@@ -1,0 +1,409 @@
+{{ snippets["Desire/RedirectOnLimit"] }}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.min.js"
+    integrity="sha512-vs7+jbztHoMto5Yd/yinM4/y2DOkPLt0fATcN+j+G4ANY2z4faIzZIOMkpBmWdcxt+596FemCh9M18NUJTZwvw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script type="text/javascript" src="/quote.js"></script>
+
+  {{ snippets["Desire/Breadcrumb"] }}
+
+  <div id="dvUID" style="display:none;">{{ user.id }}</div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered"></div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="limitModal" tabindex="-1" aria-labelledby="limitModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="w-100 modal-title" id="limitModalLabel">
+            <div class="card-section text-black text-center">
+              Example photo
+            </div>
+          </h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            id="btnCloseModal"></button>
+        </div>
+        <div class="modal-body text-black text-center" style="padding-left: 10px; padding-right: 10px;">
+          <img class="w-100" src='{{ snippets["Desire/URL/ExamplePhoto"] }}'></img>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Modal -->
+
+  <!-- ko if: $root.step() == 1 -->
+  <div id="dvContent" class="p-3 pt-5 bg-white text-black">
+    <div id="formal-quote-category">
+      <h2>Formal quote</h2>
+      <p class="py-2">Step 1. Add your items descriptions</p>
+      <div class="progress" style="height: 12px">
+        <div class="progress-bar" style="width:25%"></div>
+      </div>
+      <div class="mh-text-gray pt-2">
+        You have added <span class="text-primary" data-bind="text: $root.validItems().length">0</span> items to this
+        quote
+      </div>
+      <div class="row pb-5">
+        <!--ko foreach:items-->
+        <div class="divider px-3"
+          data-bind="style: { display: ($root.items().length > 1 &amp;&amp; $index() > 0) ? 'block' : 'none' }"></div>
+        <div class="col-12 p-3">
+          <div class="row" id="remove-item">
+            <div class="col-6 text-start">
+              <label data-bind="text: Name" style="font-weight: 700">Item <span data-bind="text: $index"></span></label>
+            </div>
+            <div class="col-6 text-end">
+              <a href="#" class="text-primary"
+                data-bind="click: removeItem, style: { display: ($root.items().length > 1) ? 'block' : 'none' }">Remove</a>
+            </div>
+          </div>
+
+          <div class="py-3">
+            <div class="form-group">
+              <label class="form-label">Description</label>
+              <select class="form-select" placeholder="Description" aria-placeholder="Description"
+                data-bind="optionsValue: 'Description', value: Description, optionsCaption: 'Description'">
+                <option disabled="" selected="" hidden="">Select description</option>
+                <option value="Ring">Ring</option>
+                <option value="Earrings">Earrings</option>
+                <option value="Necklace or Pendant">Necklace or Pendant</option>
+                <option value="Chain">Chain</option>
+                <option value="Bracelet or Bangle">Bracelet or Bangle</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- ko if: isOther -->
+          <input type="text" class="form-control" data-bind="value: UserDescription"
+            placeholder="Enter a description of the item">
+          <!-- /ko -->
+
+          <div class="py-2 pt-2">
+            <div class="form-group">
+              <label class="form-label">
+                Metal content
+              </label>
+              <select class="form-select" placeholder="MetalContent" aria-placeholder="MetalContent"
+                data-bind="optionsValue: 'MetalContent', value: MetalContent, optionsCaption: 'Metal Content'">
+                <option disabled="" selected="" hidden="">Select marking</option>
+                <option value="9">Unsure</option>
+                <option value="9">375 or 9k</option>
+                <option value="10">416 or 10k</option>
+                <option value="14">585 or 14k</option>
+                <option value="18">750 or 18k</option>
+                <option value="22">916 or 22k</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <!--/ko-->
+      </div>
+      <div class="text-center pb-4 add-new-item">
+        <a href="#" class="text-primary" data-bind="click: addNewItem">Add another item</a>
+      </div>
+      <div class="py-3">
+        <input type="button" value="Next" data-bind="click: gotoStepTwo" id="" title="Next"
+          class="btn btn-primary w-100">
+      </div>
+      <div class="mb-3">
+        <a href="/account/" class="btn btn-outline-primary w-100">
+          Back
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if: $root.step() == 2 -->
+  <div class="my-formal-quote-container bg-white text-black">
+    <div class="container pt-5 px-3">
+      <h2>Formal quote</h2>
+      <p class="py-2">Step 2. Upload your photo</p>
+      <div class="progress" style="height: 12px">
+        <div class="progress-bar" style="width:50%"></div>
+      </div>
+      <div class="mh-text-gray pt-2 mb-5">
+        You have added <span class="text-primary" data-bind="text: $root.items().length">0</span> items to this
+        quote
+      </div>
+      <div class="row mb-5">
+        <div class="col-12">
+          <div class="mh-text-gray text-small" id="quote-photo-instructions">Lay your jewellery on a flat surface ensuring you can see each individual piece and
+            take a photo.
+            <a class="text-primary" id="btnShowExample" href="#">Example photo</a>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-12">
+          <div class="file-upload-wrapper">
+            <input type="file" id="attachmentDocumentbody" class="form-control w-100 file-upload"
+              accept="image/jpg,image/jpeg,image/gif,image/tif,image/tiff,image/png,image/HEIF,image/HEVC" />
+            <div class="file-upload-label text-center w-100 text-black" id="dvUpload">
+              <div>
+                <span class="material-icons text-primary" style="font-size: 46px ;">
+                  arrow_circle_up
+                </span>
+              </div>
+              <div><span class="text-primary">Upload a file</span> or drag and drop</div>
+              <div style="color:#707172">
+                PNG, JPG, upto 5MB
+              </div>
+            </div>
+            <div class="text-center" id="dvPreview" style="display:none;">
+              <div id="imgPreview" class="image-preview">
+              </div>
+              <div id="btnBrowse" class="btn btn-light btn-sm image-upload-btn d-inline-flex">
+                <div class="material-icons capture-icon">
+                  photo_camera
+                </div>
+                <div class="px-3 capture-label">
+                  Edit
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ko if: $root.showErrorNoPhoto -->
+      <div class="row mb-3">
+        <div class="col-12">
+          <div class="">
+            <div class="text-center d-flex p-2" id="warning-next-click"style="background-color: #f6f6f6;">
+              <div class="material-icons px-2 text-primary">
+                warning_amber
+              </div>
+              <div>
+                Can't move forward without <b>photo</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /ko -->
+
+      <!-- ko if: $root.showErrorSize -->
+      <div class="row mb-3">
+        <div class="col-12">
+
+          <div class="">
+            <div class="text-center mb-3 d-flex p-2" id="image-size-validation" style="background-color: #f6f6f6;">
+              <div class="material-icons px-2 text-primary">
+                warning_amber
+              </div>
+              <div>
+                Exceeded 5MB file size
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /ko -->
+
+      <!-- ko if: $root.showErrorFormat -->
+      <div class="row mb-3">
+        <div class="col-12">
+
+          <div class="">
+            <div class="text-center mb-3 d-flex p-2" id="unsupported-document"style="background-color: #f6f6f6;">
+              <div class="material-icons px-2 text-primary">
+                warning_amber
+              </div>
+              <div>
+                Unsupported format
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /ko -->
+
+      <!-- ko ifnot: $root.showErrorNoPhoto || $root.showErrorSize -->
+      <div class="row mb-5">
+        <div class="col-12">
+        </div>
+      </div>
+      <div class="row mb-4">
+        <div class="col-12">
+        </div>
+      </div>
+      <!-- /ko -->
+
+      <div class="row pb-5">
+        <div class="col-12">
+          <div class="mb-3">
+            <button data-bind="click: gotoStepThree" class="btn btn-primary w-100">
+              Next
+            </button>
+          </div>
+          <div class="mb-5">
+            <button data-bind="click: gotoStepOne" class="btn btn-outline-primary w-100 ">
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if: $root.step() == 3 -->
+  <div class="my-formal-quote-container bg-white text-black">
+    <div class="container pt-5">
+      <h2>Formal quote</h2>
+      <p class="py-2">Step 3. Review your items</p>
+      <div class="progress" style="height: 12px">
+        <div class="progress-bar" style="width:75%"></div>
+      </div>
+      <div class="mh-text-gray pt-2 mb-5">
+        You have added <span class="text-primary" data-bind="text: $root.items().length">0</span> items to this
+        quote
+      </div>
+      <div class="row mb-5 mt-3" id="quote-items-enlist">
+        <div class="divider my-3 w-95"></div>
+
+        <!--ko foreach:items-->
+        <div class="col-10">
+          <div class="row">
+            <div class="col-5">
+              <label class="mb-3">Item 1</label>
+            </div>
+            <div class="col-5">
+              <label class="mb-3" data-bind="text: previewDscr">Ring</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-5">
+              <label class="mb-0">Metal content</label>
+            </div>
+            <div class="col-5">
+              <label class="mb-0" data-bind="text: previewMetal">375 or 9k</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="pt-4">
+            <a href="" class="text-primary" data-bind="click: $root.gotoStepOne">Edit</a>
+          </div>
+        </div>
+        <div class="divider my-3 w-95"></div>
+        <!-- /ko -->
+      </div>
+      <div class="row mb-3">
+        <div class="col-12">
+          <div class="file-upload-wrapper">
+            <input type="file" id="attachmentDocumentbody" class="form-control w-100 file-upload"
+              accept="image/jpg,image/jpeg,image/gif,image/tif,image/tiff,image/png,image/HEIF,image/HEVC" />
+            <div class="file-upload-label text-center w-100 text-black" id="dvUpload">
+              <div>
+                <span class="material-icons text-primary" style="font-size: 46px ;">
+                  arrow_circle_up
+                </span>
+              </div>
+              <div><span class="text-primary">Upload a file</span> or drag and drop</div>
+              <div style="color:#737373">
+                PNG, JPG upto 5MB
+              </div>
+            </div>
+            <div class="text-center">
+              <p class="text-start mb-5">Photo of items</p>
+              <div id="imgPreview" class="image-preview mb-5">
+              </div>
+              <div id="btnBrowse" class="btn btn-light btn-sm image-upload-btn d-inline-flex" style="margin: -80px -45px !important;">
+                <div class="material-icons capture-icon">
+                  photo_camera
+                </div>
+                <div class="px-3 capture-label">
+                  Edit
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ko if: $root.showErrorNoPhoto -->
+      <div class="row mb-3">
+        <div class="col-12">
+          <div class="" style="margin-top: -12px;">
+            <div class="text-center mb-3 d-flex p-2" id="warning-next-click" style="background-color: #f6f6f6;">
+              <div class="material-icons px-2 text-primary">
+                warning
+              </div>
+              <div>
+                Can’t move forward without photo
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $root.showErrorSize -->
+      <div class="row mb-3">
+        <div class="col-12">
+          <div class="" style="margin-top: -12px;">
+            <div class="text-center mb-3 d-flex p-2" id="image-size-validation" style="background-color: #f6f6f6;">
+              <div class="material-icons px-2 text-primary">
+                warning
+              </div>
+              <div>
+                File size limit exceeded.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $root.showErrorFormat -->
+      <div class="row mb-3">
+        <div class="col-12">
+
+          <div class="">
+            <div class="text-center mb-3 d-flex p-2" id="unsupported-document" style="background-color: #f6f6f6;">
+              <div class="material-icons px-2 text-primary">
+                warning
+              </div>
+              <div>
+                Unsupported format
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /ko -->
+
+      <!-- ko ifnot: $root.showErrorNoPhoto || $root.showErrorSize -->
+      <div class="row mb-5">
+        <div class="col-12">
+        </div>
+      </div>
+      <div class="row mb-4">
+        <div class="col-12">
+        </div>
+      </div>
+      <!-- /ko -->
+
+      <div class="row mb-5">
+        <div class="col-12">
+          <div class="mb-3">
+            <button data-bind="click: submit" class="btn btn-primary w-100">
+              Submit
+            </button>
+          </div>
+          <div class="mb-5">
+            <button data-bind="click: gotoStepTwo" class="btn btn-outline-primary w-100 ">
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /ko -->

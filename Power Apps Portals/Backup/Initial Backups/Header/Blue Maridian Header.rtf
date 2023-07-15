@@ -1,0 +1,219 @@
+{\rtf1\ansi\deff0\nouicompat{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\*\generator Riched20 10.0.22000}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang9\{% assign defaultlang = settings['LanguageLocale/Code'] | default: 'en-us' %\}\par
+\{% assign homeurl = website.adx_partialurl %\}\par
+\par
+<link href='https://fonts.googleapis.com/css?family=Open+Sans|Roboto|Montserrat|Raleway|Nunito' rel='stylesheet' />\par
+<div class="navbar navbar-inverse navbar-static-top" role="navigation">\par
+  <div class="skip-to-content"><a href="#mainContent">\{\{ resx.Skip_To_Content | default: "Skip to main content" \}\}</a></div>\par
+  <div class="container">\par
+   <div class="rsmStrikeHeader"></div>\par
+    <div class="navbar-header">\par
+      <div class="visible-xs-block">\par
+        \{% editable snippets 'Mobile Header' type: 'html' %\}\par
+      </div>\par
+      <div class="visible-sm-block visible-md-block visible-lg-block navbar-brand">\par
+        \{% editable snippets 'Navbar Left' type: 'html' %\}\par
+      </div>\par
+      <button type="button" class="navbar-toggle collapsed" title="\{\{ snippets["Header/Toggle Navigation"] | default: resx['Toggle_Navigation'] | h \}\}" data-toggle="collapse" data-target="#navbar" aria-expanded="false" onclick="setHeight();">\par
+        <span class="sr-only">\{\{ snippets["Header/Toggle Navigation"] | default: resx['Toggle_Navigation'] | h \}\}</span>\par
+        <span class="icon-bar"></span>\par
+        <span class="icon-bar"></span>\par
+        <span class="icon-bar"></span>\par
+      </button>\par
+    </div>\par
+    <div id="navbar" class="navbar-collapse collapse">\par
+      \{% assign primary_nav = weblinks["Primary Navigation"] %\}\par
+      \{% if primary_nav %\}\par
+        <nav aria-label="\{\{ resx.Main_Navigation | default: "Main Navigation" \}\}" class="navbar-right menu-bar \{% if primary_nav.editable %\}xrm-entity xrm-editable-adx_weblinkset\{% endif %\}" data-weblinks-maxdepth="2">\par
+          <ul class="nav navbar-nav weblinks">\par
+            \{% for link in primary_nav.weblinks %\}\par
+              \{% unless forloop.first %\}\par
+                <li class="divider-vertical" aria-hidden="true"></li>\par
+              \{% endunless %\}\par
+              \{% if link.display_page_child_links %\}\par
+                \{% if link.url != null %\}\par
+                  \{% assign sublinks = sitemap[link.url].children %\}\par
+                \{% endif %\}\par
+              \{% else %\}\par
+                \{% assign sublinks = link.weblinks %\}\par
+              \{% endif %\}\par
+\par
+              <li role="none" class="weblink \{% if sublinks.size > 0 %\} dropdown\{% endif %\}">\par
+                <a aria-label="\{\{ link.name | escape \}\}"\par
+                    \{% if sublinks.size > 0 -%\}\par
+                    href="#" class="dropdown-toggle" data-toggle="dropdown"\par
+                    \{%- else -%\}\par
+                    href="\{\{ link.url | escape \}\}"\par
+                    \{%- endif -%\}\par
+                    \{%- if link.Open_In_New_Window %\} target="_blank" \{% endif -%\}\par
+                    \{%- if link.nofollow %\} rel="nofollow"\{% endif -%\}\par
+                    \{%- if link.tooltip %\} title="\{\{ link.tooltip | escape \}\}"\{% endif %\}>\par
+                    \{%- if link.image -%\}\par
+                      \{%- if link.image.url startswith '.' -%\}\par
+                        <span class="\{\{ link.image.url | split:'.' | join \}\}" aria-hidden="true"></span>\par
+                      \{%- else -%\}\par
+                        <img src="\{\{ link.image.url | escape \}\}"\par
+                             alt="\{\{ link.image.alternate_text | default:link.tooltip | escape \}\}"\par
+                             \{% if link.image.width %\}width="\{\{ link.image.width | escape \}\}" \{% endif %\}\par
+                             \{% if link.image.height %\}height="\{\{ link.image.height | escape \}\}" \{% endif %\} />\par
+                      \{%- endif -%\}\par
+                    \{%- endif -%\}\par
+                    \{%- unless link.display_image_only -%\}\par
+                      \{\{ link.name | escape \}\}\par
+                    \{%- endunless -%\}\par
+                    \{%- if sublinks.size > 0 -%\}\par
+                      <span class="caret"></span>\par
+                    \{%- endif -%\}\par
+                </a>\par
+\par
+                \{% if sublinks.size > 0 %\}\par
+                  <ul class="dropdown-menu">\par
+                    \{% if link.url %\}\par
+                      <li role="none">\par
+                        <a aria-label="\{\{ link.name | escape \}\}"\par
+                           href="\{\{ link.url \}\}"\par
+                           \{% if link.Open_In_New_Window %\} target="_blank" \{% endif %\}\par
+                           \{% if link.nofollow %\}rel="nofollow" \{% endif %\}\par
+                           \{% if link.tooltip %\}title="\{\{ link.tooltip | escape \}\}" \{% endif %\}>\{\{ link.name | escape \}\}</a>\par
+                      </li>\par
+                      <li class="divider"></li>\par
+                    \{% endif %\}\par
+                    \{% for sublink in sublinks %\}\par
+                      <li role="none">\par
+                        <a aria-label="\{\{ sublink.name | default:sublink.title | escape \}\}"\par
+                           href="\{\{ sublink.url \}\}"\par
+                           \{% if sublink.Open_In_New_Window %\} target="_blank" \{% endif %\}\par
+                           \{% if sublink.nofollow %\}rel="nofollow" \{% endif %\}\par
+                           \{% if sublink.tooltip %\}title="\{\{ sublink.tooltip | escape \}\}" \{% endif %\}>\par
+                           \{\{ sublink.name | default:sublink.title | escape \}\}\par
+                        </a>\par
+                      </li>\par
+                    \{% endfor %\}\par
+                  </ul>\par
+                \{% endif %\}\par
+              </li>\par
+\par
+            \{% endfor %\}\par
+            \{% assign search_enabled = settings['Search/Enabled'] | boolean | default:true %\}\par
+            \{% if search_enabled %\}\par
+            <li class="divider-vertical" aria-hidden="true"></li>\par
+            <li class="dropdown" role="none">\par
+              <a id="search" class="navbar-icon" href="#" data-toggle="dropdown"\par
+                role="button" aria-haspopup="true" aria-expanded="false"\par
+                aria-label="\{\{ snippets["Header/Search/ToolTip"] | default:resx["Search_DefaultText"] | escape \}\}" >\par
+                <span class="glyphicon glyphicon-search"></a>\par
+              </a>\par
+              <ul class="dropdown-menu dropdown-search">\par
+                <li>\par
+                  \{% include 'Search' search_id:'q' %\}\par
+                </li>\par
+              </ul>\par
+            </li>\par
+            \{% endif %\}\par
+            <li class="divider-vertical" aria-hidden="true"></li>\par
+            \{% if website.languages.size > 1 %\}\par
+              <li class="dropdown" role="none">\par
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-label="\{\{ website.selected_language.name | escape \}\}" aria-haspopup="true" aria-expanded="false" title="\{\{ website.selected_language.name | escape \}\}">\par
+                  <span class="drop_language">\{\{ website.selected_language.name | escape \}\}</span>\par
+                  <span class="caret"></span>\par
+                </a>\par
+                \{% include 'Languages Dropdown' %\}\par
+              </li>\par
+            <li class="divider-vertical" aria-hidden="true"></li>\par
+            \{% endif %\}\par
+            \{% if user %\}\par
+              <li class="dropdown" role="none">\par
+                \{% assign username=user.fullname | escape %\}\par
+    <a href="#" class="dropdown-toggle" title="\{\{username | default: resx['Default_Profile_name'] \}\}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\par
+                    <span class="username">\{\{ username | default: resx['Default_Profile_name'] \}\}</span>\par
+     <span class="caret"></span>\par
+                </a>\par
+                <ul class="dropdown-menu">\par
+                  \{% assign show_profile_nav = settings["Header/ShowAllProfileNavigationLinks"] | boolean | default:true %\}\par
+                  \{% if show_profile_nav %\}\par
+                    \{% assign profile_nav = weblinks["Profile Navigation"] %\}\par
+                    \{% if profile_nav %\}\par
+                      \{% for link in profile_nav.weblinks %\}\par
+                        <li role="none">\par
+                            <a aria-label="\{\{ link.name | escape \}\}" href="\{\{ link.url | escape \}\}" title="\{\{ link.name | escape \}\}">\{\{ link.name | escape \}\}</a>\par
+                        </li>\par
+                      \{% endfor %\}\par
+                    \{% endif %\}\par
+                  \{% else %\}\par
+                    <li role="none"><a aria-label="\{\{ snippets["Profile Link Text"] | default:resx["Profile_Text"] | escape \}\}" href="\{\{ sitemarkers['Profile'].url | escape \}\}">\{\{ snippets["Profile Link Text"] | default:resx["Profile_Text"] | escape \}\}</a></li>\par
+                  \{% endif %\}\par
+                  <li class="divider" role="separator" aria-hidden="true"></li>\par
+                  <li role="none">\par
+                      <a aria-label="\{\{ snippets["links/logout"] | default:resx["Sign_Out"] | escape \}\}" href="\{% if homeurl%\}/\{\{ homeurl \}\}\{% endif %\}\{\{ website.sign_out_url_substitution \}\}" title="\{\{ snippets["links/logout"] | default:resx["Sign_Out"] | escape \}\}">\par
+                        \{\{ snippets["links/logout"] | default:resx["Sign_Out"] | escape \}\}\par
+                    </a>\par
+                  </li>\par
+                </ul>\par
+              </li>\par
+            \{% else %\}\par
+              <li role="none">\par
+                <a aria-label="\{\{ snippets["links/login"] | default:resx["Sign_In"] | escape \}\}" href="\{% if homeurl%\}/\{\{ homeurl \}\}\{% endif %\}\{\{ website.sign_in_url_substitution \}\}">\par
+     \{\{ snippets["links/login"] | default:resx["Sign_In"] | escape \}\}\par
+                </a>\par
+              </li>\par
+            \{% endif %\}\par
+          </ul>\par
+          \{% editable primary_nav %\}\par
+        </nav>\par
+      \{% endif %\}\par
+      <div class="navbar-right hidden-xs">\par
+        \{% editable snippets 'Navbar Right' type: 'html' %\}\par
+      </div>\par
+    </div>\par
+  </div>\par
+</div>\par
+\par
+\{% substitution %\}\par
+  \{% assign current_page = page.id %\}\par
+  \{% assign sr_page = sitemarkers["Search"].id %\}\par
+  \{% assign forum_page = sitemarkers["Forums"].id %\}\par
+  \{% if current_page %\}\par
+  \{% if current_page == sr_page or current_page == forum_page %\}\par
+    \{% assign section_class = "section-landing-search" %\}\par
+    \{% if current_page == forum_page %\}\par
+      \{% assign section_class = "section-landing-forums" %\}\par
+    \{% endif %\}\par
+    <section class="page_section \{\{ section_class | h \}\} color-inverse">\par
+      <div class="container">\par
+        <div class="row ">\par
+          <div class="col-md-12 text-center">\par
+            \{% if current_page == sr_page %\}\par
+              <h1 id="mainContent" class="section-landing-heading">\{% editable snippets 'Search/Title' default: resx["Discover_Contoso"] %\}</h1>\par
+              \{% include 'Search' search_id:'search_control' %\}\par
+            \{% endif %\}\par
+          </div>\par
+        </div>\par
+      </div>\par
+    </section>\par
+  \{% endif %\}\par
+  \{% endif %\}\par
+\{% endsubstitution %\}\par
+<script type="text/javascript">\par
+         window.onload = function() \{\par
+            if(window.navigator.appName == "Microsoft Internet Explorer" || window.navigator.userAgent.indexOf("Trident") > 0)\{\par
+                var searchElement = document.getElementById("search");\par
+                if (searchElement != null) searchElement.setAttribute("href", "");\par
+            \}\par
+          \};\par
+\par
+          function setHeight()\{\par
+           var windowHeight = window.innerHeight - 140;\par
+           var navbar = document.getElementById("navbar");\par
+           if (navbar) \{\par
+            navbar.style.maxHeight = windowHeight + "px";\par
+   \}\par
+          \}\par
+\par
+          window.addEventListener('resize', function (event) \{\par
+           setHeight();\par
+          \});\par
+\par
+</script>\par
+}
+ 

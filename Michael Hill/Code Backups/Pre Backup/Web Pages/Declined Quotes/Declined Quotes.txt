@@ -1,0 +1,296 @@
+{% if user and request.params.id  %}
+    {% assign quoteResponseTime = 7 %}
+
+    {% assign fullname = user.fullname %}
+    {% assign address = user.address1_name %}
+    {% assign email = user.emailaddress1 %}
+    {% assign mobile = user.mobilephone %}
+
+    {% fetchxml getQuoteResponseTime %}
+    <fetch count="1">
+      <entity name="ed_configuration">
+        <attribute name="ed_value" />
+        <attribute name="ed_valuestring" />
+        <filter>
+          <condition attribute="ed_name" operator="in">
+            <value>Quote Response Time</value>
+          </condition>
+        </filter>
+      </entity>
+    </fetch>
+    {% endfetchxml %}
+    {% if getQuoteResponseTime.results.entities.size > 0 %}
+        {% assign quoteResponseTime = getQuoteResponseTime.results.entities[0].ed_value | plus: 0 | integer %}  
+    {% endif %}
+
+    {% fetchxml getQuotes %}
+    <fetch top="50">
+      <entity name="ed_recycleexchangeitem">
+        <attribute name="ed_puregoldcontent" />
+        <attribute name="ed_description" />
+        <attribute name="ed_distributioncentredescription" />
+        <attribute name="ed_quotedvalue" />
+        <attribute name="ed_name" />
+        <attribute name="statuscode" />
+        <attribute name="ed_weightactual" />
+        <attribute name="ed_goldkarat" />
+        <filter>
+          <condition attribute="ed_recycleexchangeid" operator="eq" value="{{ request.params.id }}" uitype="ed_recycleexchange" />
+          <condition attribute="statuscode" operator="in">
+            <value>11</value>
+          </condition>
+        </filter>
+        <link-entity name="ed_recycleexchange" from="ed_recycleexchangeid" to="ed_recycleexchangeid" alias="package">
+          <attribute name="ed_trackingnumber" />
+          <attribute name="ed_totalquotedvalue" />
+          <attribute name="ed_name" />
+          <attribute name="statuscode" />
+          <attribute name="ed_assessmentdate" />
+          <attribute name="ed_quoteproduceddate" />
+          <attribute name="ed_returntrackingnumber" />
+          <attribute name="ed_totaloreextractionavoided" />
+          <attribute name="ed_totalcarbonemissionssaved" />
+            <filter>
+              <condition attribute="statuscode" operator="in">
+                <value>15</value>
+              </condition>
+            </filter>
+        </link-entity>
+      </entity>
+    </fetch>
+    {% endfetchxml %}
+
+    {% if getQuotes.results.entities.size > 0 %}
+        {% assign quoteNo = getQuotes.results.entities[0]['package.ed_name'] %}
+        {% assign trackingNo = getQuotes.results.entities[0]['package.ed_trackingnumber'] %}
+        {% assign returnTrackingNo = getQuotes.results.entities[0]['package.ed_returntrackingnumber'] %}
+        {% assign totalQuotedValue = getQuotes.results.entities[0]['package.ed_totalquotedvalue'] %}
+        {% assign assessmentDate = getQuotes.results.entities[0]['package.ed_quoteproduceddate'] | date_add_hours: 10 | date: "%d/%M/20%y" %}
+        {% assign statusCode = getQuotes.results.entities[0]['package.statuscode'].value %}
+
+        {% assign carbon = getQuotes.results.entities[0]['package.ed_totalcarbonemissionssaved'] | round:2 %}
+        {% assign mining = getQuotes.results.entities[0]['package.ed_totaloreextractionavoided'] | round:2 %}
+
+        {% assign date1 = now %} 
+        {% assign date2 = getQuotes.results.entities[0]['package.ed_quoteproduceddate'] | date_add_hours: 10 | date_add_days: quoteResponseTime %} 
+        {% assign words = date2 | minus: date1 | string | split: '.' %}   
+        {% assign days = words.first | integer %} 
+    {% else %}
+<script>
+    //location.replace('/account/');
+</script>
+    {% endif %}
+
+<script type="text/javascript" src="/my-quote.js"></script>
+{{ snippets["Desire/BackgroundForm"] }}
+
+{{ snippets["Desire/Breadcrumb"] }}
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>
+
+<div class="my-quote-container pt-3">
+   <div class="my-quote-confirm-return">
+    <div class="m-3 bg-white text-black">        
+        <div class="row">
+            <div class="col-12">
+                <h2 class="pb-3">Confirm your return</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2 txt-grey" id="confirm-items" style="width: 12%;"> 
+                <span class=" material-icons-outlined">
+                    info
+                </span>
+            </div>
+            <div class="col-10 px-1" >
+                <label class="txt-grey mb-3" style="margin-top:2px;">Please confirm that your items are listed below</label>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-3" id="name">
+                <label class="mb-3">Name</label>
+            </div>
+            <div class="col-9">
+                {{ fullname | escape }}
+            </div>            
+        </div>
+
+         <div class="row mb-3">
+            <div class="col-3" id="address">
+                <label class="mb-3">Address</label>
+            </div>
+            <div class="col-9">
+                {{ address | escape }}
+            </div>            
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <p><b> QUOTE NO. {{ quoteNo | escape }}</b></p>
+            </div>
+        </div>    
+
+        <div class="row pt-3">
+            <div class="col-3" id="item-label">
+                <label>Item</label>
+            </div>
+            <div class="col-9">
+
+            </div>            
+        </div>
+        <div class="divider w-100">
+          
+        </div>
+{% for entity in getQuotes.results.entities %}       
+        <div class="row mt-3">
+            <div class="col-3">
+                <label>Item {{ forloop.index }}:</label>
+            </div>
+            <div class="col-9">
+                {{ entity.ed_distributioncentredescription }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <label>Karat:</label>
+            </div>
+            <div class="col-9">
+                {{ entity.ed_goldkarat.value }}k
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <label>Weight:</label>
+            </div>
+            <div class="col-9">
+                {{ entity.ed_weightactual | decimals: 2 }} grams
+            </div>
+        </div>
+        <div class="divider w-100">
+          
+        </div>
+{% endfor %}     
+
+        <div class="row mt-5 ">
+            <div class="col-12" id="confirmItems-checkInput">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="ed_confirm_chk">
+                    <label class="form-check-label mb-0" for="ed_confirm_chk">I confirm that all my items are listed above.</label>
+                </div>
+            </div>
+        </div>
+
+        <div id="showError" class="d-none p-12 mt-3 d-flex" style="background: rgba(66, 133, 244, 0.1);">
+           <div class="material-icons-outlined">
+                warning_amber
+            </div>
+            <div class="mx-2 px-1"> Please <b>confirm </b> before proceeding  </div>
+        </div>
+
+         <div class="mb-5 pb-5 mt-5 bg-white text-black text-center">            
+            <input type="button" value="Submit" onclick="" id="btnSubmitDecline" title="Submit" class="btn btn-primary w-100 mb-3">           
+        </div>
+     </div>
+    </div>   
+</div>
+{% else %}
+no user
+<script>
+    location.replace('/');
+</script>
+{% endif %}
+
+
+<style>
+    .p-l-5 {
+        padding-left: 5px !important;
+    }
+    .va-top{
+        vertical-align: top;
+        width: 35%;
+    }
+
+.dvSpace{
+    height: 20px;
+}
+
+.txt-ac{
+    text-align: center;
+}
+
+.mart10 {
+  margin-top: 10px;
+}
+.martb20 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.padl5{
+    padding-left: 5px;
+}
+.padr5{
+    padding-right: 5px;
+}
+
+.bbg {
+    border-bottom: #D1D3D4 1px solid;
+    width: 95%;
+    margin: auto;
+}
+
+.breadcrumbanchor {
+    color:#FFFFFF !important;
+    font-family: 'Proxima Nova';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    text-decoration: none !important;
+}
+
+.breadcrumb{
+    color:#FFFFFF !important;
+    font-family: 'Proxima Nova';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px !important;
+    line-height: 20px;
+    padding-top: 15px;
+    padding-left: 15px;
+}
+
+.total {
+    /* Body Medium/Semibold */
+
+    font-family: 'Proxima Nova';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 28px;
+    /* identical to box height, or 175% */
+
+    letter-spacing: -0.15px;
+
+    /* White */
+
+    color: #FFFFFF;
+}
+
+.txt-grey {
+    font-family: 'Proxima Nova';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    /* or 157% */
+
+
+    /* Colour/Primary/Charcoal 85% */
+
+    color: #707172;
+}
+
+</style>

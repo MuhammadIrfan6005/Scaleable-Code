@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="ClientGlobalContext.js.aspx" type="text/javascript"></script>
+        <style type="text/css">
+            .button {
+                background-color: #0a58b1;
+                border: none;
+                color: white;
+                /* padding: 20px; */
+                height: 20px;
+                padding-bottom: 20px;
+                padding-top: 3px;
+                /* padding-top: 15px;
+                padding-bottom: 15px; */
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;
+                margin: 4px 2px;
+                cursor: pointer;
+            }
+            .button1 {
+                border-radius: 12px;
+            }
+            .button:hover {
+                background-color: #687d99;
+            }
+            .center {
+                margin: auto;
+                width: 50%;
+                padding: 10px;
+                display: flex;
+                justify-content: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="center">
+            <!-- <button class="btn btn-primary btn-lg active" role="button" aria-pressed="true" id="create" onclick="openModal()">Incentives</button> -->
+            <button class="button" role="button" aria-pressed="true" id="create" onclick="openModal()">Incentives</button>
+        </div>
+        <script type="text/javascript">
+            function openModal() {
+                // var windowOptions = {
+                //     height: 280,
+                //     width: 670
+                // };
+                // parent.Xrm.Navigation.openWebResource("bm_incentiveranges", windowOptions);
+                var pageInput = {
+                    pageType: "webresource",
+                    webresourceName: "bm_incentiveranges"
+                };
+                var navigationOptions = {
+                    target: 2,
+                    width: 670, // value specified in pixel
+                    height: 320, // value specified in pixel
+                    position: 1
+                };
+                Xrm.Navigation.navigateTo(pageInput, navigationOptions).then(
+                    function success() {
+                            // Run code on success
+                    },
+                    function error() {
+                            // Handle errors
+                    }
+                );
+            }
+        </script>
+    </body>
+</html>

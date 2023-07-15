@@ -1,0 +1,26 @@
+.description {
+    margin-bottom: 20px !important;
+}
+.dynamicmargin{
+  margin: 0 10px 30px 30px !important;
+    float: left;
+}
+[data-name="Racial executive Leadership"] tbody tr:not(:first-child), [data-name="Racial Board Categories"] tbody tr:not(:first-child), [data-name="Racial Staff Categories"] tbody tr:not(:first-child), [data-name="Gender Leadership Categories"] tbody tr:not(:first-child), [data-name="Gender Board Categories"] tbody tr:not(:first-child), [data-name="Gender Staff Categories"] tbody tr:not(:first-child) {
+    border: 1px solid;
+}
+
+[data-name="Racial executive Leadership"] tbody tr:not(:first-child) td, [data-name="Racial Board Categories"] tbody tr:not(:first-child) td, [data-name="Racial Staff Categories"] tbody tr:not(:first-child) td, [data-name="Gender Leadership Categories"] tbody tr:not(:first-child) td, [data-name="Gender Board Categories"] tbody tr:not(:first-child) td, [data-name="Gender Staff Categories"] tbody tr:not(:first-child) td {
+padding-top: 20px;}
+
+
+.titleDescription{
+  float: left;
+  margin-left: 100px;
+  padding: 15px 0px 15px 0px;
+}
+.titleinput{
+  float: right;
+  margin-right: 100px;
+  padding: 15px 0px 15px 0px;
+
+}

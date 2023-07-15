@@ -1,0 +1,204 @@
+@font-face {
+    font-family: "Proxima Nova";
+    src: url("/proximanova-regular-webfont.woff");
+}
+
+// @font-face {
+//     font-family: "Proxima Nova";
+//     src: url("/proximanova-semibold-webfont.woff");
+// }
+
+@font-face {
+    font-family: "Beausite Fit";
+    src: url("/BeausiteFitWeb-Regular.woff");
+}
+
+body {
+    background-color: var(--bs-black-light) !important;
+    color: var(--bs-white) !important;
+    font-family: "Proxima Nova";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+}
+
+.body-text-lg {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 30px;
+    /* or 136% */
+
+    text-align: center;
+    letter-spacing: -0.25px;
+}
+
+h0,
+.h0 {
+    font-family: "Beausite Fit";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 44px;
+    line-height: 52px;
+    /* or 118% */
+
+    text-align: center;
+    letter-spacing: -0.62px;
+}
+
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5 {
+    font-family: "Beausite Fit" !important;
+    font-style: normal;
+    font-weight: 400;
+}
+
+h1,
+.h1 {
+    font-size: 36px;
+    line-height: 48px;
+    letter-spacing: -1px;
+}
+
+h2,
+.h2 {
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: -0.5px;
+}
+
+h3,
+.h3 {
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.5px;
+}
+
+h4,
+.h4 {
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: -0.25px;
+}
+
+h5,
+.h5 {
+    font-family: "Proxima Nova";
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 22px;
+}
+
+label,
+.label {
+    margin-bottom: 12px;
+}
+
+.ds-btn {
+    font-family: "Proxima Nova";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0px;
+    padding: 8px 24px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    border: 0;
+}
+
+.ds-btn-block {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: -0.15px;
+}
+
+.ds-btn-primary {
+    background: var(--bs-blue) !important;
+    color: var(--bs-white);
+}
+
+.menu-link {
+    font-family: "Proxima Nova";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.light {
+    .accordion-button::after {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    }
+
+    .accordion-button:not(.collapsed):after {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    }
+}
+
+.dark {
+    .accordion-button:after {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    }
+
+    .accordion-button:not(.collapsed):after {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    }
+
+    .accordion-item:last-of-type .accordion-button.collapsed {
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+}
+
+.text-small {
+    font-weight: 400;
+    font-size: 12px !important;
+    line-height: 20px;
+}
+
+.text-md {
+    font-weight: 400;
+    font-size: 16px !important;
+    line-height: 28px;
+    letter-spacing: -0.15px;
+}
+
+.text-lg {
+    font-size: 22px !important;
+    line-height: 30px;
+    /* or 136% */
+
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: -0.25px;
+}
+
+.text-bold {
+    font-weight: 600;
+}
+
+.text-very-small {
+    font-weight: 400;
+    font-size: 6px !important;
+    line-height: 12px;
+}
+
+.divider {
+    border-bottom: 1px solid  var(--bs-gray-500);
+    width: 90%;
+    margin: 0 auto;
+}

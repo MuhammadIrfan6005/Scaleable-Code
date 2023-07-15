@@ -1,0 +1,194 @@
+{{ snippets["Desire/Breadcrumb"] }}
+<div class="m-1 pt-5" id="accountsection">
+    <div class="mb-5">
+        <h2 id="beginningtxt">Give your old gold a new beginning</h2>
+    </div>
+    <div class="mb-5">
+        <h3 id="accounttxt">Create your account</h3>
+    </div>
+    <p class="mb-5" style="width: 309px;">
+        We’d like you to know that your Gold Recycling account is separate from your Brilliance account.
+    </p>
+    <p class="mb-4">
+        Already have an account? &nbsp;&nbsp;<a style="color:white" href="/SignIn/">Log In</a>
+    </p>
+</div>
+
+<style>   
+     @media screen and (min-device-width: 1285px) { 
+       div#accountsection {
+       padding-left: 350px;
+      }
+       div#ContentContainer_MainContent_MainContent_LocalLogin >div:nth-child(1) {
+        padding-left: 350px;
+       }
+       .form-horizontal {
+         width: 300%;
+       }
+       div#ValidationSummary1 {
+       width: 450px;
+       }
+       div#dvTCerror {
+       width: 450px;
+       }
+     }
+
+    #beginningtxt {
+     background: linear-gradient(107.3deg, #D1B984 0%, #C8A259 102.64%);
+     -webkit-background-clip: text;
+     -webkit-text-fill-color: transparent;
+     background-clip: text;
+     text-fill-color: transparent;
+     font-family: 'GT Alpina' !important;
+     line-height: 140%;
+    }
+     #accounttxt{
+     height: 28px;
+     width: 319px;
+     font-family: 'GT Alpina' !important;
+     line-height: 28px;
+     }
+     .form-control{
+     height: 48px;
+     border: 1px solid #E4E7E8 !important;
+     border-radius: 4px;
+     }
+      #SubmitButton {
+      background: #734B1A;
+      border-style: none;
+     }
+    .nav-account {
+        display: none;
+    }
+
+    .login-heading-section {
+        display: none;
+    }
+
+    #UserNameTextBox {
+        display: none;
+    }
+
+    #ConfirmPasswordTextBox {
+        display: none;
+    }
+
+    .form-check-input:checked {
+        background-color: #734B1A;
+    }
+
+    .form-check-input {
+        width: 20px;
+        height: 20px;
+    }
+
+    .form-check {
+    padding-bottom: 40px;
+    padding-top: 30px;
+     }
+
+    .form-check-label {
+        font-family: 'Proxima Nova';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 22px;
+        color: #FFFFFF;
+        padding-left: 10px;
+        margin-top: 0.25rem !important;
+    }
+
+    .sm-ul {
+        margin-top: -12px;
+        padding-left: 0;
+        margin-bottom: 21px;
+        list-style: none;
+    }
+
+    #MHSubmitButton {
+        width: 100%;
+    }
+
+    .breadcrumb {
+        margin-left: -12px;
+        margin-right: -12px;
+    }
+
+    .blockUI.blockOverlay {
+        display: none;
+    }
+</style>
+<script>
+
+    var intervalID = '';
+
+    $(document).ready(function () {
+        //irf: changing input placeholders and button val as per figma
+        $("#EmailTextBox").attr("placeholder", "Enter Email"); 
+        $("#PasswordTextBox").attr("placeholder", "Enter Password");
+        $("#SubmitButton").val("Create an account");
+        $("#SubmitButton").attr('value', 'Create an account').addClass("w-100");
+
+
+        $(".form-group ").addClass("mb-4");
+        $(".form-horizontal").addClass("mx-1");
+        $(".control-label").removeClass('required');
+        $("#MHSubmitButton").addClass("w-100");
+
+        $("#EmailTextBox").focusout(function () {
+            $("#UserNameTextBox").val($("#EmailTextBox").val());
+        }).blur(function () {
+            $("#UserNameTextBox").val($("#EmailTextBox").val());
+        });
+
+        $("#PasswordTextBox").focusout(function () {
+            $("#ConfirmPasswordTextBox").val($("#PasswordTextBox").val());
+        }).blur(function () {
+            $("#ConfirmPasswordTextBox").val($("#PasswordTextBox").val());
+        });
+        $("#UserNameTextBox").parent().parent().hide();
+        $("#ConfirmPasswordTextBox").parent().parent().hide();
+        const tnc = '<div class="form-check"><input class="form-check-input" type="checkbox" value="" id="ed_termsandconditions_chk"><label class="form-check-label" for="ed_termsandconditions_chk">I agree to the terms and conditions. <a style="color:white" href="/terms-and-conditions/" target="_blank">Read more</a></label></div>';
+        const tncerror = '<div id="dvTCerror" style="display:none;" class="row mb-5"><div class="col-12"><div class="" style="margin-top: -12px;"><div class="text-center mb-3 d-flex p-2 justify-content-center" style="background-color: #B2955D52;"><div class="material-icons px-2 text-danger">warning</div><div style="color:white;">Tc’s need to be accepted to continue</div></div></div></div></div>';
+        $('#PasswordTextBox').parent().parent().after('<div><ul class="sm-ul"><li class="sm-li">Min. 6 characters</li><li class="sm-li">1 x UPPERCASE character</li><li class="sm-li">1 x lowercase character</li><li class="sm-li">1 x Number (0-9)</li></ul></div>' + tnc + tncerror)
+        const emailerror = '<div id="dvEmailerror" style="display:none;" class="row mb-5"><div class="col-12"><div class="" style="margin-top: -12px;"><div class="text-center mb-3 d-flex p-2 justify-content-center" style="background-color: #f6f6f6;"><div class="material-icons px-2 text-danger">warning</div><div style="color:#000;">Invalid email address</div></div></div></div></div>';
+        const btn = '<div class="form-group"><div class="col-sm-offset-4 col-sm-8"><input type="button" value="Create an account" id="MHSubmitButton" title="Create an account" class="btn btn-primary"></div></div>';
+
+        //Irf: change in logic to first check either required fields are filled or not, if filled then continue
+        $("#SubmitButton").click(function (e) {
+
+            var Email = $('#EmailTextBox').val();
+            var Password = $("#PasswordTextBox").val();
+            if (Email && Password != "") {
+                const chked = $("#ed_termsandconditions_chk").is(':checked');
+                const validEmail = validateEmail($('#EmailTextBox').val());
+                console.log('valid email:' + validEmail);
+                if (validEmail !== true) {
+//                    alert("Email is not valid");
+                }
+                else if (chked !== true) {
+                    $("#dvTCerror").show();
+                    $("#ValidationSummary1").hide();
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    return false;
+                }
+            }
+        });
+        intervalID = setInterval(tryHideAlert, 100);
+
+    });
+
+    function tryHideAlert() {
+        $("a[href='#UserNameTextBox']").first().hide();
+
+        $("a[href='#EmailTextBox']").each(function (i, obj) {
+            if ($(obj).text() == 'Username is a required field.') { $(obj).hide(); clearInterval(intervalID); }
+        });
+    }
+
+    function validateEmail(mail) {
+        return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail);
+    }
+</script>
