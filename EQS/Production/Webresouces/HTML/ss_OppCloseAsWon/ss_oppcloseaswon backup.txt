@@ -1,0 +1,3656 @@
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+		crossorigin="anonymous"></script>
+
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
+	<style type="text/css">
+		body {
+			padding-bottom: 80px;
+		}
+
+		.radioBtn a {
+			color: #3276b1;
+			background-color: #fff;
+			-webkit-transition: .6s;
+			transition: .6s;
+		}
+
+		.radioBtn .active {
+			color: #fff;
+			background-color: #286090;
+			background-image: none;
+			border-color: #204d74;
+			box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+			-webkit-transition: .6s;
+			transition: .6s;
+		}
+
+		.spaceyesno {
+			background: white;
+			color: black;
+			font-weight: bold;
+			-webkit-transition: .6s;
+			transition: .6s;
+		}
+
+		/***/
+		span.label {
+			float: left;
+			color: black;
+			font-size: 17px;
+		}
+
+		.mb8 {
+			margin-bottom: 8px;
+		}
+
+		.btn-sm {
+			padding: 2px 8px 1px 8px !important;
+		}
+
+		label {
+			font-weight: 400
+		}
+
+		.bold {
+			font-weight: 700;
+		}
+
+		.indays1 input {
+			width: 106px;
+			height: 23px;
+		}
+
+		.inputnotice {
+			width: 100%;
+		}
+
+		.indays2 input {
+			width: 57px;
+			height: 27px;
+		}
+
+		.input-sm {
+			height: 27px;
+		}
+
+		.btnrow {
+			float: right;
+			margin-right: 864px;
+		}
+
+		.btnsyesno {
+			text-align: right;
+			float: right;
+			margin-right: 870px;
+		}
+
+		.btnrow3 {
+			float: right;
+			margin-right: 1864px !important;
+		}
+
+		.btnsyesno3 {
+			text-align: right;
+			float: right;
+			margin-right: 1870px !important;
+		}
+
+		.inputdiv {
+			text-align: right;
+		}
+
+		.input130 {
+			width: 143px;
+		}
+
+		.inputfull {
+			width: 100%;
+		}
+
+		input[type="text"],
+		input[type="number"],
+		input[type="date"] {
+			border: none;
+			border-bottom: 1px solid lightgray;
+		}
+
+		input[type="text"]:hover,
+		input[type="number"]:hover,
+		input[type="date"]:hover,
+		input[type="text"]:active,
+		input[type="number"]:active,
+		input[type="date"]:active {
+			border: 1px solid black;
+		}
+
+		input#notifi_days {
+			border: 1px solid lightgray !important;
+		}
+
+		input#notifi_days:hover {
+			border: 1px solid black !important;
+		}
+
+		.all-standard {
+			margin-top: 7px;
+		}
+
+		.all-standard label {
+			/* font-size: 16px; */
+			font-weight: bold;
+			/* text-decoration: underline; */
+			/* border-bottom: 2px solid; */
+			line-height: 1;
+			float: left;
+		}
+
+		.payment_terms_text {
+			/*max-height: 0;*/
+			-webkit-transition: max-height 0.5s ease-in-out;
+			-moz-transition: max-height 0.5s ease-in-out;
+			-o-transition: max-height 0.5s ease-in-out;
+			transition: max-height 0.5s ease-in-out;
+			display: none;
+		}
+
+		.showtextpay {
+			-webkit-transition: max-height 0.5s ease-in-out;
+			-moz-transition: max-height 0.5s ease-in-out;
+			-o-transition: max-height 0.5s ease-in-out;
+			transition: max-height 0.5s ease-in-out;
+			max-height: 60px;
+			display: block;
+		}
+
+		.btnsyesno .btn,
+		.btnsyesno1 .btn {
+			/*border-radius: 0px;
+		width: 42px;*/
+		}
+
+		.btnsyesno1 span.btn,
+		.btnsyesno span.btn {
+			/*border-right: 0px;
+	    border-radius: 0px;
+	    border-left: 0px;
+	    margin-left: -4px !important;
+	    margin-right: -4px;
+	    width: 20px;*/
+		}
+
+		.btnsyesno1 span.btn:hover,
+		.btnsyesno span.btn:hover {
+			background: transparent;
+			color: blue;
+		}
+
+		.btnsyesno,
+		.fieldlabel {
+			padding-left: 10px;
+			padding-right: 10px;
+		}
+
+		button#submit {
+			float: right;
+			background-color: #001399;
+			/*color: rgba(255, 255, 255, 1.0) !important;*/
+			color: white;
+			font-family: Segoe UI;
+			font-size: 12px;
+
+			/*border: 1px solid rgba(0, 120, 215, 1.0);*/
+			border: 1px solid black;
+			width: 84px !important;
+			padding: 3px 3px 3px 3px;
+			text-align: center;
+			text-decoration: none;
+		}
+
+		button#cancel {
+			float: left;
+			text-align: center;
+			text-decoration: none;
+			background-color: rgba(255, 255, 255, 1.0);
+			/*color: rgba(0, 120, 215, 1.0);*/
+			color: black;
+			font-family: Segoe UI;
+			font-size: 12px;
+
+			/*border: 1px solid rgba(0, 120, 215, 1.0);*/
+			border: 1px solid black;
+			width: 84px !important;
+			padding: 3px 3px 3px 3px;
+		}
+
+
+		.actionbtns {
+			float: right;
+			width: 181px;
+			margin-right: 1px;
+			margin-top: 20px;
+		}
+
+		.submitbtn {
+			float: left;
+			width: auto;
+		}
+
+		.cancelbtn {
+			float: right;
+			width: auto;
+		}
+
+		.btnsyesno>.btn:first-child,
+		.btnsyesno1>.btn:first-child {
+			margin-right: -3px;
+			border-top-right-radius: 0px;
+			border-bottom-right-radius: 0px;
+		}
+
+		.btnsyesno>.btn:nth-child(2),
+		.btnsyesno1>.btn:nth-child(2) {
+			border-top-left-radius: 0px;
+			border-top-left-radius: 0px;
+			border-bottom-left-radius: 0px;
+		}
+
+		body {
+			background: #add8e638;
+		}
+
+		.hideit {
+			display: none;
+		}
+
+		.showit {
+			display: block;
+		}
+
+		p.indays2 {
+			margin-top: 12px;
+			/* border: 1px solid; */
+		}
+
+		.pl16 {
+			padding-left: 16px;
+		}
+
+		span.QNumber {
+			float: left;
+			margin-right: 5px;
+		}
+
+		.pl13 {
+			padding-left: 13px;
+		}
+
+		span.inpercent {
+			/*float: left;
+    margin-top: -3px;*/
+		}
+
+		span.countryindexsp {
+			float: left;
+			margin-top: -3px;
+		}
+
+		.pcountryindexsp,
+		.pinpercent {
+			float: left;
+			width: 100%;
+		}
+
+		.btn.btn-primary {
+			border: 1px solid black;
+			color: black;
+		}
+
+		.btn.btn-primary:hover {
+			/*background: white;*/
+			background: #204d74;
+			color: white;
+		}
+
+		.btn.btn-primary.active:hover {
+			/*background: white;*/
+			background: #204d74;
+			color: white;
+		}
+
+		.btn.btn-primary.active {
+			color: white;
+		}
+
+		.btn.btn-primary.btn-sm.active[data-title="1"] {
+			/*background: green;
+			border: 1px solid green;
+			color: white;*/
+		}
+
+		.btn.btn-primary.btn-sm[data-title="1"]:hover {
+			/*background: green;
+			color: white;
+			border: 1px solid green;*/
+
+		}
+
+		.btn.btn-primary[data-title="0"]:hover {
+			/*background: #a9a9b0;
+			color: white;
+			border: 1px solid #a9a9b0;
+			border-radius: red;*/
+		}
+
+		.btn.btn-primary.active[data-title="0"] {
+			/*background: #a9a9b0;
+			border: 1px solid #a9a9b0;
+			color: white;*/
+		}
+
+		.mt10 {
+			margin-top: 10px;
+		}
+
+		.pr0 {
+			padding-right: 0px;
+		}
+
+		a[data-title="0"] {
+			margin-left: -6px !important;
+			border-radius: 0px 3px 3px 0px;
+		}
+
+		.nabtn.active {
+			color: white;
+		}
+
+		.pl0 {
+			padding-left: 0px;
+		}
+
+		.part1,
+		.part2 {
+			margin-top: 20px;
+			margin-bottom: 30;
+			padding-top: 5px;
+			padding-bottom: 5px;
+			border-bottom: 2px solid black;
+		}
+
+		.part1 .btnsyesno,
+		.part2 .btnsyesno {
+			text-align: right;
+		}
+
+		/* nh================================ */
+		#eInvoiceError {
+			color: red;
+			font-size: 12px !important;
+		}
+
+		#E_Invoice {
+			display: none;
+		}
+
+		span.eInvoive {
+			margin-right: 9px;
+		}
+
+		#eInvoicedivMain {
+			margin-left: 1px;
+			margin-top: 25px;
+		}
+
+		.eInvoicediv p {
+			font-weight: bold;
+			/* margin-left: 30px; */
+			float: left;
+		}
+
+		#E_InvoiceEmail {
+
+			height: 27px !important;
+			padding: 5px 10px !important;
+			font-size: 12px !important;
+			line-height: 1.5;
+			border-radius: 3px;
+		}
+
+		#eInvoice {
+			size: 100px;
+			width: 20px;
+			height: 20px;
+			margin-top: -2px;
+			margin-bottom: 15px;
+			margin-right: 10px;
+		}
+
+		#addcheck {
+			size: 100px;
+			width: 20px;
+			height: 20px;
+			margin-top: -1px;
+			margin-bottom: 15px;
+			margin-right: 10px;
+		}
+
+		#saleschecklist {
+			size: 100px;
+			width: 20px;
+			height: 20px;
+			margin-top: -1px;
+			margin-bottom: 15px;
+			margin-right: 10px;
+		}
+
+		.eInvoicediv {
+			margin-top: 14px;
+		}
+
+		.eInvoiceCheckbox {
+			float: left;
+		}
+
+		.resetcheckbox {
+			margin-bottom: -3px;
+		}
+
+
+		/* ================================nh */
+		span.resetcheckbox {
+			margin-right: 9px;
+		}
+
+		.resetdiv p {
+			font-weight: bold;
+			/* margin-left: 30px; */
+			float: left;
+		}
+
+		.resetdiv {
+			margin-top: 14px;
+		}
+
+		.resettext,
+		.resetcheckbox {
+			float: left;
+		}
+
+		.resetcheckbox {
+			margin-bottom: -3px;
+		}
+
+		.mt20 {
+			margin-top: 20px;
+		}
+
+		input#resetall {
+			size: 100px;
+			width: 20px;
+			height: 20px;
+			margin-top: -2px;
+			margin-bottom: 4px;
+		}
+
+		.termdaysother {
+			margin-top: 7px;
+			border: 1px solid lightblue;
+			border-radius: 8px;
+			width: 90px;
+			height: 29px;
+			padding: 3px 6px 3px 6px;
+		}
+
+		.termdaysother:focus,
+		.termdaysother:active,
+		.termdaysother:hover {
+			border-radius: 8px !important;
+			border: 1px solid lightblue !important;
+		}
+
+		.resettext {
+			margin-top: -3px;
+		}
+
+		.p0 {
+			padding: 0px !important;
+		}
+
+		.pb4 {
+			padding-bottom: 4px;
+		}
+
+		.revenuedate {
+			border: 1px solid black;
+			padding-top: 5px !important;
+			padding-bottom: 5px !important;
+		}
+
+		.pl30 {
+			padding-left: 30px;
+		}
+
+		.plr0 {
+			padding-left: 0px;
+			padding-right: 0px;
+		}
+
+		.part1q,
+		.part2q,
+		.part1qyn,
+		.part2qyn {
+			float: left;
+			width: auto;
+		}
+
+		.secondpart {
+			/*display: none;*/
+		}
+
+		/**********cssssssss 103**********/
+		#style-7::-webkit-scrollbar-track {
+			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+			background-color: #F5F5F5;
+			border-radius: 10px;
+		}
+
+		#style-7::-webkit-scrollbar {
+			width: 10px;
+			background-color: #F5F5F5;
+		}
+
+		.error {
+			border: 3px solid red !important;
+		}
+
+		#style-7::-webkit-scrollbar-thumb {
+			border-radius: 10px;
+			background-image: -webkit-gradient(linear,
+					left bottom,
+					left top,
+					color-stop(0.44, rgb(122, 153, 217)),
+					color-stop(0.72, rgb(73, 125, 189)),
+					color-stop(0.86, rgb(28, 58, 148)));
+		}
+
+		/********LOADER*************/
+		.loader {
+			position: fixed;
+			left: 50%;
+			top: 40%;
+			border: 16px solid #f3f3f3;
+			border-radius: 50%;
+			border-top: 16px solid #3498db;
+			width: 120px;
+			height: 120px;
+			-webkit-animation: spin 2s linear infinite;
+			/* Safari */
+			animation: spin 2s linear infinite;
+		}
+
+		.loaderdiv {
+			position: fixed;
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			height: 100%;
+			z-index: 9999;
+			background: rgba(0, 0, 0, 0.7);
+		}
+
+		.caponprice {
+			width: 20%;
+			height: 4%;
+		}
+
+		.labelheight {
+			height: 4%;
+			font-weight: bold;
+		}
+
+		/* Safari */
+		@-webkit-keyframes spin {
+			0% {
+				-webkit-transform: rotate(0deg);
+			}
+
+			100% {
+				-webkit-transform: rotate(360deg);
+			}
+		}
+
+		@keyframes spin {
+			0% {
+				transform: rotate(0deg);
+			}
+
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+
+		/*********END LOADER********/
+		/********Loder2************/
+		.lds-spinner {
+			position: fixed;
+			left: 50%;
+			top: 40%;
+			color: official;
+			display: inline-block;
+			width: 64px;
+			height: 64px;
+		}
+
+		.lds-spinner div {
+			transform-origin: 32px 32px;
+			animation: lds-spinner 1.2s linear infinite;
+		}
+
+		.lds-spinner div:after {
+			content: " ";
+			display: block;
+			position: absolute;
+			top: 3px;
+			left: 29px;
+			width: 5px;
+			height: 14px;
+			border-radius: 20%;
+			background: #fff;
+		}
+
+		.lds-spinner div:nth-child(1) {
+			transform: rotate(0deg);
+			animation-delay: -1.1s;
+		}
+
+		.lds-spinner div:nth-child(2) {
+			transform: rotate(30deg);
+			animation-delay: -1s;
+		}
+
+		.lds-spinner div:nth-child(3) {
+			transform: rotate(60deg);
+			animation-delay: -0.9s;
+		}
+
+		.lds-spinner div:nth-child(4) {
+			transform: rotate(90deg);
+			animation-delay: -0.8s;
+		}
+
+		.lds-spinner div:nth-child(5) {
+			transform: rotate(120deg);
+			animation-delay: -0.7s;
+		}
+
+		.lds-spinner div:nth-child(6) {
+			transform: rotate(150deg);
+			animation-delay: -0.6s;
+		}
+
+		.lds-spinner div:nth-child(7) {
+			transform: rotate(180deg);
+			animation-delay: -0.5s;
+		}
+
+		.lds-spinner div:nth-child(8) {
+			transform: rotate(210deg);
+			animation-delay: -0.4s;
+		}
+
+		.lds-spinner div:nth-child(9) {
+			transform: rotate(240deg);
+			animation-delay: -0.3s;
+		}
+
+		.lds-spinner div:nth-child(10) {
+			transform: rotate(270deg);
+			animation-delay: -0.2s;
+		}
+
+		.lds-spinner div:nth-child(11) {
+			transform: rotate(300deg);
+			animation-delay: -0.1s;
+		}
+
+		.lds-spinner div:nth-child(12) {
+			transform: rotate(330deg);
+			animation-delay: 0s;
+		}
+
+		@keyframes lds-spinner {
+			0% {
+				opacity: 1;
+			}
+
+			100% {
+				opacity: 0;
+
+			}
+		}
+
+		/*********end loder 2*********/
+		@media screen and (max-width: 1000px) {
+			.btnsyesno {
+				text-align: right;
+			}
+
+			input.inputnotice {
+				width: 100%;
+			}
+		}
+
+		@media screen and (max-width: 750px) {
+			.inputdiv.indays1.col-md-4.col-sm-4 {
+				text-align: left;
+			}
+		}
+
+		#prepaid {
+			size: 100px;
+			width: 20px;
+			height: 20px;
+			margin-top: -2px;
+			margin-bottom: 15px;
+			margin-right: 10px;
+		}
+
+		#vatid_text {
+			display: inline-block;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			box-sizing: border-box;
+		}
+	</style>
+	<script src="ClientGlobalContext.js.aspx" type="text/javascript"></script>
+	<script type="text/javascript">
+		var closedate;
+		var actualrevenue;
+		var contractstartdate;
+		var stepname;
+		var notessubject = "{{Contract--";
+		var formLabel;
+		var OppID = parent.Xrm.Page.data.entity.getId();
+		var accountid = parent.Xrm.Page.getAttribute("parentaccountid").getValue();
+		var accid = accountid[0].id;
+		accid = accid.replace("{", "").replace("}", "");
+		OppID = OppID.replace("{", "").replace("}", "");
+		console.log("Opportunity ID " + OppID);
+		formLabel = window.opener.Xrm.Page.ui.formSelector.getCurrentItem().getLabel();
+		console.log(formLabel);
+		var NAVID;
+		var prodName = " ";
+		var opportunityname = "";
+		var contactphone = "";
+		var contactemail = "";
+		var accountname = "";
+		var accountnameid = "";
+		var accountentitytype = "";
+		var setapprovalaccountname = new Array();
+		setapprovalaccountname[0] = new Object();
+		var contactname = "";
+		var contactnameid = "";
+		var contactentitytype = "";
+		var setapprovalcontactname = new Array();
+		setapprovalcontactname[0] = new Object();
+		var ss_totalsetupbase = "";
+		var oppcurrencyid = "";
+		var oppcurrencyname = "";
+		var oppcurrencyentitytype = "";
+		var setapprovalcurrency = new Array();
+		setapprovalcurrency[0] = new Object();
+		var opportunityid = "";
+		var opportunitylookupname = "";
+		var opportunitylookupentitytype = "";
+		var setopportuntiyapproval = new Array();
+		setopportuntiyapproval[0] = new Object();
+		var checkall = false;
+		var productmaincategory = "";
+		var new_einvoice = "";
+		var new_einvoice_formatted = "";
+		var new_einvoiceemail = "";
+		var new_invoicelanguage = "";
+		var new_invoicelanguage_formatted = "";
+		var new_vatidaccounting = "";
+		var licensefee = 0;
+		var _parentaccountid_value = "";
+		var OppID = window.opener.Xrm.Page.data.entity.getId();
+		var ss_opportunitypartner = "";
+		var ss_partnershipmodel = "";
+		OppID = OppID.replace("{", "").replace("}", "");
+		console.log("Opportunity ID " + OppID);
+		var specificproducts = false;
+		var PRSALESCHECKLIST = false;
+		var productno = "";
+		var createsaleschecklist = true;
+		var ss_cancelledatdate = "";
+		function getOppData() {
+			if (screen.width) {
+				if (screen.width > 1540) {
+					debugger;
+					$('.btnsyesno').css('margin-right', "");
+					$('.btnrow').css('margin-right', "");
+					$('.btnsyesno').css('margin-right', "1470px");
+					$('.btnrow').css('margin-right', "1464px");
+				}
+
+				else if (screen.width < 1240 && screen.width > 840) {
+					$('.btnsyesno').css('margin-right', "");
+					$('.btnrow').css('margin-right', "");
+					$('.btnsyesno').css('margin-right', "570px !important");
+					$('.btnrow').css('margin-right', "564px !important");
+				}
+				else if (screen.width < 840) {
+					$('.btnsyesno').css('margin-right', "");
+					$('.btnrow').css('margin-right', "");
+					$('.btnsyesno').css('margin-right', "10px !important");
+					$('.btnrow').css('margin-right', "4px !important");
+				}
+			}
+
+			formLabel = window.opener.Xrm.Page.ui.formSelector.getCurrentItem().getLabel();
+			console.log(formLabel);
+			window.opener.Xrm.WebApi.retrieveRecord("opportunity", OppID, "?$select=estimatedclosedate,ss_contractenddate,actualclosedate,estimatedvalue,stepname,ss_contractstartdate,ss_totallicencefee,_parentaccountid_value,_ss_opportunitypartner_value,ss_partnershipmodel,ss_newcontractstartdate,ss_additionaldetailcheck,ss_additionaldetails,ss_annualincrease,ss_autorenewalforsubscriptionterm,ss_billinguponsignature,ss_caponpriceincreases,ss_casestudy,ss_newcontractenddate,ss_newcontractperiod,ss_donotcreateirsaleschecklist,ss_forwardingasrecommendatior,new_freeperiod,ss_standardcontractlength,ss_increaseinpercentage,ss_increasesallowed,ss_incresetype,ss_increasedate,ss_nextinvoicedate,ss_officialcontractpartner,ss_otherpriceincreases,ss_otherspecification,ss_paymentterm14days,ss_paymenttermdays,ss_paymenttermdaysother,new_ponumber,ss_prepaid,ss_presentation,ss_priceincreaseannual,new_priceincreaseperiod,ss_newpriceincreases,ss_reference,ss_specificationdetails,ss_standardnotificationreq,ss_standardpaymentterms,ss_standardpriceincreases,ss_newterminationperiod,ss_website,ss_createapprovalchecklist,ss_cancelledatdate").then(
+				function success(result) {
+					console.log(result);
+					checkproductforIRSaleschecklist();
+					checkproductforPRSALESCHECKLIST();
+					getOppFields(result);
+				},
+				function (error) {
+					console.log("Errro: " + error.message);
+					alert(error.message);
+				}
+			);
+		}
+		$(document).ready(function () {
+
+			// function ShowHideAdditionalDetails(Additional) {
+			// 	if ($(Additional).is(":checked") === true) {
+			// 		$("#add_area").show();
+			// 	}
+			// 	else {
+			// 		$("#add_area").show();
+			// 	}
+			// }
+			//nh================================
+			$('body').on('click', '#addcheck', function () {
+				if ($('#addcheck').prop('checked') == true) {
+					$("#additonaldetailsdiv").show();
+				}
+				else {
+					$("#additonaldetailsdiv").hide();
+				}
+			})
+			$('body').on('click', '#eInvoice', function () {
+
+				var value = this;
+				if ($(value).prop("checked") == true) {
+					$(".e_l_v_fields").show();
+				}
+				else {
+					$(".e_l_v_fields").hide();
+				}
+			});
+
+			$('body').on('click', '#E_InvoiceEmail', function () {
+
+				$("#E_InvoiceEmail").removeClass("error");
+				$("#eInvoiceError").css("display", "none");
+			});
+			//================================nh
+			//Yes No main Options/ yyyyyyyyy
+			$('body').on('click', '.radioBtn a', function () {
+				var data = $(this).data('title');
+				var tog = $(this).data('toggle');
+				$('#' + tog).prop('value', data);
+				$('a[data-toggle="' + tog + '"]').not('[data-title="' + data + '"]').removeClass('active').addClass('notActive');
+				$('a[data-toggle="' + tog + '"][data-title="' + data + '"]').removeClass('notActive').addClass('active');
+			});
+			//reset all html 102
+			var allhtml = $(".otherfields").html();
+			var currenthtml;
+			var paymenttermdaysother, paymenttermdaysselected;
+			setTimeout(function () {
+				allhtml = $(".otherfields").html();
+			}, 2000);
+			$("body").on('click', '#resetall', function () {
+				if ($(this).prop("checked") == true) {
+					//currenthtml = $(".otherfields").html();
+					$(currenthtml).val("");
+					currenthtml = $(".questions_inner").clone();
+					paymenttermdaysother = $("#payment_term_days_other").val();
+					paymenttermdaysselected = $("#payment_term_days").val();
+					$(".otherfields").html(allhtml);
+				} else {
+					$(".questions").html(currenthtml);
+					$("#payment_term_days_other").val(paymenttermdaysother);
+					$("#payment_term_days").val(paymenttermdaysselected);
+				}
+			});
+			//****** Show hide text fields 
+			$("body").on('click', '.textdiv', function () {
+				var thisvalue = $(this).parent().find("input[type=hidden]").val();
+				var attrid = $(this).parent().find("input[type=hidden]").attr("id");
+				if (thisvalue == 0) {
+					$("." + attrid + "_tdiv").removeClass('hideit');
+				} else {
+					$("." + attrid + "_tdiv").addClass('hideit');
+				}
+				//for question 4.2 
+				if (thisvalue == 1 && attrid == "special_notice") {
+					$("." + attrid + "_tdiv").removeClass('hideit');
+				} else if (attrid == "special_notice") {
+					$("." + attrid + "_tdiv").addClass('hideit');
+				}
+				//for question 6.1 
+				if (thisvalue == 1 && attrid == "restriction") {
+					$("." + attrid + "_tdiv").removeClass('hideit');
+				} else if (attrid == "restriction") {
+					$("." + attrid + "_tdiv").addClass('hideit');
+				}
+				//for question 6.2 
+				if (thisvalue == 1 && attrid == "restriction_change") {
+					$("." + attrid + "_tdiv").removeClass('hideit');
+				} else if (attrid == "restriction_change") {
+					$("." + attrid + "_tdiv").addClass('hideit');
+				}
+			});
+
+			//irf: adding this block of code to show "agreed notification period" dropdown under 3.2.1
+			$("body").on('click', '.stand_noticl', function () {
+				var stand_noticl = $("#stand_noti").val();
+				if (stand_noticl == "0") {
+					$(".q3_2_1_inner").removeClass("hideit")
+				} else {
+					$(".notificationperiod").addClass("hideit");
+				}
+			});
+
+			$("body").on('click', '#payment_term_days', function () {
+				var selecteddays = $("#payment_term_days").val();
+				if (selecteddays == "100001") {
+					$(".otherdays").removeClass("hideit");
+				} else {
+					$(".otherdays").addClass("hideit");
+				}
+			});
+
+			//**** Reset Question 4 content
+			var q4html = $(".q4_inner").html();
+			$("body").on('click', '.q4', function () {
+				var q4_value = $("#ChangesToEqsTerms").val();
+				if (q4_value == 0) {
+					$(".q4_inner").html(q4html);
+				}
+			});
+			//Reset Question 6 content
+			var q6html = $(".q6_inner").html();
+			$("body").on('click', '.q6', function () {
+				var q6_value = $("#eqs_template_data").val();
+				if (q6_value == 0) {
+					$(".q6_inner").html(q6html);
+				}
+			});
+			//Reset Question 3 content
+			var q3html = $(".q3_inner").html();
+			$("body").on('click', '.q3', function () {
+				var q3_value = $("#standard_price").val();
+				if (q3_value == 0) {
+					$(".q3_inner").html(q3html);
+				}
+			});
+			//Reset Question 2 content  
+			var q2html = $(".q2_inner").html();
+			$("body").on('click', '.q2', function () {
+				var q2_value = $("#payment_terms").val();
+				if (q2_value == 0) {
+					$(".q2_inner").html(q2html);
+				}
+			});
+
+			//part 1 click function  
+			$("body").on('click', '.part1 .btnsyesno2 a', function () {
+
+				let part1val = $("#standard_contract_length").val();
+				if (part1val == "0") {
+					alert("Please edit value");
+					$('#cap_on_price_percent option:eq(1)').prop('selected', true)
+					$(".q2_inner, .q2_1_inner, .q3_inner, .q3_1_inner, .q3_2_inner").removeClass("hideit");
+					$(".part1Questions .btnsyesno a").each(function () {
+						$(this).addClass("notActive").removeClass("active");
+					});
+					//irf: add nobtn class instead of nabtn class to show NO when user selection is NO in main question
+					$(".part1Questions .btnsyesno .nobtn").each(function () {
+						$(this).addClass("active").removeClass("notActive");
+						//irf: enable No button acccept at one input of type date
+						$(".part1Questions .btnsyesno input").not('#increasealloweddate').val(0);
+						//irf: showing new_agreednotificationperiod(q3_2_1_inner) when standard price notification is no.
+						$(".q3_2_1_inner").removeClass("hideit");
+					});
+				} else if (part1val == "1") {
+					$(".q2_inner, .q3_inner, .q2_1_inner, .q3_1_inner, .q3_2_inner, .q3_inner").removeClass("hideit");
+					//irf: adding class hideit to hide new_agreednotificationperiod if it was showing and user click on yes
+					$(".q3_2_1_inner").addClass("hideit");
+
+					$(".part1Questions a.btn").each(function () {
+						$(".part1Questions a.btn").addClass("notActive").removeClass("active");
+						$(".part1Questions a.yesbtn").addClass("active").removeClass("notActive");
+						$(".part1Questions .btnsyesno input#cap_on_price_increases").val(1);
+					});
+					//for 3.1.1.  
+					$(".part1Questions a.q3_1_1").addClass("notActive").removeClass("active");
+					$(".part1Questions .q3_1_1.nobtn").addClass("active").removeClass("notActive");
+					$(".part1Questions input#cap_on_price_increases").val(0);
+					// $(".p1pq").each(function(){
+					// 	let thisid = $(this).find("input").attr("id");
+					// 	let data_toggle = $(this).find("a").attr("data-toggle");
+					// 	let data_title = $(this).find("a").attr("data-title");
+					// 	//console.log("input id =>"+thisid+ " toggle=>"+data_toggle+" title=>"+data_title);
+					// 	if(thisid == data_toggle && data_title == "1"){
+					// 		//console.log(thisid +"---" +data_toggle);
+					// 		$(".p1pq input#"+thisid).val("1");
+					// 		$(".p1pq a[data-toggle="+data_toggle+"]").addClass("notActive").removeClass("active");
+					// 		$(".p1pq a[data-toggle="+data_toggle+"][data-title="+data_title+"]").addClass("active").removeClass("notActive");
+					// 	}
+					// });
+				}
+			});
+
+			/////COMMENT FOR PROD
+			//part 2 click function  
+			/*$("body").on('click','.part2 .btnsyesno a', function(){
+				
+				let part2val = $("#standard_contract_terms").val();
+				if(part2val == "0"){
+					alert("Please edit value");
+					$(".q4_inner, .q5_inner, .q6_inner, .q7_inner").removeClass("hideit");
+					$(".part2Questions .btnsyesno a").each(function(){
+						$(this).addClass("notActive").removeClass("active");
+					});
+					$(".part2Questions .btnsyesno .nabtn").each(function(){
+						  $(this).addClass("active").removeClass("notActive");
+						  $(".part2Questions .btnsyesno input").val(2);
+					});
+				}else if(part2val == "1"){
+					$(".q4_inner, .q5_inner, .q6_inner, .q7_inner").removeClass("hideit");
+					$(".part2Questions a.btn").removeClass("active").addClass("notActive");
+
+					$(".part2Questions .q4 .nobtn").removeClass("notActive").addClass("active");
+					$(".part2Questions .btnsyesno input#ChangesToEqsTerms").val(0);
+
+					$(".part2Questions .q4_1 .yesbtn").removeClass("notActive").addClass("active");
+					$(".part2Questions .btnsyesno input#customer").val(1);
+
+					$(".part2Questions .q4_2 .nobtn").removeClass("notActive").addClass("active");
+					$(".part2Questions .btnsyesno input#special_notice").val(0);
+
+					$(".part2Questions .q4_3 .nobtn").removeClass("notActive").addClass("active");
+					$(".part2Questions .btnsyesno input#liability").val(0);
+
+					$(".part2Questions .q4_4 .yesbtn").removeClass("notActive").addClass("active");
+					$(".part2Questions .btnsyesno input#assignment").val(1);
+
+					$(".part2Questions .q5 .nobtn").removeClass("notActive").addClass("active");
+					$(".part2Questions .btnsyesno input#slas").val(0);
+
+					$(".part2Questions .q5_1 .yesbtn").removeClass("notActive").addClass("active");
+					$(".part2Questions .btnsyesno input#standard_slas").val(1);
+
+					$(".part2Questions .q6 .yesbtn").removeClass("notActive").addClass("active");
+					$(".part2Questions .btnsyesno input#eqs_template_data").val(1);
+
+					$(".part2Questions .q6_1 .nobtn").removeClass("notActive").addClass("active");
+					$(".part2Questions .btnsyesno input#restriction").val(0);
+
+					$(".part2Questions .q6_2 .nobtn").removeClass("notActive").addClass("active");
+					$(".part2Questions .btnsyesno input#restriction_change").val(0);
+
+					$(".part2Questions .q7 .nobtn").removeClass("notActive").addClass("active");
+					$(".part2Questions .btnsyesno input#security_requirements").val(0);
+
+					$(".part2Questions .q7_1 .yesbtn").removeClass("notActive").addClass("active");
+					$(".part2Questions .btnsyesno input#EQS_standard_TOM").val(1);
+					
+					// $(".p2pq").each(function(){
+					// 	let thisid = $(this).find("input").attr("id");
+					// 	let data_toggle = $(this).find("a").attr("data-toggle");
+
+					// 	$(this).find("a").each(function(){
+					// 		let data_title = $(this).attr("data-title");
+					// 		//console.log("input id =>"+thisid+ " toggle=>"+data_toggle+" title=>"+data_title);
+					// 		if(thisid == data_toggle && data_title == "0" && data_toggle != "eqs_template_data"){
+					// 			//console.log(thisid +"---" +data_toggle);
+					// 			$(".p2pq input#"+thisid).val("0");
+					// 			$(".p2pq a[data-toggle="+data_toggle+"]").addClass("notActive").removeClass("active");
+					// 			$(".p2pq a[data-toggle="+data_toggle+"][data-title="+data_title+"]").addClass("active").removeClass("notActive");
+					// 		}
+					// 		//for Question 6
+					// 		if(thisid == data_toggle && data_title == "1" && data_toggle == "eqs_template_data"){
+					// 			//console.log(thisid +"-Q6-" +data_toggle);
+					// 			$(".p2pq input#"+thisid).val("1");
+					// 			$(".p2pq a[data-toggle="+data_toggle+"]").addClass("notActive").removeClass("active");
+					// 			$(".p2pq a[data-toggle="+data_toggle+"][data-title="+data_title+"]").addClass("active").removeClass("notActive");
+					// 		}
+					// 	});
+
+						
+					// });
+				}
+			});*/
+
+			// First Part Show Hide Fields
+			$("body").on('click', '.firstpart a', function () {
+				var classname;
+				var thisvalue = $(this).parent().find("input[type=hidden]").val();
+				var c = $(this).attr('class').split(/\s+/);
+				for (var s in c)
+					if (c[s].indexOf('q') == 0)
+						classname = c[s];
+				if (thisvalue == 0) {
+					$("." + classname + "_inner").removeClass('hideit');
+				} else {
+					$("." + classname + "_inner").addClass('hideit');
+				}
+				if (thisvalue == 1 && classname == "q3_1_1") {
+					$("." + classname + "_inner").removeClass('hideit');
+				} else if (thisvalue == 0 && classname == "q3_1_1") {
+					$("." + classname + "_inner").addClass('hideit');
+				}
+
+			});
+			/////COMMENT FOR PROD
+			// Second part Show Hide Fields
+			// $("body").on('click', '.secondpart a', function () {
+			// 	var classname;
+			// 	var thisvalue = $(this).parent().find("input[type=hidden]").val();
+			// 	var c = $(this).attr('class').split(/\s+/);
+			//       	for(var s in c)
+			//        	if(c[s].indexOf('q') == 0)
+			//            	classname = c[s];
+			//        if(thisvalue == 1){
+			//        	$("." + classname + "_inner").removeClass('hideit');
+			// 	} else {
+			// 		$("." + classname + "_inner").addClass('hideit');
+			//        }
+			//        if(thisvalue == 0 && classname == "q6"){
+			//        	$("." + classname + "_inner").removeClass('hideit');
+			// 	} else if(thisvalue == 1 && classname == "q6"){
+			// 		$("." + classname + "_inner").addClass('hideit');
+			//        }
+
+			// });
+		});
+		function getOppFields(result) {
+			$("#closedate").val(new Date().toISOString().substring(0, 10));
+			ss_cancelledatdate = result["ss_cancelledatdate"] !== null && result["ss_cancelledatdate"] !== undefined ? new Date(result["ss_cancelledatdate"]).toISOString().substring(0, 10) : "";
+			//console.log(output);
+			actualrevenue = result["estimatedvalue"];
+			stepname = result["stepname"];
+			document.getElementById('contractstartdate').value = result["ss_newcontractstartdate"] !== null && result["ss_newcontractstartdate"] !== undefined ? new Date(result["ss_newcontractstartdate"]).toISOString().substring(0, 10) : "";
+			document.getElementById('actualrevenue').value = result["estimatedvalue@OData.Community.Display.V1.FormattedValue"];
+			document.getElementById('expDate').innerHTML = result["ss_contractenddate@OData.Community.Display.V1.FormattedValue"];
+			licensefee = result["ss_totallicencefee"];
+			if (licensefee === 0.00) {
+				$(".showhide").hide();
+			}
+			_parentaccountid_value = result["_parentaccountid_value"];
+			ss_opportunitypartner = result["_ss_opportunitypartner_value"];
+			ss_partnershipmodel = result["ss_partnershipmodel"];
+			if (ss_opportunitypartner !== null && (ss_partnershipmodel === 0 || ss_partnershipmodel === 3 || ss_partnershipmodel === 2)) {
+				GetEInvoiceFieldsFromPartner(ss_opportunitypartner);
+			}
+			else if (_parentaccountid_value !== null) {
+				GetEInvoiceFields(_parentaccountid_value);
+			}
+
+			//irf: calculate "next allowed increase date" and in other fields if "contract start date" is not null
+			if ($("#contractstartdate").val() !== "") {
+				getdate();
+			}
+			//New Change to Show Data on Pop Up Close
+			createsaleschecklist = result["ss_createapprovalchecklist"];
+			if (!createsaleschecklist) {
+				$("#ContractPartner option:contains(" + result["ss_officialcontractpartner"] + ")").attr('selected', 'selected');
+				result["ss_additionaldetailcheck"] === true ? ($("#addcheck").prop('checked', true), $("#additonaldetailsdiv").show(), $("#add_area").val(result["ss_additionaldetails"])) : $("#addcheck").prop('checked', false);
+				$("#ss_incresetype").val(result["ss_incresetype"]);
+				result["ss_donotcreateirsaleschecklist"] ? $("#saleschecklist").prop('checked', true) : $("#saleschecklist").prop('checked', false);
+				$("#po_no").val(result["new_ponumber"]);
+				$("#contractperiod option:contains(" + result["ss_newcontractperiod"] + ")").attr('selected', 'selected');
+				$("#terminationperiod option:contains(" + result["ss_newterminationperiod"] + ")").attr('selected', 'selected');
+				$("#new_freePeriod").val(result["new_freeperiod"]);
+				document.getElementById('contractenddate').value = result["ss_newcontractenddate"] !== null && result["ss_newcontractenddate"] !== undefined ? new Date(result["ss_newcontractenddate"]).toISOString().substring(0, 10) : ""
+				document.getElementById('nextinvoicedate').value = result["ss_nextinvoicedate"] !== null && result["ss_nextinvoicedate"] !== undefined ? new Date(result["ss_nextinvoicedate"]).toISOString().substring(0, 10) : ""
+				$("#reference").val(result["ss_reference"]);
+				result["ss_reference"] === 2 || result["ss_reference"] === "2" ? $("#limitedconsent").show() : "";
+				result["ss_website"] === true ? $("#website").prop('checked', true) : $("#website").prop('checked', false);
+				result["ss_presentation"] === true ? $("#presentation").prop('checked', true) : $("#presentation").prop('checked', false);
+				result["ss_casestudy"] === true ? $("#casestudy").prop('checked', true) : $("#casestudy").prop('checked', false);
+				result["ss_forwardingasrecommendatior"] === true ? $("#frowarding").prop('checked', true) : $("#frowarding").prop('checked', false);
+				result["ss_otherspecification"] === true ? ($("#specification").prop('checked', true), $("#specificationdetails").show(), $("#details_sepcification").val(result["ss_specificationdetails"])) : $("#specification").prop('checked', false);
+				result["ss_standardcontractlength"] === true ? $("#standard_contract_length").val(1) : $("#standard_contract_length").val(0);
+				if (result["ss_standardcontractlength"] === true) {
+					$('a[data-toggle="standard_contract_length"][data-title="1"]').removeClass('notActive').addClass('active');
+					$(".q2_inner, .q3_inner, .q2_1_inner, .q3_1_inner, .q3_1_1_inner, .q3_2_inner, .q3_inner").removeClass("hideit");
+
+					$(".part1Questions a.btn").each(function () {
+						$(".part1Questions a.btn").addClass("notActive").removeClass("active");
+						$(".part1Questions a.yesbtn").addClass("active").removeClass("notActive");
+						$(".part1Questions .btnsyesno input#cap_on_price_increases").val(1);
+					});
+					$(".part1Questions a.q3_1_1").addClass("notActive").removeClass("active");
+					$(".part1Questions .q3_1_1.nobtn").addClass("active").removeClass("notActive");
+					$(".part1Questions input#cap_on_price_increases").val(0);
+				}
+				else {
+					$('a[data-toggle="standard_contract_length"][data-title="0"]').removeClass('notActive').addClass('active');
+					//irf: removing active class from yes when NO enabled.
+					$('a[data-toggle="standard_contract_length"][data-title="1"]').removeClass('active').addClass('notActive');
+					$('#cap_on_price_percent option:eq(1)').prop('selected', true)
+					$(".q2_inner, .q2_1_inner, .q3_inner, .q3_1_inner, .q3_1_1_inner, .q3_2_inner").removeClass("hideit");
+					$(".part1Questions .btnsyesno a").each(function () {
+						$(this).addClass("notActive").removeClass("active");
+					});
+					$(".part1Questions .btnsyesno .nabtn").each(function () {
+						$(this).addClass("active").removeClass("notActive");
+						$(".part1Questions .btnsyesno input").val(2);
+					});
+				}
+				result["ss_autorenewalforsubscriptionterm"] === 1 ? ($("#auto_renewal").val(1), $("#new_auto_renewal").val(1)) : ($("#auto_renewal").val(0), $("#new_auto_renewal").val(0));
+				if (result["ss_autorenewalforsubscriptionterm"] === 1) {
+					$('a[data-toggle="auto_renewal"][data-title="1"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="auto_renewal"][data-title="0"]').removeClass('active').addClass('notActive');
+				}
+				else {
+					$('a[data-toggle="auto_renewal"][data-title="0"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="auto_renewal"][data-title="1"]').removeClass('active').addClass('notActive');
+				}
+				$("#payment_terms").val(result["ss_standardpaymentterms"]);
+				if (result["ss_standardpaymentterms"] === 1) {
+					$('a[data-toggle="payment_terms"][data-title="1"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="payment_terms"][data-title="0"]').removeClass('active').addClass('notActive');
+					//$('a[data-toggle="payment_terms"][data-title="2"]').removeClass('active').addClass('notActive');
+				}
+				else if (result["ss_standardpaymentterms"] === 0) {
+					$('a[data-toggle="payment_terms"][data-title="0"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="payment_terms"][data-title="1"]').removeClass('active').addClass('notActive');
+					//$('a[data-toggle="payment_terms"][data-title="2"]').removeClass('active').addClass('notActive');
+					//$(".q21click").show();
+
+				}
+				//irf: to prevent of standard payment terms from being N/A(force to be Yes by default)
+				else {
+					//$('a[data-toggle="payment_terms"][data-title="2"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="payment_terms"][data-title="1"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="payment_terms"][data-title="0"]').removeClass('active').addClass('notActive');
+				}
+				$("#ispayment_terms_14").val(result["ss_paymentterm14days"]);
+				if (result["ss_paymentterm14days"] === 1) {
+					$('a[data-toggle="ispayment_terms_14"][data-title="1"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="ispayment_terms_14"][data-title="0"]').removeClass('active').addClass('notActive');
+					//$('a[data-toggle="ispayment_terms_14"][data-title="2"]').removeClass('active').addClass('notActive');
+				}
+				else if (result["ss_paymentterm14days"] === 0) {
+					$('a[data-toggle="ispayment_terms_14"][data-title="0"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="ispayment_terms_14"][data-title="1"]').removeClass('active').addClass('notActive');
+					//$('a[data-toggle="ispayment_terms_14"][data-title="2"]').removeClass('active').addClass('notActive');
+					$(".paymenttermdays2").removeClass('hideit');
+					$("#payment_term_days").val(result["ss_paymenttermdays"]);
+					$(".otherdays").show();
+					$("#payment_term_days_other").val(result["ss_paymenttermdaysother"]);
+				}
+				else {
+					//irf: to prevent of "ispayment_terms_14" from being N/A(force to be Yes by default)
+					//$('a[data-toggle="ispayment_terms_14"][data-title="2"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="ispayment_terms_14"][data-title="1"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="ispayment_terms_14"][data-title="0"]').removeClass('active').addClass('notActive');
+				}
+
+
+				$("#standard_price").val(result["ss_standardpriceincreases"]);
+				if (result["ss_standardpriceincreases"] === 1) {
+					$('a[data-toggle="standard_price"][data-title="1"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="standard_price"][data-title="0"]').removeClass('active').addClass('notActive');
+					//$('a[data-toggle="standard_price"][data-title="2"]').removeClass('active').addClass('notActive');
+					$(".q3_inner").addClass('hideit');
+				}
+				else if (result["ss_standardpriceincreases"] === 0) {
+					$('a[data-toggle="standard_price"][data-title="0"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="standard_price"][data-title="1"]').removeClass('active').addClass('notActive');
+					//$('a[data-toggle="standard_price"][data-title="2"]').removeClass('active').addClass('notActive');
+				}
+				else {
+					//irf: to prevent of standard_price from being N/A(force to be Yes by default)
+					//$('a[data-toggle="standard_price"][data-title="2"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="standard_price"][data-title="1"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="standard_price"][data-title="0"]').removeClass('active').addClass('notActive');
+				}
+				$("#annual_increases").val(result["ss_annualincrease"]);
+				if (result["ss_annualincrease"] === 1) {
+					$('a[data-toggle="annual_increases"][data-title="1"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="annual_increases"][data-title="0"]').removeClass('active').addClass('notActive');
+					//$('a[data-toggle="annual_increases"][data-title="2"]').removeClass('active').addClass('notActive');
+					$(".q3_1_inner").addClass('hideit');
+				}
+				else if (result["ss_annualincrease"] === 0) {
+					$('a[data-toggle="annual_increases"][data-title="0"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="annual_increases"][data-title="1"]').removeClass('active').addClass('notActive');
+					//$('a[data-toggle="annual_increases"][data-title="2"]').removeClass('active').addClass('notActive');
+				}
+				else {
+					//irf: to prevent of annual_increases from being N/A(force to be Yes by default)
+					//$('a[data-toggle="annual_increases"][data-title="2"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="annual_increases"][data-title="1"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="annual_increases"][data-title="0"]').removeClass('active').addClass('notActive');
+				}
+
+				// $("#cap_on_price_increases").val(result["caponpriceincreases"]);
+				// if (result["caponpriceincreases"] === 1) {
+				// 	$('a[data-toggle="annual_increases"][data-title="1"]').removeClass('notActive').addClass('active');
+				// 	$('a[data-toggle="annual_increases"][data-title="0"]').removeClass('active').addClass('notActive');
+				// 	//$('a[data-toggle="annual_increases"][data-title="2"]').removeClass('active').addClass('notActive');
+				// 	//$(".q3_1_inner").addClass('hideit');
+				// }
+				// else if (result["caponpriceincreases"] === 0) {
+				// 	$('a[data-toggle="annual_increases"][data-title="0"]').removeClass('notActive').addClass('active');
+				// 	$('a[data-toggle="annual_increases"][data-title="1"]').removeClass('active').addClass('notActive');
+				// 	//$('a[data-toggle="annual_increases"][data-title="2"]').removeClass('active').addClass('notActive');
+				// 	$(".q3_1_inner").removeClass("hideit");
+				// }
+				// else {
+				// 	//irf: to make annual-increase YES, adding active class to data-title 1
+				// 	//$('a[data-toggle="annual_increases"][data-title="2"]').removeClass('notActive').addClass('active');
+				// 	$('a[data-toggle="annual_increases"][data-title="1"]').removeClass('notActive').addClass('active');
+				// 	$('a[data-toggle="annual_increases"][data-title="0"]').removeClass('active').addClass('notActive');
+				// }
+				$("#cap_on_price_increases").val(result["ss_caponpriceincreases"]);
+				if (result["ss_caponpriceincreases"] === 1) {
+					$('a[data-toggle="cap_on_price_increases"][data-title="1"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="cap_on_price_increases"][data-title="0"]').removeClass('active').addClass('notActive');
+					//$('a[data-toggle="cap_on_price_increases"][data-title="2"]').removeClass('active').addClass('notActive');
+					$(".q3_1_1_inner").removeClass('hideit');
+					$("#cap_on_price_new").val(result["ss_newpriceincreases"]);
+				}
+				else if (result["ss_caponpriceincreases"] === 0) {
+					$('a[data-toggle="cap_on_price_increases"][data-title="0"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="cap_on_price_increases"][data-title="1"]').removeClass('active').addClass('notActive');
+					//$('a[data-toggle="cap_on_price_increases"][data-title="2"]').removeClass('active').addClass('notActive');
+					$(".q3_1_1_inner").addClass('hideit');
+					//$(".q3_1_inner").removeClass("hideit");
+				}
+				else {
+					//$('a[data-toggle="cap_on_price_increases"][data-title="2"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="cap_on_price_increases"][data-title="1"]').removeClass('active').addClass('notActive');
+					$('a[data-toggle="cap_on_price_increases"][data-title="0"]').removeClass('notActive').addClass('active');
+				}
+				var increasealloweddateopp = result["ss_increasedate"] !== null && result["ss_increasedate"] !== undefined ? new Date(result["ss_increasedate"]).toISOString().substring(0, 10) : "";
+				$("#increasealloweddate").val(increasealloweddateopp);
+
+				$("#other_price").val(result["ss_otherpriceincreases"]);
+				if (result["ss_otherpriceincreases"] === 1) {
+					$('a[data-toggle="other_price"][data-title="1"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="other_price"][data-title="0"]').removeClass('active').addClass('notActive');
+					//$('a[data-toggle="other_price"][data-title="2"]').removeClass('active').addClass('notActive');
+					$(".q3_2_inner").addClass('hideit');
+					$("#cap_on_price_new").val(result["ss_newpriceincreases"]);
+				}
+				else if (result["ss_otherpriceincreases"] === 0) {
+					$('a[data-toggle="other_price"][data-title="0"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="other_price"][data-title="1"]').removeClass('active').addClass('notActive');
+					//$('a[data-toggle="other_price"][data-title="2"]').removeClass('active').addClass('notActive');
+					$(".q3_2_inner").removeClass('hideit');
+					//$(".q3_1_inner").removeClass("hideit");
+				}
+				else {
+					//$('a[data-toggle="other_price"][data-title="2"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="other_price"][data-title="1"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="other_price"][data-title="0"]').removeClass('active').addClass('notActive');
+				}
+				//irf: comment below logic because this funcionalty is not needed as per SVEN
+
+				// $("#increases_allowed").val(result["ss_increasesallowed"]);
+				// if (result["ss_increasesallowed"] === 1) {
+				// 	$('a[data-toggle="increases_allowed"][data-title="1"]').removeClass('notActive').addClass('active');
+				// 	$('a[data-toggle="increases_allowed"][data-title="0"]').removeClass('active').addClass('notActive');
+				// 	//$('a[data-toggle="increases_allowed"][data-title="2"]').removeClass('active').addClass('notActive');
+				// 	$(".q3_2_inner").addClass('hideit');
+				// 	$("#cap_on_price_new").val(result["ss_newpriceincreases"]);
+				// }
+				// else if (result["ss_increasesallowed"] === 0) {
+				// 	$('a[data-toggle="increases_allowed"][data-title="0"]').removeClass('notActive').addClass('active');
+				// 	$('a[data-toggle="increases_allowed"][data-title="1"]').removeClass('active').addClass('notActive');
+				// 	//$('a[data-toggle="increases_allowed"][data-title="2"]').removeClass('active').addClass('notActive');
+				// 	$(".q3_2_inner").removeClass('hideit');
+				// 	//$(".q3_1_inner").removeClass("hideit");
+				// }
+				// else {
+				// 	//$('a[data-toggle="increases_allowed"][data-title="2"]').removeClass('notActive').addClass('active');
+				// 	$('a[data-toggle="increases_allowed"][data-title="1"]').removeClass('active').addClass('notActive');
+				// 	$('a[data-toggle="increases_allowed"][data-title="0"]').removeClass('active').addClass('notActive');
+				// }
+
+				$("#stand_noti").val(result["ss_standardnotificationreq"]);
+				if (result["ss_standardnotificationreq"] === 1) {
+					$('a[data-toggle="stand_noti"][data-title="1"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="stand_noti"][data-title="0"]').removeClass('active').addClass('notActive');
+					//$('a[data-toggle="stand_noti"][data-title="2"]').removeClass('active').addClass('notActive');
+				}
+				else if (result["ss_standardnotificationreq"] === 0) {
+					$('a[data-toggle="stand_noti"][data-title="0"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="stand_noti"][data-title="1"]').removeClass('active').addClass('notActive');
+					$(".q3_2_1_inner").removeClass('hideit');
+					//$('a[data-toggle="stand_noti"][data-title="2"]').removeClass('active').addClass('notActive');
+				}
+				else {
+					//$('a[data-toggle="stand_noti"][data-title="2"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="stand_noti"][data-title="1"]').removeClass('notActive').addClass('active');
+					$('a[data-toggle="stand_noti"][data-title="0"]').removeClass('active').addClass('notActive');
+				}
+			}
+
+		}
+		//--------------------------------------------------------------------------
+		//This Function Will Get Fields from Partner Entity 
+		function GetEInvoiceFieldsFromPartner(ss_opportunitypartner) {
+			Xrm.WebApi.online.retrieveRecord("new_partner", ss_opportunitypartner, "?$select=new_einvoice,new_einvoiceemail,new_invoicelanguage,new_vatidaccounting").then(
+				function success(result) {
+					var new_einvoice = result["new_einvoice"];
+					var new_einvoice_formatted = result["new_einvoice@OData.Community.Display.V1.FormattedValue"];
+					var new_einvoiceemail = result["new_einvoiceemail"];
+					var new_invoicelanguage = result["new_invoicelanguage"];
+					var new_invoicelanguage_formatted = result["new_invoicelanguage@OData.Community.Display.V1.FormattedValue"];
+					var new_vatidaccounting = result["new_vatidaccounting"];
+
+					//if (new_einvoice) {
+					$('#eInvoice').prop("checked", true);
+					$('#E_InvoiceEmail').val(new_einvoiceemail);
+					$('#vatid_text').val(new_vatidaccounting);
+					$('#invoice_language').val(new_invoicelanguage);
+					$(".e_l_v_fields").show();
+					//}
+					// else {
+					// 	$('#eInvoice').prop("checked", true);
+					// 	$(".e_l_v_fields").show();
+					// }
+				},
+				function (error) {
+					Xrm.Utility.alertDialog(error.message);
+				}
+			);
+		}
+		function GetEInvoiceFields(_parentaccountid_value) {
+			Xrm.WebApi.online.retrieveRecord("account", _parentaccountid_value, "?$select=new_einvoice,new_einvoiceemail,new_invoicelanguage,new_vatidaccounting").then(
+				function success(result) {
+					var new_einvoice = result["new_einvoice"];
+					var new_einvoice_formatted = result["new_einvoice@OData.Community.Display.V1.FormattedValue"];
+					var new_einvoiceemail = result["new_einvoiceemail"];
+					var new_invoicelanguage = result["new_invoicelanguage"];
+					var new_invoicelanguage_formatted = result["new_invoicelanguage@OData.Community.Display.V1.FormattedValue"];
+					var new_vatidaccounting = result["new_vatidaccounting"];
+					console.log("fdgfsg" + new_invoicelanguage);
+					//if (new_einvoice) {
+					$('#eInvoice').prop("checked", true);
+					$('#E_InvoiceEmail').val(new_einvoiceemail);
+					$('#vatid_text').val(new_vatidaccounting);
+					$('#invoice_language').val(new_invoicelanguage);
+					$(".e_l_v_fields").show();
+					//}
+					// else {
+					// 	$('#eInvoice').prop("checked", true);
+					// 	$(".e_l_v_fields").show();
+					// }
+				},
+				function (error) {
+					console.log("GetEInvoiceFields =>" + error.message);
+				}
+			);
+		}
+		/////Update Account E_Invoice, E_Invoice Email, VAT, Invoice Language fields
+		function UpdateAccountE_InvoiceFields(parentaccountid) {
+			var entity = {};
+			entity.new_einvoice = false;
+			if ($('#eInvoice').prop("checked") == true) {
+				entity.new_einvoice = true;
+			}
+			entity.new_einvoiceemail = $('#E_InvoiceEmail').val();
+			entity.new_vatidaccounting = $('#vatid_text').val();
+			entity.new_invoicelanguage = $('#invoice_language option:selected').val();
+			Xrm.WebApi.online.updateRecord("account", parentaccountid, entity).then(
+				function success(result) {
+					var updatedEntityId = result.id;
+				},
+				function (error) {
+					Xrm.Utility.alertDialog(error.message);
+				}
+			);
+		}
+
+		//Update Partner E_Invoice Fields 
+		function UpdateAccountE_InvoiceFieldsofPartner() {
+			var entity = {};
+			entity.new_einvoice = false;
+			if ($('#eInvoice').prop("checked") == true) {
+				entity.new_einvoice = true;
+			}
+			entity.new_einvoiceemail = $('#E_InvoiceEmail').val();
+			entity.new_vatidaccounting = $('#vatid_text').val();
+			entity.new_invoicelanguage = $('#invoice_language option:selected').val();
+			Xrm.WebApi.online.updateRecord("new_partner", ss_opportunitypartner, entity).then(
+				function success(result) {
+					var updatedEntityId = result.id;
+				},
+				function (error) {
+					Xrm.Utility.alertDialog(error.message);
+				}
+			);
+		}
+
+		////CLOSE OPPORTUNITY METHOD
+		function CloseOpportuntiy(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, checkall, productno, ownerid, specificproducts) {
+			///new request
+			var Sdk = window.Sdk || {};
+			/**
+			 * Request to win an opportunity
+			 * @param {Object} opportunityClose - The opportunity close activity associated with this state change.
+			 * @param {number} status - Status of the opportunity.
+			 */
+			Sdk.WinOpportunityRequest = function (opportunityClose, status) {
+				this.OpportunityClose = opportunityClose;
+				this.Status = status;
+
+				this.getMetadata = function () {
+					return {
+						boundParameter: null,
+						parameterTypes: {
+							"OpportunityClose": {
+								"typeName": "mscrm.opportunityclose",
+								"structuralProperty": 5 // Entity Type
+							},
+							"Status": {
+								"typeName": "Edm.Int32",
+								"structuralProperty": 1 // Primitive Type
+							}
+						},
+						operationType: 0, // This is an action. Use '1' for functions and '2' for CRUD
+						operationName: "WinOpportunity",
+					};
+				};
+			};
+
+
+			var opportunityClose = {
+				"opportunityid@odata.bind": "/opportunities(" + OppID + ")",
+				"actualrevenue": actualrevenue,
+				//"actualend": new Date(),
+				"actualend": $("#closedate").val(),
+				"description": " "
+			}
+
+			// Construct a request object from the metadata
+			var winOpportunityRequest = new Sdk.WinOpportunityRequest(opportunityClose, 3);
+
+			// Use the request object to execute the function
+			var usa_formid = "549a0942-7e0f-4a58-a042-020f7223616a";
+			var uk_formid = "5ac19b1e-cc08-4da1-a44a-18ddf58319b3";
+			var france_formid = "359b49e9-2e9a-43c1-950f-29ae955ed96d";
+			var germany_formid = "919795cb-887b-4a1c-81f3-ae3ae7e6848f";
+			var asia_formid = "ccec4ee8-fc86-4e69-a6db-5f1510b2552f";
+			var swiss_formid = "85a117e7-50d3-45e9-bae7-fb566e7dcf22";
+			var complianceform = "1a994ed9-2b46-4726-bd3d-858cb1245bd7";
+
+			//Form Ids added by Saad
+			var Asia_form_id = "669A38DF-DCEF-4FE7-AFCD-A14FDD875FF7";
+			var Franc_form_id = "3B626F09-7FF4-4533-8777-6059BE3B6165";
+			var Germany_form_id = "2CB9C488-E6AE-4F9C-BBC2-4AF5445F7BF8";
+			var Swiss_form_id = "F0EF4423-BDC5-4021-876D-1CC10E5769E8";
+			var UK_form_id = "459E2A7C-F4B6-481F-A3B3-7EE70221E62C";
+			var USA_form_id = "E9C90923-8716-4D11-95CA-202C76FBD437";
+			window.opener.Xrm.WebApi.online.execute(winOpportunityRequest).then(
+				function (result) {
+					if (result.ok) {
+						window.opener.Xrm.Page.data.refresh(true);
+						console.log("Status: %s %s", result.status, result.statusText);
+						if (createsaleschecklist === false) {
+							window.close();
+						}
+						// if (createsaleschecklist === false) {
+						// 	const array = productmaincategory.split(',');
+						// 	var dupChars = array.filter((element, index) => {
+						// 		return array.indexOf(element) !== index;
+						// 	});
+
+						// 	var flowurl = "https://prod-154.westeurope.logic.azure.com:443/workflows/30a7c5b65e9949ffa3acf5296141e8fb/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=ddlrBdszV8nyCiub7Uns6A-UWNPKCovl_SOTqCgTcPM";
+
+						// 	var input = JSON.stringify({
+						// 		"Termination Reason": "Cockpit Migration",
+						// 		"Official Contract Partner": $("#ContractPartner option:selected").text(),
+						// 		"Opportunity": opportunityname,
+						// 		"Account": accid,
+						// 		"Items": "Contract",
+						// 		"Product Category": dupChars.toString(),
+						// 		"Cancellation Due Date": ss_cancelledatdate.toString(),
+						// 		"Link To CRM": "https://eqsnewdevelopment.crm4.dynamics.com/main.aspx?appid=c25bb550-cd11-eb11-a813-000d3ab85666&newWindow=true&pagetype=entityrecord&etn=opportunity&id=" + OppID
+						// 	});
+						// 	var req = new XMLHttpRequest();
+						// 	req.open("POST", flowurl, false);
+						// 	req.setRequestHeader('Content-Type', 'application/json');
+						// 	////Response
+						// 	req.onreadystatechange = function () {
+						// 		if (this.readyState === 4) {
+						// 			req.onreadystatechange = null;
+						// 			if (this.status === 200) {
+						// 				var result = this.response;
+						// 				console.log(result);
+						// 				window.close();
+						// 			}
+						// 			else {
+						// 				//alert(this.statusText);
+						// 				var result = this.response;
+						// 				console.log("Error" + result);
+						// 				window.close();
+						// 			}
+						// 		}
+						// 	};
+						// 	req.send(input);
+						// }
+						var form_id;
+						switch (_businessunitid_value_formatted) {
+							case "EQS Germany":
+								form_id = Germany_form_id;
+								break;
+							case "EQS Switzerland":
+								form_id = Swiss_form_id;
+								break;
+							case "EQS US":
+								form_id = USA_form_id;
+								break;
+							case "EQS Asia":
+								form_id = Asia_form_id;
+								break;
+							case "EQS France":
+								form_id = Franc_form_id;
+								break;
+							case "EQS UK":
+								form_id = UK_form_id;
+								break;
+							case "EQS Group Version Test":
+								form_id = Germany_form_id;
+								break;
+							case "EQS Group AG":
+								form_id = Germany_form_id;
+						}
+						// Todays Changes: updated the condition
+
+						if (checkall) {
+							if (((_businessunitid_value_formatted === "EQS Germany") || (_businessunitid_value_formatted === "EQS Switzerland") || (_businessunitid_value_formatted === "EQS US") || (_businessunitid_value_formatted === "EQS Asia") || (_businessunitid_value_formatted === "EQS France") || (_businessunitid_value_formatted === "EQS UK") || (_businessunitid_value_formatted === "EQS Group Version Test") || (_businessunitid_value_formatted === "EQS Group AG")) && (productmaincategory.includes("IR Products") || productmaincategory.includes("IR Cockpit")) && (prodName.includes("EQS Integrity Line") || prodName.includes("EQS Integrity Line Classic") || prodName.includes("EQS Policy Manager") || prodName.includes("EQS Approval Manager") || prodName.includes("EQS Insider Manager Corporate License") || prodName.includes("EQS Insider Manager Corporate License") || productno.includes("680160"))) {
+								openapprovalform(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, form_id, ownerid, productno);
+							}
+
+							else if ((_businessunitid_value_formatted === "EQS Germany" || _businessunitid_value_formatted === "EQS Group AG") && (prodName.includes("EQS Integrity Line") || prodName.includes("EQS Integrity Line Classic") || prodName.includes("EQS Policy Manager") || prodName.includes("EQS Approval Manager"))) {
+
+								openapprovalform(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, null, ownerid, productno);
+
+							} else if (_businessunitid_value_formatted === "EQS Switzerland" && (prodName.includes("EQS Integrity Line") || prodName.includes("EQS Integrity Line Classic") || prodName.includes("EQS Policy Manager") || prodName.includes("EQS Approval Manager"))) {
+
+								openapprovalform(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, null, ownerid, productno);
+
+							} else if (_businessunitid_value_formatted === "EQS US" && (prodName.includes("EQS Integrity Line") || prodName.includes("EQS Integrity Line Classic") || prodName.includes("EQS Policy Manager") || prodName.includes("EQS Approval Manager"))) {
+
+								openapprovalform(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, null, ownerid, productno);
+
+							} else if (_businessunitid_value_formatted === "EQS Asia" && (prodName.includes("EQS Integrity Line") || prodName.includes("EQS Integrity Line Classic") || prodName.includes("EQS Policy Manager") || prodName.includes("EQS Approval Manager"))) {
+
+								openapprovalform(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, null, ownerid, productno);
+
+							} else if (_businessunitid_value_formatted === "EQS France" && (prodName.includes("EQS Integrity Line") || prodName.includes("EQS Integrity Line Classic") || prodName.includes("EQS Policy Manager") || prodName.includes("EQS Approval Manager"))) {
+
+								openapprovalform(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, null, ownerid, productno);
+
+							} else if (_businessunitid_value_formatted === "EQS UK" && (prodName.includes("EQS Integrity Line") || prodName.includes("EQS Integrity Line Classic") || prodName.includes("EQS Policy Manager") || prodName.includes("EQS Approval Manager"))) {
+
+								openapprovalform(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, null, ownerid, productno);
+
+							}
+							else if (_businessunitid_value_formatted === "EQS Italy" && (prodName.includes("EQS Integrity Line") || prodName.includes("EQS Integrity Line Classic") || prodName.includes("EQS Policy Manager") || prodName.includes("EQS Approval Manager"))) {
+
+								openapprovalform(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, null, ownerid, productno);
+
+							}
+							else if (_businessunitid_value_formatted === "EQS Denmark" && (prodName.includes("EQS Integrity Line") || prodName.includes("EQS Integrity Line Classic") || prodName.includes("EQS Policy Manager") || prodName.includes("EQS Approval Manager"))) {
+
+								openapprovalform(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, null, ownerid, productno);
+
+							}
+							else if (_businessunitid_value_formatted === "EQS Spain" && (prodName.includes("EQS Integrity Line") || prodName.includes("EQS Integrity Line Classic") || prodName.includes("EQS Policy Manager") || prodName.includes("EQS Approval Manager"))) {
+
+								openapprovalform(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, null, ownerid, productno);
+
+							} else if (_businessunitid_value_formatted === "EQS Group Version Test" && (prodName.includes("EQS Integrity Line") || prodName.includes("EQS Integrity Line Classic") || prodName.includes("EQS Policy Manager") || prodName.includes("EQS Approval Manager"))) {
+
+								openapprovalform(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, null, ownerid, productno);
+
+							} else if (((_businessunitid_value_formatted === "EQS Germany") || (_businessunitid_value_formatted === "EQS Switzerland") || (_businessunitid_value_formatted === "EQS US") || (_businessunitid_value_formatted === "EQS Asia") || (_businessunitid_value_formatted === "EQS France") || (_businessunitid_value_formatted === "EQS UK") || (_businessunitid_value_formatted === "EQS Group Version Test") || (_businessunitid_value_formatted === "EQS Group AG")) && (productmaincategory.includes("IR Products") || productmaincategory.includes("IR Cockpit") || prodName.includes("EQS Insider Manager Corporate License") || prodName.includes("EQS Insider Manager Corporate License") || productno.includes("680160"))) {
+
+								openapprovalform(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, form_id, ownerid, productno);
+							}
+							else {
+								window.close();
+							}
+							//window.close();
+						}
+					}
+				},
+				function (error) {
+					alert("Error! " + error.message);
+					console.log(error.message);
+					window.close();
+					// handle error conditions
+				}
+			);
+			///end new request
+		}
+		function openapprovalform(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, formid, ownerid, productno) {
+			productmaincategory = productmaincategory.split(',').filter(function (allItems, i, a) {
+				return i == a.indexOf(allItems);
+			}).join(',');
+			if ((_businessunitid_value_formatted === "EQS Germany" || _businessunitid_value_formatted === "EQS Switzerland" || _businessunitid_value_formatted === "EQS US" || _businessunitid_value_formatted === "EQS Asia" || _businessunitid_value_formatted === "EQS France" || _businessunitid_value_formatted === "EQS UK" || _businessunitid_value_formatted === "EQS Group Version Test" || _businessunitid_value_formatted === "EQS Group AG") && (productmaincategory.includes("IR Products") || productmaincategory.includes("IR Cockpit"))) {
+
+				parent.Xrm.WebApi.online.retrieveMultipleRecords("ss_irsaleschecklist", "?$select=ss_irsaleschecklistid&$filter=_ss_relatedopportunity_value eq " + OppID + "&$top=1").then(
+					function success(results) {
+						var ss_irsaleschecklistid = "";
+						if (results.entities.length > 0) {
+							ss_irsaleschecklistid = results.entities[0]["ss_irsaleschecklistid"];
+							openEntityForm("ss_irsaleschecklist", ss_irsaleschecklistid, formid);
+							window.close();
+						} else {
+
+							CreateApproval(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, formid, ownerid, productno);
+						}
+
+					},
+					function (error) {
+
+						var alertStrings = {
+							confirmButtonLabel: "Yes",
+							text: error.message,
+							title: "Error"
+						};
+						var alertOptions = {
+							height: 120,
+							width: 260
+						};
+						parent.Xrm.Navigation.openAlertDialog(alertStrings, alertOptions)
+					}
+				);
+			}
+			else {
+				parent.Xrm.WebApi.online.retrieveMultipleRecords("ss_saleschecklist", "?$select=ss_saleschecklistid&$filter=_ss_relatedopportunity_value eq " + OppID + "&$top=1").then(
+					function success(results) {
+
+						var ss_saleschecklistid = "";
+						if (results.entities.length > 0) {
+							ss_saleschecklistid = results.entities[0]["ss_saleschecklistid"];
+							openEntityForm("ss_saleschecklist", ss_saleschecklistid, null);
+							window.close();
+						} else {
+
+							CreateApproval(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, null, ownerid, productno);
+						}
+
+					},
+					function (error) {
+
+						var alertStrings = {
+							confirmButtonLabel: "Yes",
+							text: error.message,
+							title: "Error"
+						};
+						var alertOptions = {
+							height: 120,
+							width: 260
+						};
+						parent.Xrm.Navigation.openAlertDialog(alertStrings, alertOptions)
+					}
+				);
+			}
+
+		}
+		//Open Entity Form
+		function openEntityForm(entityName, entityId, formId) {
+			var entityFormOptions = {};
+			entityFormOptions["entityName"] = entityName;
+			entityFormOptions["entityId"] = entityId;
+			entityFormOptions["formId"] = formId;
+
+			// Open the form.
+			Xrm.Navigation.openForm(entityFormOptions).then(
+				function (success) {
+					console.log(success);
+
+				},
+				function (error) {
+					console.log(error);
+				});
+		}
+		function CreateApproval(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, formid, ownerid, productno) {
+			productmaincategory = productmaincategory.split(',').filter(function (allItems, i, a) {
+				return i == a.indexOf(allItems);
+			}).join(',');
+			var entity = {};
+			if (NAVID) {
+				entity.ss_accountnavid = NAVID;
+			}
+			if (opportunityname) {
+				entity.ss_opportunitytopic = opportunityname;
+			}
+			if (contactphone) {
+				entity.ss_contactphone = contactphone;
+			}
+			if (contactemail) {
+				entity.ss_contactemail = contactemail;
+			}
+			if (prodName) {
+				entity.ss_productname = prodName;
+			}
+			if (accid) {
+				entity["ss_opportunityaccount@odata.bind"] = "/accounts(" + accid + ")";
+			}
+			if (setapprovalcontactname && setapprovalcontactname[0]) {
+				entity["ss_opportunitycontact@odata.bind"] = "/contacts(" + setapprovalcontactname[0].id + ")";
+			}
+
+			if (OppID) {
+				entity["ss_relatedopportunity@odata.bind"] = "/opportunities(" + OppID + ")";
+			}
+			if (setapprovalcurrency && setapprovalcurrency[0]) {
+				entity["ss_transactioncurrencyid@odata.bind"] = "/transactioncurrencies(" + setapprovalcurrency[0].id + ")";
+
+			}
+			if (actualrevenue) {
+				entity.ss_actualvalue = actualrevenue;
+			}
+			if (ss_totalsetupbase) {
+				entity.ss_totalsetupfee = ss_totalsetupbase;
+			}
+			if (productmaincategory) {
+				entity.ss_productmaincategory = productmaincategory;
+			}
+			if (_businessunitid_value_formatted) {
+				entity.ss_businessunit = PRSALESCHECKLIST === true ? "EQS PR" : _businessunitid_value_formatted;
+			}
+			entity.ss_name = opportunityname + "-Approval";
+			if (productno.includes("680160")) {
+				parent.Xrm.WebApi.online.createRecord("ss_xmlsaleschecklist", entity).then(
+					function success(result) {
+
+						openEntityForm("ss_xmlsaleschecklist", result.id, "c4e083d2-7e3d-464d-9523-c0af61397428");
+						window.close();
+					},
+					function (error) {
+
+						var alertStrings = {
+							confirmButtonLabel: "Yes",
+							text: error.message,
+							title: "Error"
+						};
+						var alertOptions = {
+							height: 120,
+							width: 260
+						};
+						parent.Xrm.Navigation.openAlertDialog(alertStrings, alertOptions)
+						window.close();
+					}
+				);
+			}
+			if (PRSALESCHECKLIST === true && $("#saleschecklist").is(":checked") === false) {
+				parent.Xrm.WebApi.online.createRecord("ss_irsaleschecklist", entity).then(
+					function success(result) {
+
+						openEntityForm("ss_irsaleschecklist", result.id, "9b9821e1-69d3-4679-b198-e64701475276");
+						window.close();
+					},
+					function (error) {
+
+						var alertStrings = {
+							confirmButtonLabel: "Yes",
+							text: error.message,
+							title: "Error"
+						};
+						var alertOptions = {
+							height: 120,
+							width: 260
+						};
+						parent.Xrm.Navigation.openAlertDialog(alertStrings, alertOptions)
+						window.close();
+					}
+				);
+			}
+			else if ((prodName.includes("EQS Integrity Line") || prodName.includes("EQS Integrity Line Classic") || prodName.includes("EQS Policy Manager") || prodName.includes("EQS Approval Manager")) && (!productmaincategory.includes("IR Cockpit") && !productmaincategory.includes("IR Products"))) {
+				parent.Xrm.WebApi.online.createRecord("ss_saleschecklist", entity).then(
+					function success(result) {
+
+						openEntityForm("ss_saleschecklist", result.id, null);
+						window.close();
+					},
+					function (error) {
+
+						var alertStrings = {
+							confirmButtonLabel: "Yes",
+							text: error.message,
+							title: "Error"
+						};
+						var alertOptions = {
+							height: 120,
+							width: 260
+						};
+						parent.Xrm.Navigation.openAlertDialog(alertStrings, alertOptions)
+						window.close();
+					}
+				);
+			}
+			else if ((_businessunitid_value_formatted === "EQS Germany" || _businessunitid_value_formatted === "EQS Group AG" || _businessunitid_value_formatted === "EQS Switzerland" || _businessunitid_value_formatted === "EQS US" || _businessunitid_value_formatted === "EQS Asia" || _businessunitid_value_formatted === "EQS France" || _businessunitid_value_formatted === "EQS UK" || _businessunitid_value_formatted === "EQS Group Version Test") && (productmaincategory.includes("IR Products") || productmaincategory.includes("IR Cockpit")) || (prodName.includes("EQS Integrity Line") || prodName.includes("EQS Integrity Line Classic") || prodName.includes("EQS Policy Manager") || prodName.includes("EQS Approval Manager") || prodName.includes("EQS Insider Manager Corporate License") || prodName.includes("EQS Insider Manager Corporate License"))) {
+				if (specificproducts !== null && specificproducts !== "" && specificproducts !== undefined && !specificproducts) {
+					window.close();
+					return;
+				}
+				// if (ownerid.toLowerCase() !== "ba1c0408-a866-e511-80fc-3863bb34da08") {
+				// 	window.close();
+				// 	return;
+				// }
+				if ($("#saleschecklist").is(":checked") === true) {
+					window.close();
+					return;
+				}
+				parent.Xrm.WebApi.online.createRecord("ss_irsaleschecklist", entity).then(
+					function success(result) {
+
+						openEntityForm("ss_irsaleschecklist", result.id, formid);
+						window.close();
+					},
+					function (error) {
+
+						var alertStrings = {
+							confirmButtonLabel: "Yes",
+							text: error.message,
+							title: "Error"
+						};
+						var alertOptions = {
+							height: 120,
+							width: 260
+						};
+						parent.Xrm.Navigation.openAlertDialog(alertStrings, alertOptions)
+						window.close();
+					}
+				);
+			}
+			else if ((_businessunitid_value_formatted === "EQS Germany" || _businessunitid_value_formatted === "EQS Group AG" || _businessunitid_value_formatted === "EQS Switzerland" || _businessunitid_value_formatted === "EQS US" || _businessunitid_value_formatted === "EQS Asia" || _businessunitid_value_formatted === "EQS France" || _businessunitid_value_formatted === "EQS UK" || _businessunitid_value_formatted === "EQS Group Version Test" || _businessunitid_value_formatted === "EQS Denmark" || _businessunitid_value_formatted === "EQS Italy" || _businessunitid_value_formatted === "EQS Spain") && (prodName.includes("EQS Integrity Line") || prodName.includes("EQS Integrity Line Classic") || prodName.includes("EQS Policy Manager") || prodName.includes("EQS Approval Manager") || prodName.includes("EQS Insider Manager Corporate License") || prodName.includes("EQS Insider Manager Corporate License"))) {
+				if (specificproducts && (prodName.includes("EQS Integrity Line") || prodName.includes("EQS Integrity Line Classic") || prodName.includes("EQS Policy Manager") || prodName.includes("EQS Approval Manager") || prodName.includes("EQS Insider Manager Corporate License") || prodName.includes("EQS Insider Manager Corporate License"))) {
+					parent.Xrm.WebApi.online.createRecord("ss_saleschecklist", entity).then(
+						function success(result) {
+
+							openEntityForm("ss_saleschecklist", result.id, null);
+							window.close();
+						},
+						function (error) {
+
+							var alertStrings = {
+								confirmButtonLabel: "Yes",
+								text: error.message,
+								title: "Error"
+							};
+							var alertOptions = {
+								height: 120,
+								width: 260
+							};
+							parent.Xrm.Navigation.openAlertDialog(alertStrings, alertOptions)
+							window.close();
+						}
+					);
+				}
+				else {
+					window.close();
+					return;
+				}
+
+			}
+
+
+		}
+		function ShowHideFields() {
+
+			var payment_termdays = $("#payment_term").val();
+			var payment_terms = $("#payment_terms").val(); //2
+			// var ispayment_terms_14 = $("#ispayment_terms_14").val() == 1 ? true : false; //2.1
+			var payment_term_days = $("#payment_term_days").val(); //2.1 dropdwon
+			var billing_upon_signature = $("#billing_upon_signature").val() == 1 ? true : false; //2.2
+			var standard_price = $("#standard_price").val() == 1 ? true : false; //3
+			var annual_increases = $("#annual_increases").val() == 1 ? true : false; //3.1
+			var cap_on_price_increases = $("#cap_on_price_increases").val() == 1 ? true : false; //3.1.1
+			var cap_on_price_percent = Number(("#cap_on_price_new").val()); //3.1.1  dropdwon
+			var other_price = $("#other_price").val() == 1 ? true : false; //3.2
+			//var increases_allowed = $("#increases_allowed").val() == 1 ? true : false; //3.2.1
+			var stand_noti = $("#stand_noti").val() == 1 ? true : false; //3.2.2
+
+		}
+		function CheckValidation(CheckContract) {
+			debugger;
+			var contractpartner = $("#ContractPartner option:selected").text();
+			if (contractpartner == null || contractpartner == "" || contractpartner == undefined || contractpartner.includes("--select an option--")) {
+				$("#ContractPartner").prop('required', true);
+				$("#ContractPartner").css('border-color', 'red');
+				$("#ContractPartner").after("<div class='validation' style='color:red;margin-bottom: 10px;'>Please Select Official Contract Owner</div>");
+				return;
+			}
+			if (licensefee !== 0.00) {
+				var constartdate = $("#contractstartdate").val();
+				if (constartdate == null || constartdate == undefined || constartdate == "") {
+					$("#contractstartdate").after("<div class='validation' style='color:red;margin-bottom: 10px;'>Please Select Start Date</div>");
+					return;
+				}
+				var conenddate = $("#contractenddate").val();
+				if (conenddate == null || conenddate == undefined || conenddate == "") {
+					$("#contractenddate").after("<div class='validation' style='color:red;margin-bottom: 10px;'>Please Select End Date</div>");
+					return;
+				}
+				var contractper = $("#contractperiod option:selected").text();
+				if (contractper.includes("--select an option--")) {
+					$("#contractperiod").after("<div class='validation' style='color:red;margin-bottom: 10px;'>Please Select Contract Period</div>");
+					return;
+				}
+				var nextinvoide = $("#nextinvoicedate").val();
+				if (nextinvoide == null || nextinvoide == undefined || nextinvoide == "") {
+					$("#nextinvoicedate").after("<div class='validation' style='color:red;margin-bottom: 10px;'>Please Select Invoice Date</div>");
+					return;
+				}
+				var termination = $("#terminationperiod option:selected").text();
+				if (termination.includes("--select an option--")) {
+					$("#terminationperiod").after("<div class='validation' style='color:red;margin-bottom: 10px;'>Please Select Termination Period</div>");
+					return;
+				}
+				var priceincrease = $("#ss_incresetype").val();
+				if (priceincrease === null || priceincrease === undefined || priceincrease === "") {
+					$(".priceincreasetype").after("<div class='validation' style='color:red;margin-bottom: 10px;'>Please Select Price Increase Type</div>");
+					return;
+				}
+
+				//irf: check if agreed notification period field is empty then show a error to user and prompt form from save
+				var stand_noticl = $("#stand_noti").val();
+				if (stand_noticl == "0") {
+					var agreednotificationperiod = Number($("#new_agreednotificationperiod").val());
+					if (agreednotificationperiod === 0) {
+						$("#new_agreednotificationperiod").after("<div class='validation' style='color:red;margin-bottom: 10px;'>Please Select Agreed notification period</div>");
+						return;
+					}
+				}
+
+				$('input,select,.part1,.part2').removeClass('error');
+				//Nh=====================================
+				var e_Invoice = $("#eInvoice").is(":checked");
+				var e_Invoice_email = $("#E_InvoiceEmail").val();
+				e_Invoice_email = e_Invoice_email.trim();
+				if (e_Invoice && e_Invoice_email == "") {
+					$("#E_InvoiceEmail").addClass("error");
+					$("#eInvoiceError").html("Please fill this E-Invoice E-mail field");
+					$("#eInvoiceError").show();
+					return;
+				}
+				else if (e_Invoice && e_Invoice_email !== "") {
+					var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+					if (!regex.test(e_Invoice_email)) {
+						$("#eInvoiceError").html("Please enter valid email");
+						$("#eInvoiceError").show();
+						$("#E_InvoiceEmail").addClass("error");
+						return;
+					}
+				}
+				//=======================================nH
+				var payment_termdays = $("#payment_term").val();
+				var payment_terms = $("#payment_terms").val() == 1 ? true : false; //2
+				var ispayment_terms_14 = $("#ispayment_terms_14").val() == 1 ? true : false; //2.1
+				var payment_term_days = $("#payment_term_days").val(); //2.1 dropdwon
+				var billing_upon_signature = $("#billing_upon_signature").val() == 1 ? true : false; //2.2
+				var standard_price = $("#standard_price").val() == 1 ? true : false; //3
+				var annual_increases = $("#annual_increases").val() == 1 ? true : false; //3.1
+				var cap_on_price_increases = $("#cap_on_price_increases").val() == 1 ? true : false; //3.1.1
+				var cap_on_price_percent = Number($("#cap_on_price_new").val()); //3.1.1  dropdwon
+				var other_price = $("#other_price").val() == 1 ? true : false; //3.2
+				//var increases_allowed = $("#increases_allowed").val() == 1 ? true : false; //3.2.1
+				var stand_noti = $("#stand_noti").val() == 1 ? true : false; //3.2.2
+
+				//Check Section Parent Questions are attempted
+				var part1value = $("#standard_contract_length").val();
+				var part2value = $("#standard_contract_terms").val();
+				console.log("part1 =>" + part1value + " part2 =>" + part2value);
+				if (part1value == undefined || part1value == "") {
+					alert('Please make sure you have selected Yes/No for "Standard Contract length, payment terms and pricing"."');
+					$(".part1").addClass("error");
+					throw new Error('Please make sure you have selected Yes/No for "Standard Contract length, payment terms and pricing".');
+				}
+				/////COMMENT FOR PROD
+				/*else if(part2value == undefined || part2value == ""){
+					alert('Please make sure you have selected Yes/No for "Standarad contract terms."');
+					$(".part2").addClass("error");
+					throw new Error('Please make sure you have selected Yes/No for "Standarad contract terms.');
+				}*/
+
+				if (payment_termdays == 0) {
+					$("#payment_term").addClass('error');
+					alert("Please enter payment term days");
+					throw new Error("Please enter payment term days");
+				}
+				var errorAlert = 0;
+				var throwError = 0;
+				var closedatevalue = $("#closedate").val();
+				console.log("close date =" + closedatevalue);
+				if (closedatevalue == "") {
+					alert("Please enter Close Date");
+					throw new Error("Please enter Close Date");
+				}
+				$(".otherfields .textfielddiv").each(function () {
+					if ($(this).hasClass("hideit") == false) {
+						var thistext = $(this).find("input").val();
+						if (thistext.length == 0) {
+							$(this).find("input").addClass('error');
+							if (errorAlert == 0) {
+								alert("Please write all text fields");
+								errorAlert = 1;
+							}
+							throwError = 1;
+						}
+					}
+				});
+				if (throwError == 1) {
+					throw new Error("Please write all text fields");
+				}
+				var termdays = $("#payment_term_days").val();
+				if (termdays != 100001) {
+					$("#payment_term_days_other").val(termdays);
+				}
+
+			}
+			CheckContract(CheckBusinessStage);
+		}
+		function CheckContract(CheckBusinessStage) {
+			//alert("Business Stage Called");
+			window.opener.Xrm.WebApi.retrieveMultipleRecords("annotation", "?$select=subject&$filter=_objectid_value eq " + OppID + " and notetext eq '{{Contract--'").then(
+				function success(result) {
+					console.log("Contracts=>" + result.entities.length);
+					if (result.entities.length <= 0) {
+						if (formLabel == "IR - DE" || formLabel == "EQS - UK" || formLabel == "EQS - Asia" || formLabel == "EQS - RU") {
+							alert("Please Upload the Contract");
+							window.close();
+							console.log("Please Upload the Contract");
+						} else {
+							CheckBusinessStage(updateOpp);
+						}
+
+						//window.close(); 
+					} else {
+						CheckBusinessStage(updateOpp);
+					}
+				},
+				function (error) {
+					alert("Error: " + error.message);
+				}
+			);
+		}
+		function CheckBusinessStage(updateOpp) {
+			if (stepname != "4-Close") {
+				alert("Please Complete all the Business Stages.");
+				console.log("Please Complete all the Business Stages.");
+				window.close();
+			}
+			else { //alert("Close Opportunity Called");
+				checkforproducts();
+			}
+		}
+		//updop 
+		function updateOpp(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, checkall, productno) {
+			$(".loaderdiv").removeClass("hideit");
+			var entity = {};
+			entity.actualclosedate = $("#closedate").val();
+			if (licensefee !== 0.00) {
+
+				//entity.ss_allstandard = $("#all_standard").val() == 1 ? true : false;
+				//Nh====================================
+				var e_Invoice = $("#eInvoice").is(":checked");
+				var e_Invoice_email = $("#E_InvoiceEmail").val();
+				e_Invoice_email = e_Invoice_email.trim();
+				if (e_Invoice) {
+					entity.ss_einvoice = e_Invoice;
+					entity.ss_einvoiceemail = e_Invoice_email;
+				}
+				//====================================nH
+				if ($("#standard_contract_length").val() !== null && $("#standard_contract_length").val() !== undefined && $("#standard_contract_length").val() !== "") {
+					entity.ss_standardcontractlength = $("#standard_contract_length").val() == 1 ? true : false; //Q1parent
+				}
+				if ($("#auto_renewal").val() !== null && $("#auto_renewal").val() !== undefined && $("#auto_renewal").val() !== "") {
+					entity.ss_autorenewalforsubscriptionterm = $("#auto_renewal").val();// 1
+				}
+				if ($("#standard_price").val() !== null && $("#standard_price").val() !== undefined && $("#standard_price").val() !== "") {
+					entity.ss_standardpriceincreases = $("#standard_price").val(); //3
+				}
+				if ($("#standard_price").val() !== null && $("#standard_price").val() !== undefined && $("#standard_price").val() !== "") {
+					entity.ss_standardpriceincreases = $("#standard_price").val(); //3
+				}
+				if ($("#annual_increases").val() !== null && $("#annual_increases").val() !== undefined && $("#annual_increases").val() !== "") {
+					entity.ss_annualincrease = $("#annual_increases").val(); //3.1
+				}
+				if ($("#cap_on_price_increases").val() !== null && $("#cap_on_price_increases").val() !== undefined && $("#cap_on_price_increases").val() !== "") {
+					entity.ss_caponpriceincreases = $("#cap_on_price_increases").val(); //3.1.1
+				}
+				if (Number($("#cap_on_price_new").val()) !== null && Number($("#cap_on_price_new").val()) !== undefined && Number($("#cap_on_price_new").val()) !== "") {
+					entity.ss_newpriceincreases = Number($("#cap_on_price_new").val());
+				}
+				if ($("#other_price").val() !== undefined && $("#other_price").val() !== null && $("#other_price").val() !== "") {
+					entity.ss_otherpriceincreases = $("#other_price").val(); //3.2
+				}
+				// if($("#increases_allowed").val() !== null && $("#increases_allowed").val() !== undefined && $("#increases_allowed").val() !=="") {
+				// 	entity.ss_increasesallowed = $("#increases_allowed").val(); //3.2.1
+				// }
+				if ($("#stand_noti").val() !== null && $("#stand_noti").val() !== "" && $("#stand_noti").val() !== undefined) {
+					entity.ss_standardnotificationreq = $("#stand_noti").val(); //3.2.2
+				}
+
+				var prepaidval = $('#prepaid').is(":checked");
+				if (prepaidval) {
+					entity.ss_prepaid = prepaidval;
+				}
+				if (Number($("#priceincreaseannual").val()) !== null && Number($("#priceincreaseannual").val()) !== undefined && Number($("#priceincreaseannual").val()) !== "") {
+					entity.ss_priceincreaseannual = Number($("#priceincreaseannual").val());
+				}
+
+				var stdate = $("#contractstartdate").val();
+				entity.ss_newcontractstartdate = new Date(stdate).toISOString();
+				var endate = $("#contractenddate").val();
+				entity.ss_newcontractenddate = new Date(endate).toISOString();
+				entity.ss_newcontractperiod = $("#contractperiod option:selected").text();
+				var invdate = $("#nextinvoicedate").val();
+				entity.ss_nextinvoicedate = new Date(invdate).toISOString();
+				entity.ss_newterminationperiod = $("#terminationperiod option:selected").text();
+			}
+			entity.ss_officialcontractpartner = $("#ContractPartner option:selected").text();
+			if ($("#payment_terms").val() !== null && $("#payment_terms").val() !== undefined && $("#payment_terms").val() !== "") {
+				entity.ss_standardpaymentterms = $("#payment_terms").val(); //2
+			}
+			if ($("#ispayment_terms_14").val() !== undefined && $("#ispayment_terms_14").val() !== null && $("#ispayment_terms_14").val() !== "") {
+				entity.ss_paymentterm14days = $("#ispayment_terms_14").val(); //2.1
+			}
+			if ($("#payment_term_days").val() !== undefined && $("#payment_term_days").val() !== null && $("#payment_term_days").val() !== "") {
+				entity.ss_paymenttermdays = $("#payment_term_days").val(); //2.1 dropdwon
+			}
+			if ($("#payment_term_days_other").val() !== undefined && $("#payment_term_days_other").val() !== null && $("#payment_term_days_other").val() !== "") {
+				entity.ss_paymenttermdaysother = $("#payment_term_days_other").val(); //2.1 other days
+			}
+			if ($("#billing_upon_signature").val() !== undefined && $("#billing_upon_signature").val() !== null && $("#billing_upon_signature").val() !== "") {
+				entity.ss_billinguponsignature = $("#billing_upon_signature").val(); //2.2
+			}
+
+			entity.ss_reference = $("#reference").val();
+			if ($("#website").is(":checked") === true) {
+				entity.ss_website = true;
+			}
+			else {
+				entity.ss_website = false;
+			}
+			if ($("#presentation").is(":checked") === true) {
+				entity.ss_presentation = true;
+			}
+			else {
+				entity.ss_presentation = false;
+			}
+			if ($("#casestudy").is(":checked") === true) {
+				entity.ss_casestudy = true;
+			}
+			else {
+				entity.ss_casestudy = false;
+			}
+			if ($("#frowarding").is(":checked") === true) {
+				entity.ss_forwardingasrecommendatior = true;
+			}
+			else {
+				entity.ss_forwardingasrecommendatior = false;
+			}
+			if ($("#specification").is(":checked") === true) {
+				entity.ss_otherspecification = true
+			}
+			else {
+				entity.ss_otherspecification = false;
+			}
+			entity.ss_specificationdetails = $("#details_sepcification").val();
+			if ($("#addcheck").is(":checked") === true) {
+				entity.ss_additionaldetailcheck = true;
+			}
+			else {
+				entity.ss_additionaldetailcheck = false;
+			}
+			entity.ss_additionaldetails = $("#add_area").val();
+			var incresetype = $("#ss_incresetype").val();
+			if (incresetype !== "" && incresetype !== undefined && incresetype !== null) {
+				entity.ss_incresetype = incresetype;
+			}
+			entity.ss_increaseinpercentage = Number($("#percentincrease").val());
+			if ($("#saleschecklist").is(":checked") === true) {
+				entity.ss_donotcreateirsaleschecklist = true;
+			}
+			else {
+				entity.ss_donotcreateirsaleschecklist = false;
+			}
+			entity.new_ponumber = $("#po_no").val();
+			var increasealloweddateopp = $("#increasealloweddate").val();
+			if (increasealloweddateopp !== null && increasealloweddateopp !== "") {
+				entity.ss_increasedate = increasealloweddateopp;
+			}
+
+			entity.new_priceincreaseperiod = 100000000;
+			if ($("#new_freePeriod option:selected").val() > 0) {
+				entity.new_freeperiod = $("#new_freePeriod option:selected").val();
+			}
+
+			var agreednotificationperiod = Number($("#new_agreednotificationperiod").val());
+			if (agreednotificationperiod !== 0) {
+				entity.new_agreednotificationperiod = agreednotificationperiod;
+			}
+
+			// var client_ref = $("#client_ref").val()  == 1 ? true : ($("#client_ref").val()  == 0 ? false : "");
+			// if(client_ref !== "")
+			// {
+			// entity.ss_isclientusedasref = client_ref;
+			// }
+			/////COMMENT FOR PROD
+			// *** SECOND PART ***
+
+			/*entity.ss_standaradcontractterms = $("#standard_contract_terms").val() == 1 ? true : false;//Q2parent
+			entity.ss_changestoeqsterms = $("#ChangesToEqsTerms").val(); //4
+			entity.ss_customercanbeusedasreference = $("#customer").val(); //4.1
+			//entity.ss_customerrightstoauditeqs = $("#customer_rights").val() == 1 ? true : false; //4.2
+			entity.ss_specialnotice = $("#special_notice").val(); //4.3
+			entity.ss_specialnoticetext = $("#special_notice_text").val(); //4.3 text
+			entity.ss_limitationofliability = $("#liability").val(); //4.4
+			entity.ss_limitationofliabilitytext = $("#liability_text").val(); //4.4 text
+			entity.ss_assignmentlanguage = $("#assignment").val(); //4.5
+			entity.ss_slasagreement = $("#slas").val(); //5
+			entity.ss_standardslas = $("#standard_slas").val(); //5.1
+			entity.ss_standardslastext = $("#standard_slas_text").val(); //5.1 text
+			entity.ss_eqstemplatedata = $("#eqs_template_data").val(); //6
+			entity.ss_restrictionondatacenterlocation = $("#restriction").val(); //6.1
+			entity.ss_restrictionondatacenterlocationtext = $("#restriction_text").val(); //6.1 text
+			entity.ss_restrictionsonchange = $("#restriction_change").val(); //6.2
+			entity.ss_restrictionsonchangetext = $("#restriction_change_text").val(); //6.2 text
+			entity.ss_securityrequirements = $("#security_requirements").val(); //7
+			entity.ss_eqstoms = $("#EQS_standard_TOM").val(); //7.1
+			entity.ss_eqstomstext = $("#EQS_standard_TOM_text").val(); //7.1 text
+	*/
+
+			//alert("Close Opp");
+			window.opener.Xrm.WebApi.online.updateRecord("opportunity", OppID, entity).then(
+				function success(result) {
+					//var updatedEntityId = result.id;
+					if (ss_opportunitypartner !== null && (ss_partnershipmodel === 0 || ss_partnershipmodel === 3 || ss_partnershipmodel === 2)) {
+						UpdateAccountE_InvoiceFieldsofPartner();
+					}
+					else {
+						UpdateAccountE_InvoiceFields(_parentaccountid_value);
+					}
+					checkuserBU(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, checkall, productno);
+				},
+				function (error) {
+					console.log(error.message + "==" + JSON.stringify(entity));
+					Xrm.Utility.alertDialog("Updateion Failed " + error.message);
+					$(".loaderdiv").addClass("hideit");
+				}
+			);
+		}
+		function CancelIt() {
+			window.close();
+		}
+		function showCSdate() {
+			if ($("#prepaid").is(":checked")) {
+				var startdate = $("#contractstartdate").val();
+				$("#nextinvoicedate").val(startdate);
+			}
+			else {
+				var endate = $("#contractenddate").val();
+				$("#nextinvoicedate").val(endate);
+			}
+		}
+		function getdate() {
+			var date = $("#contractstartdate").val();
+			if (date != null || date != undefined) {
+				$("#nextinvoicedate").val(date);
+				var month = moment(date).subtract(1, "days").format('YYYY-MM-DD');
+				$("#contractenddate").val(month);
+				$("#expDate").html(date);
+				var priceperiod = $("#priceincreaesperiod option:selected").text();
+				var alloweddate = new Date(date);
+				var finaldate = moment(date).add(priceperiod, 'months').format('YYYY-MM-DD')
+				$("#increasealloweddate").val(finaldate);
+			}
+		}
+
+		function getterminationdate() {
+			var conperioddate = $("#contractperiod").val();
+			var startdate = $("#contractstartdate").val();
+			if (conperioddate != null && conperioddate != undefined && conperioddate != "Other" && startdate != null && startdate != undefined) {
+				var date = new Date(startdate);
+				var month = moment(startdate).add(conperioddate, 'months').format('YYYY-MM-DD');
+				$("#nextinvoicedate").val(month);
+				month = moment(month).subtract(1, "days").format('YYYY-MM-DD');
+				//month = moment(month).format('YYYY-MM-DD');
+				$("#contractenddate").val(month);
+				$("#expDate").html(month);
+				$('#nextinvoicedate').prop('readonly', true);
+			}
+			else {
+				var date = new Date(startdate);
+				var month = moment(startdate).add(conperioddate, 'months').format('YYYY-MM-DD');
+				$("#nextinvoicedate").val(month);
+				month = moment(month).subtract(1, "days").format('YYYY-MM-DD');
+				//month = moment(month).format('YYYY-MM-DD');
+				$("#expDate").html(month);
+				$("#contractenddate").val(null);
+				$('#nextinvoicedate').prop('readonly', false);
+			}
+		}
+		function setcaponprice() {
+			var price = $('#priceincreaseannual').val();
+			$('#cap_on_price_new').val(price);
+		}
+		function showlimitedconsent(select) {
+
+			if (select.value === 2 || select.value === "2") {
+				$("#limitedconsent").show();
+			}
+			else {
+				$("#limitedconsent").hide();
+			}
+		}
+		function showsepcificationdetails(specification) {
+			if ($(specification).is(":checked") === true) {
+				$("#specificationdetails").show();
+			} else {
+				$("#specificationdetails").hide();
+			}
+		}
+		function getIndexes() {
+			var increasetype = $("#ss_incresetype").val();
+			if (increasetype !== null || increasetype !== "") {
+				parent.Xrm.WebApi.online.retrieveMultipleRecords("ss_navisionidmapping", "?$select=new_danishindex,new_frenchindex,new_germanindex,new_italianindex,new_spanishindex,ss_swissindex,ss_usindex,ss_ukindex").then(
+					function success(results) {
+						for (var i = 0; i < results.entities.length; i++) {
+							new_danishindex = results.entities[i]["new_danishindex"];
+							new_frenchindex = results.entities[i]["new_frenchindex"];
+							new_germanindex = results.entities[i]["new_germanindex"];
+							new_italianindex = results.entities[i]["new_italianindex"];
+							new_spanishindex = results.entities[i]["new_spanishindex"];
+							ss_swissindex = results.entities[i]["ss_swissindex"];
+							ss_usindex = results.entities[i]["ss_usindex"];
+							ss_ukindex = results.entities[i]["ss_ukindex"];
+						}
+
+						if (increasetype === 1 || increasetype === "1") {
+							$("#increaseinpercent").hide();
+							$("#percentincrease").val(new_danishindex);
+						}
+						else if (increasetype === 2 || increasetype === "2") {
+							$("#increaseinpercent").hide();
+							$("#percentincrease").val(new_frenchindex);
+						}
+						else if (increasetype === 3 || increasetype === "3") {
+							$("#increaseinpercent").hide();
+							$("#percentincrease").val(new_germanindex);
+						}
+						else if (increasetype === 4 || increasetype === "4") {
+							$("#increaseinpercent").hide();
+							$("#percentincrease").val(new_italianindex);
+						}
+						else if (increasetype === 5 || increasetype === "5") {
+							$("#increaseinpercent").show();
+							$("#percentincrease").val(0.00);
+						}
+						else if (increasetype === 6 || increasetype === "6") {
+							$("#increaseinpercent").hide();
+							$("#percentincrease").val(new_spanishindex);
+						}
+						else if (increasetype === 7 || increasetype === "7") {
+							$("#increaseinpercent").hide();
+							$("#percentincrease").val(ss_swissindex);
+						}
+						else if (increasetype === 8 || increasetype === "8") {
+							$("#increaseinpercent").hide();
+							$("#percentincrease").val(ss_usindex);
+						}
+						else if (increasetype === 9 || increasetype === "9") {
+							$("#increaseinpercent").hide();
+							$("#percentincrease").val(ss_ukindex);
+						}
+						else {
+							$("#increaseinpercent").hide();
+						}
+					},
+					function (error) {
+						parent.Xrm.Utility.alertDialog(error.message);
+					}
+				);
+			}
+			else {
+				$("#increase%").hide();
+			}
+		}
+
+
+		function checkforproducts() {
+			if (parent.Xrm.Page.getAttribute("name")) {
+				opportunityname = parent.Xrm.Page.getAttribute("name").getValue();
+				if (opportunityname == null || opportunityname == "") {
+					opportunityname = "";
+				}
+			} else {
+				opportunityname = "";
+			}
+			if (parent.Xrm.Page.getAttribute("ss_totalsetupfee_base")) {
+				ss_totalsetupbase = parent.Xrm.Page.getAttribute("ss_totalsetupfee_base").getValue();
+				if (ss_totalsetupbase == null || ss_totalsetupbase == "") {
+					ss_totalsetupbase = "";
+				}
+			} else {
+				ss_totalsetupbase = "";
+			}
+			if (parent.Xrm.Page.getAttribute("parentaccountid").getValue() != null) {
+				var accountnameid = parent.Xrm.Page.getAttribute("parentaccountid").getValue()[0].id;
+				var accountname = parent.Xrm.Page.getAttribute("parentaccountid").getValue()[0].name;
+				var accountentitytype = parent.Xrm.Page.getAttribute("parentaccountid").getValue()[0].entityType;
+				setapprovalaccountname[0].id = accountnameid.replace("{", "").replace("}", "");;
+				setapprovalaccountname[0].name = accountname;
+				setapprovalaccountname[0].entityType = accountentitytype;
+			} else {
+				setapprovalaccountname = "";
+			}
+			if (parent.Xrm.Page.getAttribute("parentcontactid").getValue() != null) {
+				var contactnameid = parent.Xrm.Page.getAttribute("parentcontactid").getValue()[0].id;
+				var contactname = parent.Xrm.Page.getAttribute("parentcontactid").getValue()[0].name;
+				var contactentitytype = parent.Xrm.Page.getAttribute("parentcontactid").getValue()[0].entityType;
+				setapprovalcontactname[0].id = contactnameid.replace("{", "").replace("}", "");
+				setapprovalcontactname[0].name = contactname;
+				setapprovalcontactname[0].entityType = contactentitytype;
+			} else {
+				setapprovalcontactname = "";
+			}
+			if (parent.Xrm.Page.getAttribute("transactioncurrencyid").getValue() != null) {
+				var oppcurrencyid = parent.Xrm.Page.getAttribute("transactioncurrencyid").getValue()[0].id;
+				var oppcurrencyname = parent.Xrm.Page.getAttribute("transactioncurrencyid").getValue()[0].name;
+				var oppcurrencyentitytype = parent.Xrm.Page.getAttribute("transactioncurrencyid").getValue()[0].entityType;
+				setapprovalcurrency[0].id = oppcurrencyid.replace("{", "").replace("}", "");;
+				setapprovalcurrency[0].name = oppcurrencyname;
+				setapprovalcurrency[0].entityType = oppcurrencyentitytype;
+			} else {
+				setapprovalcurrency = "";
+			}
+			setopportuntiyapproval[0].id = OppID;
+			setopportuntiyapproval[0].name = opportunityname;
+			setopportuntiyapproval[0].entityType = "opportunity";
+			var fetchData = {
+				opportunityid: OppID
+			};
+			var fetchXml = [
+				"<fetch>",
+				"  <entity name='opportunityproduct'>",
+				"    <attribute name='productidname' />",
+				"    <attribute name='productname' />",
+				"    <filter>",
+				"      <condition attribute='opportunityid' operator='eq' value='", fetchData.opportunityid, "'/>",
+				"    </filter>",
+				"    <link-entity name='product' from='productid' to='productid' alias='pd'>",
+				"      <attribute name='ss_productmaincategoryname' />",
+				"      <attribute name='ss_productmaincategory' />",
+				"      <attribute name='name' />",
+				"	   <attribute name='productnumber' />",
+				"<filter>",
+				"<condition attribute='producttypecode' operator='eq' value='100000003' />",
+				"</filter>",
+				"    </link-entity>",
+				"    <link-entity name='opportunity' from='opportunityid' to='opportunityid'>",
+				"      <link-entity name='account' from='accountid' to='parentaccountid' alias='acc'>",
+				"        <attribute name='ss_name' />",
+				"        <attribute name='bbo_navid' />",
+				"      </link-entity>",
+				"      <link-entity name='contact' from='contactid' to='parentcontactid' alias='oppcontact'>",
+				"        <attribute name='emailaddress1' />",
+				"        <attribute name='telephone1' />",
+				"      </link-entity>",
+				"    </link-entity>",
+				"  </entity>",
+				"</fetch>",
+			].join("");
+			fetchXml = "?fetchXml=" + encodeURIComponent(fetchXml);
+			parent.Xrm.WebApi.online.retrieveMultipleRecords("opportunityproduct", fetchXml).then(
+				function success(result) {
+					if (result.entities.length > 0) {
+						for (var i = 0; i < result.entities.length; i++) {
+							prodName += result.entities[i]["pd.name"] + ",";
+							productmaincategory += result.entities[i]["pd.ss_productmaincategory@OData.Community.Display.V1.FormattedValue"] + ",";
+							productno += result.entities[i]["pd.productnumber"] + ",";
+							console.log("In => " + productmaincategory);
+						}
+
+						checkall = true;
+						NAVID = result.entities[0]["acc.bbo_navid"];
+						contactemail = result.entities[0]["oppcontact.emailaddress1"];
+						contactphone = result.entities[0]["oppcontact.telephone1"];
+
+						updateOpp(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, checkall, productno);
+					} else {
+						updateOpp(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, checkall, productno);
+					}
+				},
+				function (error) {
+					console.log("Error is => " + console.error);
+				}
+			)
+
+		}
+
+		function checkuserBU() {
+			var ownerid = window.parent.Xrm.Page.getAttribute("ownerid").getValue()[0].id;
+			ownerid = ownerid.replace("{", "").replace("}", "");
+			if (ownerid) {
+				parent.Xrm.WebApi.online.retrieveRecord("systemuser", ownerid, "?$select=_businessunitid_value").then(
+					function success(result) {
+						var _businessunitid_value = result["_businessunitid_value"];
+						var _businessunitid_value_formatted = result["_businessunitid_value@OData.Community.Display.V1.FormattedValue"];
+						var _businessunitid_value_lookuplogicalname = result["_businessunitid_value@Microsoft.Dynamics.CRM.lookuplogicalname"];
+						CheckSpecificProduct(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, checkall, productno, ownerid);
+						// CloseOpportuntiy(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, checkall, ownerid);
+					},
+					function (error) {
+						Xrm.Utility.alertDialog(error.message);
+					}
+				);
+			}
+		}
+		function CheckSpecificProduct(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, checkall, productno, ownerid) {
+			var fetchData = {
+				opportunityid: OppID,
+				producttypecode: "100000003",
+				productnumber: "614005a",
+				productnumber2: "614008a",
+				productnumber3: "614003a",
+				productnumber4: "614004a",
+				productnumber5: "614009a",
+				productnumber6: "614010a",
+				// productnumber7: "614007a",
+				// productnumber8: "614002a",
+				productnumber9: "614006a",
+				productnumber10: "612845a",
+				productnumber11: "612846a"
+			};
+			var fetchXml = [
+				"<fetch>",
+				"  <entity name='opportunityproduct'>",
+				"    <attribute name='productidname' />",
+				"    <attribute name='productname' />",
+				"    <filter>",
+				"      <condition attribute='opportunityid' operator='eq' value='", fetchData.opportunityid/*&quot;, fetchData.opportunityid, &quot;*/, "'/>",
+				"    </filter>",
+				"    <link-entity name='product' from='productid' to='productid' alias='pd'>",
+				"      <attribute name='ss_productmaincategoryname' />",
+				"      <attribute name='ss_productmaincategory' />",
+				"      <attribute name='name' />",
+				"      <filter type='and'>",
+				"        <condition attribute='producttypecode' operator='eq' value='", fetchData.producttypecode/*100000003*/, "'/>",
+				"        <condition attribute='productnumber' operator='not-in'>",
+				"          <value>", fetchData.productnumber/*614005a*/, "</value>",
+				"          <value>", fetchData.productnumber2/*614008a*/, "</value>",
+				"          <value>", fetchData.productnumber3/*614003a*/, "</value>",
+				"          <value>", fetchData.productnumber4/*614004a*/, "</value>",
+				"          <value>", fetchData.productnumber5/*614009a*/, "</value>",
+				"          <value>", fetchData.productnumber6/*614010a*/, "</value>",
+				// "          <value>", fetchData.productnumber7/*614007a*/, "</value>",
+				// "          <value>", fetchData.productnumber8/*614002a*/, "</value>",
+				"          <value>", fetchData.productnumber9/*614006a*/, "</value>",
+				"          <value>", fetchData.productnumber10/*612845a*/, "</value>",
+				"          <value>", fetchData.productnumber11/*612845a*/, "</value>",
+				"        </condition>",
+				"      </filter>",
+				"    </link-entity>",
+				"  </entity>",
+				"</fetch>",
+			].join("");
+			fetchXml = "?fetchXml=" + encodeURIComponent(fetchXml);
+			parent.Xrm.WebApi.online.retrieveMultipleRecords("opportunityproduct", fetchXml).then(
+				function success(result) {
+					if (result.entities.length > 0) {
+
+						specificproducts = true;
+
+						CloseOpportuntiy(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, checkall, productno, ownerid, specificproducts);
+					} else {
+						CloseOpportuntiy(prodName, NAVID, opportunityname, contactphone, contactemail, setapprovalaccountname, setapprovalcontactname, ss_totalsetupbase, setapprovalcurrency, setopportuntiyapproval, productmaincategory, _businessunitid_value_formatted, checkall, productno, ownerid, specificproducts);
+					}
+				},
+				function (error) {
+					console.log("Error is => " + console.error);
+				}
+			)
+		}
+		function checkproductforIRSaleschecklist() {
+			var fetchData = {
+				opportunityid: OppID
+			};
+			var fetchXml = [
+				"<fetch>",
+				"  <entity name='opportunityproduct'>",
+				"    <attribute name='productidname' />",
+				"    <attribute name='productname' />",
+				"    <filter>",
+				"      <condition attribute='opportunityid' operator='eq' value='", fetchData.opportunityid, "'/>",
+				"    </filter>",
+				"    <link-entity name='product' from='productid' to='productid' alias='pd'>",
+				"      <attribute name='ss_productmaincategoryname' />",
+				"      <attribute name='ss_productmaincategory' />",
+				"      <attribute name='name' />",
+				"<filter>",
+				"<condition attribute='producttypecode' operator='eq' value='100000003' />",
+				"</filter>",
+				"    </link-entity>",
+				"  </entity>",
+				"</fetch>",
+			].join("");
+			fetchXml = "?fetchXml=" + encodeURIComponent(fetchXml);
+			parent.Xrm.WebApi.online.retrieveMultipleRecords("opportunityproduct", fetchXml).then(
+				function success(result) {
+					if (result.entities.length > 0) {
+						for (var i = 0; i < result.entities.length; i++) {
+							productmaincategory += result.entities[i]["pd.ss_productmaincategory@OData.Community.Display.V1.FormattedValue"] + ",";
+						}
+						if (productmaincategory.includes("IR Cockpit") || productmaincategory.includes("IR Products")) {
+							$("#irsaleschecklist").show();
+						}
+					}
+				},
+				function (error) {
+					console.log("Error is => " + console.error);
+				}
+			)
+		}
+		function checkproductforPRSALESCHECKLIST() {
+			var fetchData = {
+				"opportunityid": OppID,
+				"producttypecode": "100000003",
+				"productnumber2": "612845a",
+				"productnumber3": "612846a"
+			};
+			var fetchXml = [
+				"<fetch>",
+				"  <entity name='opportunityproduct'>",
+				"    <attribute name='productid'/>",
+				"    <filter>",
+				"      <condition attribute='opportunityid' operator='eq' value='", fetchData.opportunityid/*00000000-0000-0000-0000-000000000000*/, "'/>",
+				"    </filter>",
+				"    <link-entity name='product' from='productid' to='productid' alias='pd'>",
+				"      <attribute name='name'/>",
+				"      <filter>",
+				"        <condition attribute='producttypecode' operator='eq' value='", fetchData.producttypecode/*100000003*/, "'/>",
+				"        <condition attribute='productnumber' operator='in'>",
+				"          <value>", fetchData.productnumber2/*612845a*/, "</value>",
+				"          <value>", fetchData.productnumber3/*612846a*/, "</value>",
+				"        </condition>",
+				"      </filter>",
+				"    </link-entity>",
+				"  </entity>",
+				"</fetch>"
+			].join("");
+			fetchXml = "?fetchXml=" + encodeURIComponent(fetchXml);
+			parent.Xrm.WebApi.online.retrieveMultipleRecords("opportunityproduct", fetchXml).then(
+				function success(result) {
+					if (result.entities.length > 0) {
+						PRSALESCHECKLIST = true;
+					}
+				},
+				function (error) {
+					console.log("Error is => " + console.error);
+				}
+			)
+		}
+
+	</script>
+	<meta>
+	<meta>
+</head>
+
+<body onload="getOppData()" class="scrollbar " id="style-7">
+	<div class="loaderdiv hideit">
+		<!-- <div class="loader"></div> -->
+		<div class="lds-spinner">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<h2 onclick="">Close Opportunity</h2>
+				<p class="bold">Please provide the following information about why this Opportunity is being closed.</p>
+			</div>
+			<div class="col-md-12 col-xs-12 mt20">
+				<div class="col-md-12 col-xs-12 p0 revenuedate">
+					<div class="col-md-2 col-xs-2 ">
+						<label><strong>Actual Revenue*</strong></label>
+						<strong><input style="width:100px" class="input-sm input130" readonly="" type="text"
+								id="actualrevenue" name="actualrevenue"></strong>
+					</div>
+					<div class="col-md-2 col-xs-2 ">
+						<label><strong>Close Date*</strong></label>
+						<strong><input style="width:132px" class="input-sm input130" type="date" id="closedate"
+								name="closedate"></strong>
+					</div>
+					<div class="col-md-2 col-xs-2">
+						<label><strong>Official Contract Owner</strong></label>
+						<strong>
+							<select id="ContractPartner" style="width: 147; height: 24px;">
+								<option disabled="" selected="" value="">--select an option--</option>
+								<option value="EQS Germany">EQS Germany</option>
+								<option value="EQS Switzerland">EQS Switzerland</option>
+								<option value="EQS Russia">EQS Russia</option>
+								<option value="EQS US">EQS US</option>
+								<option value="EQS UK">EQS UK</option>
+								<option value="EQS Spain">EQS Spain</option>
+								<option value="EQS Denmark">EQS Denmark</option>
+								<option value="EQS Italy">EQS Italy</option>
+								<option value="EQS France">EQS France</option>
+								<option value="EQS Asia">EQS Asia</option>
+								<!-- <option value="EQS Poland">EQS Poland</option> -->
+								<option value="EQS Austria">EQS Austria</option>
+							</select></strong>
+					</div>
+					<div class="col-lg-1 col-md-1 col-xs-1">
+						<p><span class="eInvoiceCheckbox"><input type="checkbox" class="custom-control-input"
+									id="addcheck"></span><span><strong>Additional Details</strong></span></p><br>
+						<div id="additonaldetailsdiv" style="display: none;" class="col-md-2 col-xs-2">
+							<textarea rows="1" cols="20" id="add_area"
+								placeholder="Enter Additional Details"></textarea>
+						</div>
+					</div>
+					<!--  -->
+
+					<div class="col-md-2 col-xs-2 priceincreasetype">
+						<label><strong>Price Increase Type</strong></label>
+						<strong>
+							<select id="ss_incresetype" style="width: 147; height: 24px;" onchange="getIndexes()">
+								<option disabled="" selected="" value="">--select an option--</option>
+								<option value="1">Danish Index</option>
+								<option value="2">French Index</option>
+								<option value="3">German Index</option>
+								<option value="4">Italian Index</option>
+								<option value="6">Spanish Index</option>
+								<option value="7">Swiss Index</option>
+								<option value="8">US Index</option>
+								<option value="9">UK Index</option>
+								<option value="5">Individual Value</option>
+							</select></strong><br>
+						<div id="increaseinpercent" style="display: none;" class="col-lg-4 col-md-4 col-xs-4">
+							<label><strong>Increase in %</strong></label>
+							<input type="number" step="any" id="percentincrease">
+						</div>
+					</div>
+
+					<div class="col-lg-2 col-md-2 col-xs-2" id="irsaleschecklist" style="display: none;">
+						<p><span class="eInvoiceCheckbox"><input type="checkbox" class="custom-control-input"
+									id="saleschecklist"></span><span><strong>Do Not Create IR Sales
+									Checklist</strong></span></p>
+					</div>
+					<div class="row col-md-12 col-xs-12 mt20">
+						<div class="col-md-3 col-xs-3 col-lg-3">
+							<span><strong>PO Number</strong></span><input type="text" name="po_number" id="po_no"
+								class="input-sm input130" style="height: 22px;">
+						</div>
+					</div>
+				</div>
+				<div class="col-md-2 col-xs-12 p0 resetdiv">
+					<div class="col-md-12 col-xs-12">
+						<p><span class="resetcheckbox"><input type="checkbox" class="custom-control-input" id="resetall"
+									name="reset"></span><span class="resettext"><strong>Set to default
+									value</strong></span> </p>
+					</div>
+
+				</div>
+
+			</div>
+		</div><br><br>
+		<div class="revenuedate">
+			<div class="row" id="eInvoicedivMain">
+				<div class="col-md-2 col-sm-2 col-xl-3 col-xs-2" id="eInvoicediv">
+					<p><span class="eInvoiceCheckbox"><input type="checkbox" class="custom-control-input" id="eInvoice"
+								name="eInvoice"></span><span class="resettext"><strong>E-Invoice</strong></span> </p>
+					<br>
+					<div class="e_l_v_fields" id="E_Invoice">
+						<input type="email" id="E_InvoiceEmail" aria-describedby="emailHelp"
+							placeholder="Enter E-Invoice E-mail">
+						<span id="eInvoiceError"></span>
+					</div><br>
+					<div id="vatid">
+						<span><strong>VAT ID: </strong></span><input type="text" name="vatid_name" id="vatid_text"
+							class="input-sm input130" style="height: 22px;">
+					</div><br>
+					<div class="form-group" id="invoice_lan">
+						<span><strong>Invoice Language: </strong></span>
+						<select name="inv_lan" id="invoice_language">
+							<option value="100000000">German</option>
+							<option value="100000001">English</option>
+						</select>
+					</div>
+				</div>
+				<div class="showhide col-md-2 col-sm-2 col-xl-2 col-xs-2" id="contractstartdateid">
+					<label><strong>Contract Start Date* &nbsp;</strong></label><input type="date"
+						class="input-sm input130" id="contractstartdate" name="ContractStartDate" value=""
+						onchange="getdate()">
+					<br><br>
+					<div id="freeperiod">
+						<label><strong>Free Period
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></label>
+						<strong>
+							<select id="new_freePeriod" style="width: 147; height: 20px;">
+								<option disabled="" selected="" value="">--select an option--</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
+							</select></strong>
+					</div>
+				</div>
+				<div class=" showhide col-md-2 col-sm-2 col-xl-2 col-xs-2" id="contractperioddateid">
+					<label><strong>Contract Period*</strong></label>
+					<strong>
+						<select id="contractperiod" onchange="getterminationdate()" style="width: 147; height: 20px;">
+							<option disabled="" selected="" value="">--select an option--</option>
+							<option>3</option>
+							<option>6</option>
+							<option>9</option>
+							<option>12</option>
+							<option>18</option>
+							<option>24</option>
+							<option>36</option>
+							<option>Other</option>
+						</select></strong>
+				</div>
+				<div class="showhide col-md-2 col-sm-2 col-xl-2 col-xs-2" id="terminationperiodid">
+					<label><strong>Termination Period* &nbsp; </strong></label>
+					<strong>
+						<select id="terminationperiod" style="width: 147; height: 24px;">
+							<option>1</option>
+							<option>2</option>
+							<option selected="">3</option>
+							<option>4</option>
+							<option>5</option>
+							<option>6</option>
+						</select></strong>
+				</div>
+			</div>
+			<div class="row" style="margin-left: 1px ;">
+				<div class="showhide col-md-2 col-sm-2 col-xl-2 col-xs-2" id="prepaidid">
+					<p><span class="eInvoiceCheckbox"><input type="checkbox" class="custom-control-input" id="prepaid"
+								name="prepaid" onchange="showCSdate()" checked=""></span><span class="resettext"
+							checked=""><strong>Prepaid</strong></span> </p>
+				</div>
+				<div class=" showhide col-md-2 col-sm-2 col-xl-2 col-xs-2" id="contractenddateid">
+					<label><strong>Contract End Date*&nbsp;</strong></label><input type="date" class="input-sm input130"
+						id="contractenddate" name="ContractEndDate">
+				</div>
+
+				<div class="showhide col-md-2 col-sm-2 col-xl-2 col-xs-2" id="contractenddateid">
+					<label><strong>Next Invoice Date*</strong></label><input type="date" id="nextinvoicedate"
+						name="NextInvoiceDate" readonly="">
+				</div>
+				<div class="col-md-2 col-sm-2 col-xl-2 col-xs-2">
+					<div class="fieldlabel">
+						<label>Reference?*&nbsp;&nbsp;&nbsp;</label>
+						<select name="optionvalues" id="reference" class="target" onchange="showlimitedconsent(this)">
+							<option value="1">Yes</option>
+							<option value="0">No</option>
+							<option value="2">Limited consent</option>
+						</select><br><br>
+						<div id="limitedconsent" style="display: none;">
+							<span><input type="checkbox" id="website">&nbsp;&nbsp;Website&nbsp;&nbsp;&nbsp;</span>
+							<span><input type="checkbox"
+									id="presentation">&nbsp;&nbsp;Presentation&nbsp;&nbsp;&nbsp;</span><br>
+							<span><input type="checkbox" id="casestudy">&nbsp;&nbsp;Case Study&nbsp;&nbsp;&nbsp;</span>
+							<span><input type="checkbox" id="frowarding">&nbsp;&nbsp;Forwarding as
+								recommendatior</span><br>
+							<span><input type="checkbox" id="specification"
+									onchange="showsepcificationdetails(this)">&nbsp;&nbsp;Other Specification</span>
+						</div>
+						<div id="specificationdetails" style="display: none;">
+							<textarea rows="1" cols="20" id="details_sepcification"
+								placeholder="Enter Specification Details"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="showhide radioBtn crmfield btn-group col-md-6 col-sm-6 col-xl-6 col-xs-6">
+					<div class="fieldlabel">
+						<label>Auto-renewal of subscription?*</label>
+					</div>
+					<div class="renewalbtnyesno col-sm-4 col-xs-6 col-md-3">
+						<a class="btn btn-primary btn-sm active" data-toggle="auto_renewal" data-title="1">YES</a>
+						<!-- <a class="btn btn-primary btn-sm nabtn active" data-toggle="auto_renewal"
+								data-title="2">N/A</a> -->
+						<a class="btn btn-primary btn-sm nobtn " data-toggle="auto_renewal" data-title="0">NO</a>
+						<input type="hidden" class="" name="auto_renewal" value="1" id="new_auto_renewal">
+					</div>
+				</div>
+				<!-- <div class="col-md-3 col-sm-3 col-xl-3 col-xs-3" id="outer_limited">
+					<p><span class="eInvoiceCheckbox"><input type="checkbox" class="custom-control-input" id="limited" name="limited"></span><span class="resettext"><strong>Limited</strong></span> </p>
+				</div>
+				<div class="col-md-3 col-sm-3 col-xl-3 col-xs-3" id="outer_unlimited">
+					<p><span class="eInvoiceCheckbox"><input type="checkbox" class="custom-control-input" id="unlimited" name="unlimited"></span><span class="resettext"><strong>Unlimited</strong></span> </p>
+				</div> -->
+				<!-- <div class="btnsyesno col-sm-4 col-xs-6 col-md-3 p1pq"> -->
+
+				<!-- </div> -->
+			</div>
+		</div>
+
+	</div>
+	<!-- New Update -->
+	<!-- <div class="radioBtn crmfield mainQues part1 pl0 btn-group col-md-12 mb8">
+            <div class="fieldlabel part1q">
+                <label><span class="QNumber bold">Client can be used as reference</span></label>
+            </div>
+            <div class="btnsyesno pl0 part1qyn">
+                <a class="btn btn-primary btn-sm " data-toggle="client_ref" data-title="1"><span class="glyphicon glyphicon-ok-sign"></span> YES</a>
+                <a class="btn btn-primary btn-sm nobtn " data-toggle="client_ref" data-title="0"><span class="glyphicon glyphicon-remove-sign"></span> NO</a>
+                <input type="hidden" name="client_ref" value="" id="client_ref">
+            </div>
+        </div> -->
+	<div class="row">
+
+		<!-- 104 -->
+		<div class="col-md-12 co1-sm-12 col-xs-12 mb8">
+
+
+
+		</div>
+		<div class="btnsyesno1 col-md-9 col-xs-6">
+
+		</div>
+	</div>
+
+	<div class="row otherfields questions" id="questions" onclick="">
+		<div class="questions_inner">
+			<!-- **********1 Contract length, payment terms and pricing *************101 -->
+			<div class="contractlength col-sm-12 firstpart">
+				<div class="crmfield col-sm-12">
+					<!-- <p class="bold">I. Standard Contract length, payment terms and pricing</p> -->
+
+					<div class="showhide radioBtn crmfield mainQues part1 pl0 btn-group col-md-12 mb8">
+						<div class="fieldlabel col-sm-6 part1q">
+							<label><span class="QNumber bold">I. Standard Contract length, payment terms and
+									pricing</span></label>
+						</div>
+						<!-- irf: added 1 as value in input to reflect yes as auto selected by default  -->
+						<div class="btnsyesno2 col-sm-6 pl0 part1qyn">
+							<a class="btn btn-primary btn-sm active" data-toggle="standard_contract_length"
+								data-title="1"><span class="glyphicon glyphicon-ok-sign"></span> YES</a>
+							<a class="btn btn-primary btn-sm nobtn " data-toggle="standard_contract_length"
+								data-title="0"><span class="glyphicon glyphicon-remove-sign"></span> NO</a>
+							<input type="hidden" name="standard_contract_length" value="1"
+								id="standard_contract_length">
+						</div>
+					</div>
+					<!-- Part 1 Questions -->
+					<div class="showhide radioBtn crmfield subscription btn-group col-xs-12 col-sm-12 col-md-12 mb8">
+						<div class="fieldlabel col-sm-6 col-xs-6 col-md-2">
+							<label><span class="QNumber">1.</span> Auto-renewal of subscription?*</label>
+						</div>
+						<div class="renewalbtnyesno innerrenewal col-sm-4 col-xs-6 col-md-3 p1pq">
+							<a class="btn btn-primary btn-sm active" data-toggle="auto_renewal" data-title="1">YES</a>
+							<!-- <a class="btn btn-primary btn-sm nabtn active" data-toggle="auto_renewal"
+								data-title="2">N/A</a> -->
+							<a class="btn btn-primary btn-sm nobtn " data-toggle="auto_renewal" data-title="0">NO</a>
+							<input type="hidden" class="" name="auto_renewal" value="1" id="auto_renewal">
+						</div>
+					</div>
+					<div class="row part1Questions">
+						<!-- Question 1 -->
+
+						<div class=" showhide col-md-12 com-sm-12">
+							<p class="col-md-12"><strong class="pl13"> Expiration Date: <span
+										id="expDate"></span></strong></p>
+						</div>
+						<!-- Question 2 -->
+						<div class="radioBtn crmfield btn-group col-md-12 col-sm-12 col-xs-12 mb8">
+							<!-- //irf: col-md-4 to col-md-3 to align text with buttons -->
+							<div class="fieldlabel col-sm-6 col-xs-6 col-md-3">
+								<label><span class="QNumber">2.</span> Standard Payment Terms?*</label>
+							</div>
+							<div class="btnsyesno col-sm-4 col-xs-6 col-md-3 q2click p1pq">
+								<!-- irf: add active class to YES button -->
+								<a class="btn btn-primary btn-sm terms yesbtn textdiv q2 active"
+									data-toggle="payment_terms" data-title="1">YES</a>
+								<!-- <a class="btn btn-primary btn-sm nabtn q2 active" data-toggle="payment_terms" data-title="2">N/A</a> -->
+								<a class="btn btn-primary btn-sm terms q2 nobtn textdiv" data-toggle="payment_terms"
+									data-title="0">NO</a>
+								<input type="hidden" class="" name="payment_terms" value="1" id="payment_terms">
+							</div>
+
+						</div>
+						<!--  new-->
+						<!-- **** QUESTION 2 INNER **** -->
+						<!-- irf: remove hideit class from below -->
+						<div class="col-md-12 q2_inner  pr0">
+							<div class="radioBtn crmfield btn-group col-md-12 col-sm-12 col-xs-12 mb8  q2_1">
+								<!-- //irf: col-md-4 to col-md-3 to align text with buttons -->
+								<div class="fieldlabel col-sm-6 col-xs-6 col-md-3">
+									<label><span class="QNumber">2.1.</span> Payment term 14 days?*</label>
+								</div>
+								<div class="btnsyesno col-sm-4 col-xs-6 col-md-3 q21click">
+									<a class="btn btn-primary btn-sm terms yesbtn textdiv q2_1 active"
+										data-toggle="ispayment_terms_14" data-title="1">YES</a>
+									<!-- <a class="btn btn-primary btn-sm nabtn q2_1" data-toggle="ispayment_terms_14" data-title="2">N/A</a> -->
+									<a class="btn btn-primary btn-sm terms textdiv nobtn q2_1"
+										data-toggle="ispayment_terms_14" data-title="0">NO</a>
+									<input type="hidden" name="ispayment_terms_14" value="1" id="ispayment_terms_14">
+									<!-- irf: remove hideit class from below -->
+									<p class="paymenttermdays2  q2_1_inner mt10"> Select Days
+										<select class="selectin input-sm" name="payment_term_days"
+											id="payment_term_days">
+											<option value="0">--</option>
+											<option selected="" value="14">14 Days</option>
+											<option value="30">30 Days</option>
+											<option value="45">45 Days</option>
+											<option value="60">60 Days</option>
+											<option value="100001">Other</option>
+										</select>
+
+									</p>
+
+								</div>
+								<!-- irf: remove hideit class from below -->
+								<p class="col-md-12 col-sm-12 col-xs-12 otherdays text-center hideit">
+									<span>Please enter no of days: </span><input type="number" min="0" value="0"
+										class="termdaysother" id="payment_term_days_other"
+										onkeypress="return event.charCode >= 48 &amp;&amp;event.charCode <= 57 || event.key === &quot;Backspace&quot;">
+								</p>
+							</div>
+							<!-- <div class="radioBtn crmfield btn-group col-md-12 col-sm-12 col-xs-12 mb8 q2_2">
+								<div class="fieldlabel col-sm-6 col-xs-6 col-md-4">
+									<label><span class="QNumber">2.2.</span> Billing upon signature?</label>
+								</div>
+								<div class="btnsyesno col-sm-4 col-xs-6 col-md-3">
+									<a class="btn btn-primary btn-sm yesbtn active" data-toggle="billing_upon_signature"
+										data-title="1">YES</a>
+									<a class="btn btn-primary btn-sm nabtn " data-toggle="billing_upon_signature"
+										data-title="2">N/A</a>
+									<a class="btn btn-primary btn-sm nobtn" data-toggle="billing_upon_signature"
+										data-title="0">NO</a>
+									<input type="hidden" name="billing_upon_signature" value="1"
+										id="billing_upon_signature">
+								</div>
+							</div> -->
+						</div>
+						<!-- Question 2 -->
+						<div class="showhide radioBtn crmfield btn-group col-md-12 col-sm-12 col-xs-12 mb8 ">
+							<!-- //irf: col-md-4 to col-md-3 to align text with buttons -->
+							<div class="fieldlabel col-sm-6 col-xs-6 col-md-3">
+								<label><span class="QNumber">3.</span> Price Increases?*</label>
+							</div>
+							<div class="btnsyesno col-sm-4 col-xs-6 col-md-3 q3click p1pq">
+								<!-- irf: add active class to YES option -->
+								<a class="btn btn-primary btn-sm yesbtn textdiv q3 active" data-toggle="standard_price"
+									data-title="1">YES</a>
+								<!-- <a class="btn btn-primary btn-sm nabtn q3 active" data-toggle="standard_price" data-title="2">N/A</a> -->
+								<a class="btn btn-primary btn-sm textdiv nobtn q3" data-toggle="standard_price"
+									data-title="0">NO</a>
+								<input type="hidden" class="" name="standard_price" value="1" id="standard_price">
+							</div>
+						</div>
+						<!-- **** QUESTION3 INNER **** -->
+						<!-- irf: remove hideit class from below -->
+						<div class="showhide col-md-12 q3_inner pr0">
+							<div class="radioBtn crmfield btn-group col-md-12 col-xs-12 mb8 ">
+								<!-- //irf: col-md-4 to col-md-3 to align text with buttons -->
+								<div class="fieldlabel col-sm-6 col-xs-6 col-md-3">
+									<label><span class="QNumber">3.1.</span> Standard Price Increase?*</label>
+								</div>
+								<div class="btnsyesno col-sm-4 col-xs-6 col-md-3 q31click">
+									<a class="btn btn-primary btn-sm ainc yesbtn textdiv q3_1 active"
+										data-toggle="annual_increases" data-title="1">YES</a>
+									<!-- <a class="btn btn-primary btn-sm nabtn q3_1 notActive" data-toggle="annual_increases" data-title="2">N/A</a> -->
+									<a class="btn btn-primary btn-sm ainc textdiv nobtn q3_1 "
+										data-toggle="annual_increases" data-title="0">NO</a>
+									<input type="hidden" name="annual_increases" value="1" id="annual_increases">
+								</div>
+							</div>
+							<!-- *** QUESTION 3.1 INNER *** -->
+							<!-- irf: remove hideit class from below -->
+							<div class="showhide col-md-12 pr0 q3_1_inner">
+								<div class="radioBtn crmfield btn-group col-md-12 col-xs-12 mb8 q311">
+									<!-- //irf: col-md-4 to col-md-3 to align text with buttons -->
+									<div class="fieldlabel col-sm-6 col-xs-6 col-md-3">
+										<label><span class="QNumber">3.1.1.</span> Cap on price increases?</label>
+									</div>
+									<div class="btnsyesno col-sm-4 col-xs-6 col-md-3 q311click">
+										<a class="btn btn-primary btn-sm yesbtn q3_1_1"
+											data-toggle="cap_on_price_increases" data-title="1">YES</a>
+										<!-- <a class="btn btn-primary btn-sm nabtn q3_1_1 notActive" data-toggle="cap_on_price_increases" data-title="2">N/A</a> -->
+										<a class="btn btn-primary btn-sm q3_1_1 nobtn active"
+											data-toggle="cap_on_price_increases" data-title="0">NO</a>
+										<input type="hidden" name="cap_on_price_increases" value="0"
+											id="cap_on_price_increases">
+										<!-- irf: remove hideit class from below -->
+										<p class="cap_pinpercent q3_1_1_inner mt10 hideit"><span class="QNumber"></span>
+											<span class="inpercent">in <input type="number"
+													class="w3-input w3-border w3-round-large caponprice"
+													id="cap_on_price_new" step="0.01" value="1">
+												<label class="labelheight" for="number">%</label></span>
+										</p>
+									</div>
+									<!-- //irf:  col-md-2 col-sm-2 col-xl-2 col-xs-2 to col 4 to all-->
+									<div class=" btnsyesno showhide col-md-4 col-sm-4 col-xl-4 col-xs-4"
+										id="priceincreaseperiodid" style="display: none;">
+										<label>Price Increase Period* &nbsp;</label>
+										<strong>
+											<select id="priceincreaesperiod" style="width: 147; height: 24px;">
+												<option>1</option>
+												<option>2</option>
+												<option>3</option>
+												<option>4</option>
+												<option>5</option>
+												<option>6</option>
+												<option>7</option>
+												<option>8</option>
+												<option>9</option>
+												<option>10</option>
+												<option>11</option>
+												<option selected="">12</option>
+											</select></strong>
+									</div>
+
+									<!-- <div class="col-sm-4 col-xs-6 col-md-3 q311click showhide" id="alloweddateid"><br>
+										<p class="cap_pinpercent hideit q3_1_1_inner mt10"><span class="QNumber"></span>
+											<span class="QNumber">3.1.2.</span>Next Allowed Increase Date&nbsp;</label>
+											<input type="date"
+											class="w3-input w3-border w3-round-large" id="increasealloweddate"
+											name="alloweddate" style="margin-left: 700px;">
+										</p>
+									</div> -->
+								</div>
+							</div>
+
+
+							<!-- //irf: col-md-4 to col-md-3 to align text with buttons -->
+							<div class="fieldlabel col-sm-6 col-xs-6 col-md-3">
+								<label><span class="QNumber">3.1.2.</span>Next Allowed Increase Date</label>
+							</div>
+							<div class="btnsyesno col-sm-4 col-xs-6 col-md-3 q311click" style="margin-left: 120px;">
+								<!-- remove mt10 class from paragraphh -->
+								<p class="">
+									<input type="date" class="w3-input w3-border w3-round-large"
+										id="increasealloweddate" name="alloweddate">
+								</p>
+							</div>
+
+
+							<div class="showhide radioBtn crmfield btn-group col-md-12 col-xs-12 mb8">
+								<!-- //irf: col-md-4 to col-md-3 to align text with buttons -->
+								<div class="fieldlabel col-sm-6 col-xs-6 col-md-3">
+									<label><span class="QNumber">3.2.</span> Exceptional Price Increase?</label>
+								</div>
+								<div class="btnsyesno col-sm-4 col-xs-6 col-md-3 q32click">
+									<a class="btn btn-primary btn-sm yesbtn q3_2 active" data-toggle="other_price"
+										data-title="1">YES</a>
+									<!-- <a class="btn btn-primary btn-sm nabtn q3_2 notActive" data-toggle="other_price" data-title="2">N/A</a> -->
+									<a class="btn btn-primary btn-sm nobtn q3_2" data-toggle="other_price"
+										data-title="0">NO</a>
+									<input type="hidden" name="other_price" value="1" id="other_price">
+								</div>
+							</div>
+							<!-- *** QUESTION 3.2 INNER *** -->
+							<!-- irf: remove hideit class from below -->
+							<div class="showhide col-md-12 pr0 q3_2_inner">
+
+								<!-- irf: remove below complete div for "Increases allowed as per sven" -->
+
+								<!-- <div class="radioBtn crmfield btn-group col-md-12 col-xs-12 mb8">
+									<div class="fieldlabel col-sm-6 col-xs-6 col-md-4 pl16">
+										<label><span class="QNumber">3.2.1.</span> Increases allowed</label>
+									</div> -->
+								<!-- <div class="btnsyesno col-sm-4 col-xs-6 col-md-3">
+										<a class="btn btn-primary btn-sm yesbtn active" data-toggle="increases_allowed" data-title="1">YES</a>
+										<a class="btn btn-primary btn-sm nobtn " data-toggle="increases_allowed" data-title="0">NO</a>
+										<input type="hidden" name="increases_allowed" value="1" id="increases_allowed"> -->
+								<!-- <a class="btn btn-primary btn-sm nabtn notActive" data-toggle="increases_allowed" data-title="2">N/A</a> -->
+								<!-- <p class="indays2 hideit"><input type="number" id="notifi_days" class="input-sm" value="0" name="notifi_days"> in days</p> -->
+								<!-- </div>
+								</div> -->
+								<div class="showhide radioBtn crmfield btn-group col-md-12 col-xs-12 mb8 ">
+									<!-- //irf: col-md-4 to col-md-3 to align text with buttons -->
+									<div class="fieldlabel col-sm-6 col-xs-6 col-md-3 pl16">
+										<label><span class="QNumber">3.2.1.</span> Standard notification period
+											agreed?</label>
+									</div>
+									<div class="btnsyesno col-sm-4 col-xs-6 col-md-3">
+										<a class="btn btn-primary btn-sm yesbtn stand_noticl active"
+											data-toggle="stand_noti" data-title="1">YES</a>
+										<!-- <a class="btn btn-primary btn-sm nabtn notActive" data-toggle="stand_noti" data-title="2">N/A</a> -->
+										<a class="btn btn-primary btn-sm nobtn stand_noticl" data-toggle="stand_noti"
+											data-title="0">NO</a>
+										<input type="hidden" name="stand_noti" value="1" id="stand_noti">
+										<!-- irf: adding new section for "Agreed notification period" field -->
+										<p class="notificationperiod q3_2_1_inner mt10 hideit"> Agreed notification
+											period:
+											<select class="selectin input-sm" name="new_agreednotificationperiod"
+												id="new_agreednotificationperiod">
+												<option selected="" value="0">--</option>
+												<option value="1">30 Days</option>
+												<option value="2">60 Days</option>
+												<option value="3">90 Days</option>
+												<option value="4">Other</option>
+											</select>
+										</p>
+									</div>
+								</div>
+							</div> <!-- q3_2_inner end -->
+						</div> <!-- q3_inner end -->
+
+						<div class="crmfield btn-group col-md-12 col-xs-12 mb8">
+
+						</div>
+
+
+					</div>
+					<!--  -->
+					<div class="col-md-7 btnrow">
+						<div class="actionbtns">
+							<div class="submitbtn">
+								<button id="submit" onclick="CheckValidation(CheckContract)">Ok</button>
+							</div>
+							<div class="cancelbtn">
+								<button id="cancel" onclick="CancelIt()">Cancel</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div> <!-- end contract length 6 columns-->
+
+			<!-- /////COMMENT FOR PROD -->
+			<!-- **********11 Other Terms ************* -->
+
+			<div class="sladiv col-sm-6 col-md-6 secondpart">
+				<!-- <p class="bold">II. Standarad contract terms</p>  -->
+
+				<!-- <div class="radioBtn plr0 mainQues part2 crmfield btn-group col-md-12 col-xs-12 mb8"> -->
+				<!--/////COMMENT FOR PROD  -->
+				<!-- <div class="fieldlabel part2q">
+							<label><span class="QNumber bold">II. Standard contract terms</span></label>
+						</div> -->
+				<!-- <div class="btnsyesno part2qyn">
+									<a class="btn btn-primary btn-sm" data-toggle="standard_contract_terms" data-title="1"><span class="glyphicon glyphicon-ok-sign"></span> YES</a>
+									<a class="btn btn-primary btn-sm " data-toggle="standard_contract_terms" data-title="0"><span
+										class="glyphicon glyphicon-remove-sign"></span> NO</a>
+									<input type="hidden" name="standard_contract_terms" value="" id="standard_contract_terms">
+						</div> -->
+
+				<!-- </div> -->
+				<!-- /////COMMENT FOR PROD -->
+				<!-- Part 2 Questions -->
+				<!-- <div class="row input-group part2Questions">
+						<div class="radioBtn crmfield btn-group q4 col-md-12 col-xs-12 mb8">
+							<div class="fieldlabel col-md-8">
+								<label><span class="QNumber">4.</span> Changes to EQS Terms or customer template?</label>
+							</div>
+							<div class="btnsyesno p2pq col-md-4">
+								<a class="btn btn-primary btn-sm yesbtn q4" data-toggle="ChangesToEqsTerms" data-title="1">YES</a>
+								<a class="btn btn-primary btn-sm nabtn q4 active" data-toggle="ChangesToEqsTerms" data-title="2">N/A</a>
+								<a class="btn btn-primary btn-sm q4 nobtn" data-toggle="ChangesToEqsTerms" data-title="0">NO</a>
+								<input type="hidden" name="ChangesToEqsTerms" value="2" id="ChangesToEqsTerms">
+							</div>
+						</div> -->
+				<!-- q4_inner div -->
+				<!-- <div class="col-md-12 q4_inner pr0 hideit">
+							<div class="radioBtn crmfield btn-group q4_1 col-md-12 mb8">
+								<div class="fieldlabel col-md-8">
+									<label><span class="QNumber">4.1.</span> Customer can be used as reference customer?</label>
+								</div>
+								<div class="btnsyesno col-md-4">
+									<a class="btn btn-primary btn-sm yesbtn active" data-toggle="customer" data-title="1">YES</a>
+									<a class="btn btn-primary btn-sm nabtn " data-toggle="customer" data-title="2">N/A</a>
+									<a class="btn btn-primary btn-sm nobtn" data-toggle="customer" data-title="0">NO</a>
+									<input type="hidden" name="customer" value="1" id="customer">
+								</div>
+							</div>
+							<div class="radioBtn crmfield btn-group q4_2 col-md-12 mb8">
+								<div class="fieldlabel col-md-8">
+									<label><span class="QNumber">4.2.</span> Special notice or administrative requirements?</label>
+								</div>
+								<div class="btnsyesno col-md-4">
+									<a class="btn btn-primary btn-sm special_noticebtn yesbtn textdiv " data-toggle="special_notice"data-title="1">YES</a>
+									<a class="btn btn-primary btn-sm nabtn textdiv" data-toggle="special_notice" data-title="2">N/A</a>
+									<a class="btn btn-primary btn-sm special_noticebtn nobtn textdiv active" data-toggle="special_notice" data-title="0">NO</a>
+									<input type="hidden" name="special_notice" value="0" id="special_notice">
+								</div>
+							</div> -->
+				<!-- text field for 4.3 -->
+				<!-- <div class="inputdiv col-md-12 col-sm-12 col-xs-12 textfielddiv special_notice_tdiv hideit">
+								<p class="col-md-12 pl30"><input class="input-sm inputnotice"  placeholder="please describe it" id="special_notice_text" type="text" size="" name="special_notice_text"></p>
+							</div>
+							<div class="radioBtn crmfield btn-group q4_3 col-md-12 mb8">
+								<div class="fieldlabel col-md-8">
+									<label><span class="QNumber">4.3.</span> Non Standard limitation of liability (e.g no or higher liability cap, or special cap for data breaches)?</label>
+								</div>
+								<div class="btnsyesno col-md-4">
+									<a class="btn btn-primary btn-sm textdiv yesbtn active" data-toggle="liability" data-title="1">YES</a>
+									<a class="btn btn-primary btn-sm nabtn textdiv" data-toggle="liability" data-title="2">N/A</a>
+									<a class="btn btn-primary btn-sm textdiv nobtn" data-toggle="liability" data-title="0">NO</a>
+									<input type="hidden" name="liability" value="1" id="liability">
+								</div>
+							</div> -->
+				<!-- Text Field  liability_text-->
+				<!-- <div class="col-md-12  col-sm-12 col-xs-12 textfielddiv liability_tdiv hideit">
+								<p class="col-md-12 pl30"><input id="liability_text" placeholder="please describe it"
+										class="input-sm inputfull" type="text" name="liability_text"></p>
+							</div>
+							<div class="radioBtn crmfield btn-group q4_4 col-md-12 mb8">
+								<div class="fieldlabel col-md-8">
+									<label><span class="QNumber">4.4.</span> Standard assignment language (no restrictions of
+										assignments to an affiliate)?</label>
+								</div>
+								<div class="btnsyesno col-md-4">
+									<a class="btn btn-primary btn-sm textdiv yesbtn active" data-toggle="assignment" data-title="1">YES</a>
+									<a class="btn btn-primary btn-sm nabtn textdiv" data-toggle="assignment" data-title="2">N/A</a>
+									<a class="btn btn-primary btn-sm textdiv nobtn" data-toggle="assignment" data-title="0">NO</a>
+									<input type="hidden" name="assignment" value="1" id="assignment">
+								</div>
+							</div> -->
+				<!-- Text Field  assignment_text-->
+				<!-- <div class="col-md-12  col-sm-12 col-xs-12 textfielddiv assignment_tdiv hideit">
+								<p class="col-md-12 pl30"><input id="assignment_text" placeholder="please describe it"
+										class="input-sm inputfull" type="text" name="assignment_text"></p>
+							</div>
+						</div> -->
+				<!-- q4_inner end -->
+				<!-- Question 5 -->
+				<!-- <div class="radioBtn crmfield btn-group q5 col-md-12 col-xs-12 mb8">
+							<div class="fieldlabel col-md-8">
+								<label><span class="QNumber">5.</span> SLAs are part of agreement?</label>
+							</div>
+							<div class="btnsyesno p2pq col-md-4">
+								<a class="btn btn-primary btn-sm yesbtn q5" data-toggle="slas" data-title="1">YES</a>
+								<a class="btn btn-primary btn-sm nabtn q5 active" data-toggle="slas" data-title="2">N/A</a>
+								<a class="btn btn-primary btn-sm q5 nobtn" data-toggle="slas" data-title="0">NO</a>
+								<input type="hidden" name="slas" value="2" id="slas">
+							</div>
+						</div>
+	
+						q5_inner div
+						<div class="col-md-12 q5_inner hideit pr0">
+							<div class="radioBtn crmfield btn-group q5_1 col-md-12 col-xs-12 mb8">
+								<div class="fieldlabel col-md-8">
+									<label><span class="QNumber">5.1.</span> EQS Standard SLAs?</label>
+								</div>
+								<div class="btnsyesno col-md-4">
+									<a class="btn btn-primary btn-sm textdiv yesbtn active" data-toggle="standard_slas"
+										data-title="1">YES</a>
+									<a class="btn btn-primary btn-sm nabtn textdiv" data-toggle="standard_slas" data-title="2">N/A</a>
+									<a class="btn btn-primary btn-sm textdiv nobtn" data-toggle="standard_slas" data-title="0">NO</a>
+									<input type="hidden" name="standard_slas" value="1" id="standard_slas">
+								</div>
+							</div> -->
+				<!-- Text Field  standard_slas_text-->
+				<!-- <div class="col-md-12  col-sm-12 col-xs-12 textfielddiv standard_slas_tdiv hideit">
+								<p class="col-md-12 pl30"><input id="standard_slas_text" placeholder="please describe it"
+										class="input-sm inputfull" type="text" name="standard_slas_text"></p>
+							</div>
+						</div> -->
+				<!-- q5_inner div end -->
+
+				<!-- Question 6 -->
+				<!-- <div class="radioBtn crmfield btn-group q6 col-md-12 col-xs-12 mb8">
+							<div class="fieldlabel col-md-8">
+								<label><span class="QNumber">6.</span> EQS template Data Processing Exhibit- without changes or amendments.</label>
+							</div>
+							<div class="btnsyesno p2pq col-md-4">
+								<a class="btn btn-primary btn-sm yesbtn q6 " data-toggle="eqs_template_data" data-title="1">YES</a>
+								<a class="btn btn-primary btn-sm nabtn q6 active" data-toggle="eqs_template_data" data-title="2">N/A</a>
+								<a class="btn btn-primary btn-sm nobtn q6" data-toggle="eqs_template_data" data-title="0">NO</a>
+								<input type="hidden" name="eqs_template_data" value="2" id="eqs_template_data">
+							</div>
+						</div> -->
+				<!-- q6_inner div -->
+				<!-- <div class="col-md-12 q6_inner hideit pr0">
+							<div class="radioBtn crmfield btn-group q6_1 col-md-12 mb8">
+								<div class="fieldlabel col-md-8">
+									<label><span class="QNumber">6.1.</span> Restriction on data center location ( e.g. location, country, EU/EEA)</label>
+								</div>
+								<div class="btnsyesno col-md-4">
+									<a class="btn btn-primary btn-sm yesbtn textdiv " data-toggle="restriction" data-title="1">YES</a>
+									<a class="btn btn-primary btn-sm nabtn textdiv" data-toggle="restriction" data-title="2">N/A</a>
+									<a class="btn btn-primary btn-sm textdiv nobtn active" data-toggle="restriction" data-title="0">NO</a>
+									<input type="hidden" name="restriction" value="0" id="restriction">
+								</div>
+							</div> -->
+				<!-- Text Field  Restriction on data center_text-->
+				<!-- <div class="col-md-12  col-sm-12 col-xs-12 textfielddiv restriction_tdiv hideit">
+								<p class="col-md-12 pl30"><input id="restriction_text" placeholder="please describe it"
+										class="input-sm inputfull" type="text" name="restriction_text"></p>
+							</div>
+							<div class="radioBtn crmfield btn-group q6_2 col-md-12 mb8">
+								<div class="fieldlabel col-md-8">
+									<label><span class="QNumber">6.2.</span> Restrictions on using or changing subprocessors? (e.g customer
+										consent required, special notication)</label>
+								</div>
+								<div class="btnsyesno col-md-4">
+									<a class="btn btn-primary btn-sm yesbtn textdiv" data-toggle="restriction_change" data-title="1">YES</a>
+									<a class="btn btn-primary btn-sm nabtn textdiv" data-toggle="restriction_change" data-title="2">N/A</a>
+									<a class="btn btn-primary btn-sm textdiv nobtn active" data-toggle="restriction_change" data-title="0">NO</a>
+									<input type="hidden" name="restriction_change" value="0" id="restriction_change">
+								</div>
+							</div> -->
+				<!-- Text Field  Restrictions on using or changing center_text-->
+				<!-- <div class="col-md-12  col-sm-12 col-xs-12 textfielddiv restriction_change_tdiv hideit">
+								<p class="col-md-12 pl30"><input id="restriction_change_text" placeholder="please describe it"
+										class="input-sm inputfull" type="text" name="restriction_change_text"></p>
+							</div>
+						</div> -->
+				<!-- q6_inner div end -->
+
+				<!-- Question 7 -->
+				<!-- <div class="radioBtn crmfield btn-group q7 col-md-12 mb8">
+							<div class="fieldlabel col-md-8">
+								<label><span class="QNumber">7.</span> Security Requirements made part of agreement?</label>
+							</div>
+							<div class="btnsyesno p2pq col-md-4">
+								<a class="btn btn-primary btn-sm textdiv yesbtn q7" data-toggle="security_requirements" data-title="1">YES</a>
+								<a class="btn btn-primary btn-sm nabtn textdiv q7 active" data-toggle="security_requirements" data-title="2">N/A</a>
+								<a class="btn btn-primary btn-sm textdiv nobtn q7" data-toggle="security_requirements" data-title="0">NO</a>
+								<input type="hidden" name="security_requirements" value="2" id="security_requirements">
+							</div>
+						</div> -->
+
+				<!-- q7_inner div -->
+				<!-- <div class="col-md-12 q7_inner hideit pr0">
+							<div class="radioBtn crmfield btn-group q7_1 col-md-12 mb8">
+								<div class="fieldlabel col-md-8">
+									<label><span class="QNumber">7.1.</span> EQS standard TOMs?</label>
+								</div>
+								<div class="btnsyesno col-md-4">
+									<a class="btn btn-primary btn-sm textdiv yesbtn active" data-toggle="EQS_standard_TOM" data-title="1">YES</a>
+									<a class="btn btn-primary btn-sm nabtn textdiv " data-toggle="EQS_standard_TOM" data-title="2">N/A</a>
+									<a class="btn btn-primary btn-sm textdiv nobtn" data-toggle="EQS_standard_TOM" data-title="0">NO</a>
+									<input type="hidden" name="EQS_standard_TOM" value="1" id="EQS_standard_TOM">
+								</div>
+							</div> -->
+				<!-- Text Field  agreement_text-->
+				<!-- <div class="col-md-12  col-sm-12 col-xs-12 textfielddiv EQS_standard_TOM_tdiv hideit">
+								<p class="col-md-12 pl30"><input id="EQS_standard_TOM_text" placeholder="please describe it"
+										class="input-sm inputfull" type="text" name="EQS_standard_TOM_text"></p>
+							</div>
+						</div> -->
+				<!-- q7_inner div end -->
+				<!-- </div> -->
+				<!-- Part 2 Questions end -->
+
+
+				<!-- </div> -->
+				<!-- end contract length 6 columns-->
+
+
+				<!-- <div class="col-md-12 btnrow">
+					<div class="actionbtns">
+						<div class="submitbtn">
+							<button id="submit" onclick="CheckValidation(CheckContract)">Ok</button>
+						</div>
+						<div class="cancelbtn">
+							<button id="cancel" onclick="CancelIt()">Cancel</button>
+						</div>
+					</div>
+
+			</div> -->
+			</div> <!-- quentions_inner end -->
+		</div>
+		<!--Otherfields end -->
+	</div>
+	<!-- end container-fluid -->
+
+
+
+
+
+
+
+
+</body>
+
+</html>

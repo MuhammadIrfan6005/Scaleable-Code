@@ -1,0 +1,1441 @@
+<html><head>
+    <style type="text/css">
+        P {
+            margin: 0;
+        }
+    </style>
+    <meta>
+    <meta>
+</head>
+<!-- parent.setEmailRange();  -->
+
+<body onload="getParentDate()" onfocusout="parent.setEmailRange();" style="overflow-wrap: break-word;">
+
+    <style>
+        body {
+            padding-top: 5px;
+            overflow-y: scroll !important;
+            overflow-x: auto;
+        }
+
+        .subtableBody {
+            background: mistyrose;
+        }
+
+        .itegrityText {
+            margin-right: 12px;
+            float: left;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .integrityClass3 {
+            margin-left: 25px;
+        }
+
+        .integrityClass {
+            width: 130px;
+        }
+
+        .integrityClass2 {
+            width: 50px;
+        }
+
+        .integrityClassEnd {
+            float: right;
+        }
+
+        .integrityCheckbox,
+        .integrityCheckbox2,
+        .integrityCheckbox3 .integrityCheckbox4 {
+            /* margin-top: 9px !important; */
+        }
+
+        .subfield {
+            text-align: left;
+            font-size: small;
+            font-weight: 500;
+        }
+
+        .removetable>tbody>tr>td>input[type="text"] {
+            text-align: center;
+            width: 120px;
+            height: 22px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .removetable>tbody>tr>td>input[type="number"] {
+            text-align: center;
+            width: 50px;
+            height: 22px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .removetable>tbody>tr>.supportTd {
+            text-align: center;
+            width: 50px;
+            height: 22px;
+
+        }
+
+        .removetable>tbody>tr>.additionaldetails {
+            text-align: center;
+            width: 50px;
+            height: 22px;
+
+        }
+
+        .removetable>tbody>tr>.mainSupportTd {
+            text-align: left;
+            font-weight: bold;
+
+        }
+
+        /* ================= nH*/
+        #Createdon {
+            width: 10px;
+            height: 14px;
+            overflow: hidden;
+            vertical-align: bottom;
+            background: transparent url(ss_background.png) no-repeat scroll -165px -37px;
+        }
+
+        div#scrollable_content {
+            height: 100%;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        #Modifiedon {
+            width: 10px;
+            height: 14px;
+            overflow: hidden;
+            vertical-align: bottom;
+        }
+
+        #Createdby {
+            width: 10px;
+            height: 14px;
+            overflow: hidden;
+            vertical-align: bottom;
+        }
+
+        #Filename {
+            width: 10px;
+            height: 14px;
+            overflow: hidden;
+            vertical-align: bottom;
+        }
+
+        /* Nh */
+
+        #functionalArea {
+            position: fixed;
+            bottom: 0;
+            width: 93%;
+        }
+
+        /*==========================*/
+        #setupFee,
+        #mlicFee,
+        #licFee {
+            border: none;
+            border-bottom: 2px solid #e4e4e4;
+            width: 120px;
+            text-align: center;
+
+        }
+
+        #sb,
+        #mlb,
+        #lb {
+            text-align: center;
+        }
+
+        .col-sm-2>input[type=text] {
+            text-align: center;
+        }
+
+        .table-custom>thead>tr>th {
+            width: 120px;
+        }
+
+        .table-custom>tbody>tr>td:nth-child(5),
+        .table-custom>tbody>tr>td:nth-child(6),
+        .table-custom>tbody>tr>td:nth-child(7),
+        .table-custom>tbody>tr>td:nth-child(8),
+        .table-custom>tbody>tr>td:nth-child(9),
+        .table-custom>tbody>tr>td:nth-child(10) {
+            width: 120px;
+        }
+
+        .table-custom>tbody>tr>td:nth-child(4) {
+            width: 150px;
+        }
+
+        .table-custom>tbody>tr>td>input[type=text],
+        .table-custom>tbody>tr>td>input[type=textarea],
+        .table-custom>tbody>tr>td>input[type=date] {
+            width: 120px;
+        }
+
+        /*New design*/
+
+        #sumAmount {
+            align-self: center;
+
+        }
+
+        #row {
+            margin-left: 140px;
+            align-items: center;
+            width: 90%;
+        }
+
+
+        /*===========================*/
+        #title {
+            padding-right: 5px;
+            width: 13px;
+        }
+
+        .table-container {
+            width: auto;
+            margin-left: 0;
+            margin-right: auto;
+            font-family: "Segoe UI", Arial, Sans-Serif;
+            font-size: 12px;
+        }
+
+        .h2 {
+            font-family: "Segoe UI", Arial, Sans-Serif;
+            font-size: 12px;
+            color: #000000;
+            /* width: 200px; */
+            display: inline;
+        }
+
+        .table-custom {
+            border-spacing: 0;
+            width: 100%;
+        }
+
+        .table-custom>thead>tr>th {
+            /*border-top: 1px solid rgba(128, 128, 128, 0.21);*/
+            cursor: pointer;
+            text-align: center;
+            padding: 5px 5px;
+            border-bottom: 0px solid rgba(128, 128, 128, 0.21);
+            font-family: "Segoe UI", Arial, Sans-Serif;
+            color: #080808;
+            font-size: 12px;
+        }
+
+
+        tbody {
+            height: 100px;
+            overflow: auto;
+        }
+
+        .table-custom>tbody>tr>td {
+            height: 25px;
+            border: 2px solid white;
+            padding: 5px 10px;
+            font-family: "Segoe UI", Arial, Sans-Serif;
+            color: #080808;
+            font-size: 12px;
+            font-weight: 500;
+            background-color: #f3f3f3;
+            text-align: center;
+            /*width: 140px;*/
+        }
+
+        .table-custom>tbody>tr {
+            height: 25px;
+            padding-top: 3px;
+            padding-left: 5px;
+            /*min-width: 140px;*/
+        }
+
+        .tr_alignright {
+            padding-right: 5px;
+            text-align: right;
+        }
+
+        .tr_alignmiddle {
+            padding: 0px;
+            text-align: center;
+        }
+
+        tr.selected {
+            background-color: #D7EBF9;
+        }
+
+        img.unselected {
+            display: none;
+        }
+
+        #TBL_CampaignActivities th:not(:last-child) {
+            border-right: 1px solid rgba(128, 128, 128, 0.21);
+        }
+
+        hr {
+            display: block;
+            height: 0px;
+            border: 1px solid lightgray;
+            margin: 1em 0;
+            padding: 0;
+        }
+
+        #TBL_CampaignActivities th #headright {
+            border-right: none;
+        }
+
+        .blue {
+            color: #1160B7 !important;
+        }
+
+        .black {
+            color: #000000 !important;
+            font-weight: 500 !important;
+        }
+
+        .light-black {
+            color: #000000 !important;
+        }
+
+        #rightColumn {
+            border-right: none;
+        }
+
+        #plusimage {
+            margin-right: 10px;
+            float: right;
+            background-image: url("ss_DownArrow");
+            cursor: pointer;
+        }
+
+        #delete-input-btn {
+            visibility: hidden;
+        }
+
+        tr:hover div#fdib #delete-input-btn {
+            visibility: visible;
+            float: right;
+            margin-right: 25px;
+        }
+
+
+        .toptable {
+            width: 100%;
+            top: -5px;
+        }
+
+        .toptable tr {
+            height: 8px;
+        }
+
+        #nonotes {
+            margin-top: 10px;
+            font-family: "Segoe UI", Arial, Sans-Serif;
+            color: grey;
+            font-size: 12px;
+        }
+
+        .loaderStyle {
+            text-align: center;
+            cursor: wait;
+            background: transparent;
+            font-size: 12px;
+            position: absolute;
+            display: none;
+            left: 45%;
+            top: 200px;
+            width: 50px;
+            height: 50px;
+        }
+
+        .loaderStyle img {
+            margin-top: 10px;
+            border: none;
+        }
+
+        #paging {
+            height: 10px;
+            float: right;
+            font-family: "Segoe UI", Arial, Sans-Serif;
+            color: grey;
+            font-size: 12px;
+        }
+
+        #paging1 {
+            height: 10px;
+            float: right;
+            font-family: "Segoe UI", Arial, Sans-Serif;
+            color: grey;
+            font-size: 12px;
+        }
+
+        #preprevious {
+            background: transparent url(ss_background.png) no-repeat scroll -157px -135px;
+            width: 8px;
+            height: 9px;
+            overflow: hidden;
+        }
+
+        #preprevious1 {
+            background: transparent url(ss_background.png) no-repeat scroll -157px -135px;
+            width: 8px;
+            height: 9px;
+            overflow: hidden;
+        }
+
+        #forward {
+            float: right;
+            background: transparent url(ss_background.png) no-repeat scroll -157px -124px;
+            width: 8px;
+            height: 9px;
+            overflow: hidden;
+        }
+
+        #forward1 {
+            float: right;
+            background: transparent url(ss_background.png) no-repeat scroll -95px -159px;
+            width: 8px;
+            height: 9px;
+            overflow: hidden;
+        }
+
+        #previous {
+            float: right;
+            background: transparent url(ss_background.png) no-repeat scroll -167px -118px;
+            width: 8px;
+            height: 9px;
+            overflow: hidden;
+        }
+
+        #previous1 {
+            float: right;
+            background: transparent url(ss_background.png) no-repeat scroll -167px -118px;
+            width: 8px;
+            height: 9px;
+            overflow: hidden;
+        }
+
+        .table-custom>thead>tr>td:hover {
+            background-color: #D7EBF9;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .table-custom>tbody>tr:hover {
+            background-color: #D7EBF9;
+            text-decoration: underline;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .nohover {
+            background-color: white !important;
+        }
+
+        #head {
+            margin-bottom: 8px;
+        }
+
+        #searchtable {
+            border-spacing: 0px;
+            padding: 0px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        #search {
+            border-right: none;
+            width: 280px;
+            margin-left: 5px;
+        }
+
+        #moreRecords {
+            color: #005592;
+            text-align: right;
+            display: none;
+        }
+
+        #withoutpadding {
+            padding: 0px;
+            border-spacing: 0px;
+        }
+
+        #mainContainer {
+            margin-bottom: 160px;
+            width: 95%;
+        }
+
+        #shoppingcart {
+            width: 33%;
+            float: left;
+        }
+
+        #cartContainer {
+            height: 450px;
+            width: 100%;
+            clear: both;
+        }
+
+        #cartTableContainer {
+            max-height: 380px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            width: 100%;
+            padding: 0px;
+            margin: 0px;
+            clear: both;
+        }
+
+        #cartTotals {
+            width: 100%;
+        }
+
+        .input-xs {
+            height: 22px;
+            padding: 2px 5px;
+            font-size: 12px;
+            line-height: 1.5;
+            width: 80%;
+            margin-left: 9%;
+            margin-right: 9%;
+        }
+
+
+        .inactive {
+            display: none;
+        }
+
+        #delete-cart-btn {
+            margin-bottom: 2px;
+            opacity: 0.7;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #msgDiv img {
+            width: 300px;
+        }
+
+        .borderfocus {
+            border-color: #D7EBF9;
+        }
+
+        .nav-tabs>li.active>a,
+        .nav-tabs>li.active>a:hover {
+            color: #ffffff;
+            background-color: #337ab7;
+            border: 0px solid #ddd;
+            border-bottom-color: transparent;
+            cursor: default;
+        }
+
+        .nav>li>a {
+            position: relative;
+            display: block;
+        }
+
+        .nav {
+            display: table;
+            width: 100%;
+            margin: 0;
+        }
+
+        .nav-tabs>li.active>a,
+        .nav-tabs>li.active>a:hover,
+        .nav-tabs>li.active>a:focus {
+            background-color: #337ab7;
+            color: #ffffff;
+            border: 0px solid #ddd;
+        }
+
+        a {
+            color: #ffffff;
+        }
+
+        td.checker {
+            width: 3% !important;
+            background: white !important;
+        }
+
+        p.TabHeading,
+        #productselector_heading1 {
+            color: #337ab7;
+            font-size: 25px;
+            font-weight: 400;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        td {
+            font-size: 12px;
+        }
+
+        .kap_pak {
+            text-align: center;
+            width: 120px;
+            height: 10px;
+            font-size: 8px;
+            font-weight: 500;
+        }
+
+        .contract_len {
+            display: none;
+        }
+    </style>
+
+
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="ss_bootstrap.min.css">
+    <script src="ss_jquery"></script>
+    <script src="ss_bootstrap.min.js"></script>
+    <script src="ClientGlobalContext.js.aspx"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="ss_css_loader">
+
+
+    <style>
+        body {
+
+            overflow-x: auto;
+            background-color: #eee;
+        }
+
+        .on {
+            background-color: #a7cdf0;
+        }
+
+        #Createdon {
+            width: 10px;
+            height: 14px;
+            overflow: hidden;
+            vertical-align: bottom;
+            background: transparent url(ss_background.png) no-repeat scroll -165px -37px;
+        }
+
+        div#scrollable_content {
+            height: 100%;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        #Modifiedon {
+            width: 10px;
+            height: 14px;
+            overflow: hidden;
+            vertical-align: bottom;
+        }
+
+        #Createdby {
+            width: 10px;
+            height: 14px;
+            overflow: hidden;
+            vertical-align: bottom;
+        }
+
+        #Filename {
+            width: 10px;
+            height: 14px;
+            overflow: hidden;
+            vertical-align: bottom;
+        }
+
+        /*#title {
+            display: inline;
+            width: 10px;
+            height: 14px;
+            overflow: hidden;
+            vertical-align: bottom;
+        }*/
+
+        #title {
+            padding-right: 5px;
+            width: 13px;
+        }
+
+        .table-container {
+            width: auto;
+            margin-left: 0;
+            margin-right: auto;
+            font-family: "Segoe UI", Arial, Sans-Serif;
+            font-size: 12px;
+        }
+
+        .h2 {
+            font-family: "Segoe UI", Arial, Sans-Serif;
+            font-size: 12px;
+            color: #000000;
+            display: inline;
+        }
+
+        .table-custom {
+            border-spacing: 0;
+            width: 100%;
+        }
+
+        .contract_field {
+            display: none;
+        }
+
+
+
+
+        .table-custom>thead>tr>td {
+            padding: 2px 5px;
+            /*width: 140px;*/
+        }
+
+        tbody {
+            height: 100px;
+            overflow: auto;
+        }
+
+
+        .table-custom>tbody>tr {
+            height: 25px;
+            padding-top: 3px;
+            padding-left: 5px;
+            /*min-width: 140px;*/
+        }
+
+        .tr_alignright {
+            padding-right: 5px;
+            text-align: right;
+        }
+
+        .tr_alignmiddle {
+            padding: 0px;
+            text-align: center;
+        }
+
+        tr.selected {
+            background-color: #D7EBF9;
+        }
+
+        img.unselected {
+            display: none;
+        }
+
+        #TBL_CampaignActivities th:not(:last-child) {
+            border-right: 1px solid rgba(128, 128, 128, 0.21);
+        }
+
+        hr {
+            display: block;
+            height: 1px;
+            border: 0;
+            border-top: 1px solid #d6d6d6;
+            margin: 1em 0;
+            padding: 0;
+        }
+
+        #TBL_CampaignActivities th #headright {
+            border-right: none;
+        }
+
+        .blue {
+            color: #1160B7 !important;
+        }
+
+        .black {
+            color: #000000 !important;
+            font-weight: 500 !important;
+        }
+
+        .light-black {
+            color: #000000 !important;
+        }
+
+        #rightColumn {
+            border-right: none;
+        }
+
+        #plusimage {
+            margin-right: 10px;
+            float: right;
+            background-image: url("ss_DownArrow");
+            cursor: pointer;
+        }
+
+        #delete-input-btn {
+            visibility: hidden;
+        }
+
+        tr:hover div#fdib #delete-input-btn {
+            visibility: visible;
+            float: right;
+            margin-right: 25px;
+        }
+
+
+        .toptable {
+            width: 100%;
+            top: -5px;
+        }
+
+        .toptable tr {
+            height: 8px;
+        }
+
+        #nonotes {
+            margin-top: 10px;
+            font-family: "Segoe UI", Arial, Sans-Serif;
+            color: grey;
+            font-size: 12px;
+        }
+
+        .loaderStyle {
+            text-align: center;
+            cursor: wait;
+            background: transparent;
+            font-size: 12px;
+            position: absolute;
+            display: none;
+            left: 45%;
+            top: 200px;
+            width: 50px;
+            height: 50px;
+        }
+
+        .loaderStyle img {
+            margin-top: 10px;
+            border: none;
+        }
+
+        #paging {
+            height: 10px;
+            float: right;
+            font-family: "Segoe UI", Arial, Sans-Serif;
+            color: grey;
+            font-size: 12px;
+        }
+
+        #paging1 {
+            height: 10px;
+            float: right;
+            font-family: "Segoe UI", Arial, Sans-Serif;
+            color: grey;
+            font-size: 12px;
+        }
+
+        #preprevious {
+            background: transparent url(ss_background.png) no-repeat scroll -157px -135px;
+            width: 8px;
+            height: 9px;
+            overflow: hidden;
+        }
+
+        #preprevious1 {
+            background: transparent url(ss_background.png) no-repeat scroll -157px -135px;
+            width: 8px;
+            height: 9px;
+            overflow: hidden;
+        }
+
+        #forward {
+            float: right;
+            background: transparent url(ss_background.png) no-repeat scroll -157px -124px;
+            width: 8px;
+            height: 9px;
+            overflow: hidden;
+        }
+
+        #forward1 {
+            float: right;
+            background: transparent url(ss_background.png) no-repeat scroll -95px -159px;
+            width: 8px;
+            height: 9px;
+            overflow: hidden;
+        }
+
+        #previous {
+            float: right;
+            background: transparent url(ss_background.png) no-repeat scroll -167px -118px;
+            width: 8px;
+            height: 9px;
+            overflow: hidden;
+        }
+
+        #previous1 {
+            float: right;
+            background: transparent url(ss_background.png) no-repeat scroll -167px -118px;
+            width: 8px;
+            height: 9px;
+            overflow: hidden;
+        }
+
+        .table-custom>thead>tr>td:hover {
+            background-color: #D7EBF9;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .table-custom>tbody>tr:hover {
+            background-color: #D7EBF9;
+            text-decoration: underline;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .nohover {
+            background-color: white !important;
+        }
+
+        #head {
+            margin-bottom: 8px;
+        }
+
+
+        #searchtable {
+            border-spacing: 0px;
+            padding: 0px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        #search {
+            border-right: none;
+            width: 280px;
+            margin-left: 5px;
+        }
+
+        #moreRecords {
+            color: #005592;
+            text-align: right;
+            display: none;
+        }
+
+        #withoutpadding {
+            padding: 0px;
+            border-spacing: 0px;
+        }
+
+
+
+        #shoppingcart {
+            /*background-image: url(ss_cart);*/
+            width: 33%;
+            float: left;
+        }
+
+        #cartContainer {
+            height: 450px;
+            width: 100%;
+            clear: both;
+        }
+
+        #cartTableContainer {
+            max-height: 380px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            width: 100%;
+            padding: 0px;
+            margin: 0px;
+            clear: both;
+        }
+
+        #cartTotals {
+            width: 100%;
+        }
+
+        .input-xs {
+            height: 22px;
+            padding: 2px 5px;
+            font-size: 12px;
+            line-height: 1.5;
+            width: 80%;
+            margin-left: 9%;
+            margin-right: 9%;
+        }
+
+        select {
+            border: none;
+            border-bottom: 2px solid #e4e4e4;
+            padding-right: 48px;
+        }
+
+        .single-button {
+            background-color: white;
+            height: 50px;
+            text-align: center;
+        }
+
+        .inactive {
+            display: none;
+        }
+
+        /*.loader {
+            text-align: center;
+            cursor: wait;
+            background-color: transparent;
+            display: none;
+            margin-top: 5px;
+        }
+
+            .loader img {
+                border: none;
+            }*/
+
+        #delete-cart-btn {
+            margin-bottom: 2px;
+            opacity: 0.7;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #msgDiv img {
+            width: 300px;
+        }
+
+        .borderfocus {
+            border-color: #D7EBF9;
+        }
+
+        .nav-tabs>li {
+
+            font-size: 19px;
+            width: 25%;
+            margin: -3px 7px 0px 7px !important;
+            font-weight: 500;
+            border: 2px solid transparent;
+            float: none;
+            display: table-cell;
+            text-align: center;
+        }
+
+        .nav-tabs>li>a {
+            background-color: #716f6f;
+            margin-right: 0px;
+            line-height: 1.42857143;
+            border: 2px solid transparent;
+            border-radius: 0px 0px 0 0;
+        }
+
+        .nav-tabs>li.active>a,
+        .nav-tabs>li.active>a:hover {
+            color: #ffffff;
+            background-color: #337ab7;
+            border: 0px solid #ddd;
+            border-bottom-color: transparent;
+            cursor: default;
+        }
+
+
+
+        .nav {
+            display: table;
+            width: 100%;
+            margin: 0;
+        }
+
+        .nav-tabs>li.active>a,
+        .nav-tabs>li.active>a:hover,
+        .nav-tabs>li.active>a:focus {
+            background-color: #337ab7;
+            color: #ffffff;
+            border: 0px solid #ddd;
+        }
+
+        a {
+            color: #ffffff;
+        }
+
+        td.productname {
+            text-align: left !important;
+            padding-left: 15px !important;
+        }
+
+        input[type=textarea] {
+            width: -webkit-fill-available;
+            /*margin-right: 5px;
+            margin-left: 5px;*/
+        }
+
+        .packageCheckbox {
+            font-weight: bold;
+            font-size: 13px;
+            vertical-align: sub;
+        }
+
+        .sumAmount {
+            margin-top: 15px;
+            background-color: white;
+            padding: 25px 55px;
+        }
+
+        .scroll1 {
+            padding: 1px 25px;
+            margin-top: 20px;
+            background-color: white;
+            padding-bottom: 30px;
+            margin-bottom: 15px;
+        }
+
+        input {
+            background-position: right;
+            border: 2px solid #e1e1e1;
+            padding-left: 5px;
+        }
+
+        .tablepopulate {
+            width: 100%;
+        }
+
+        input.DiscountedSetupTextbox:focus {
+            border: 1px solid #337ab7;
+            outline: 0px;
+        }
+
+        .checkbox_hr {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            background: white;
+        }
+
+        .checkbox_hr2 {
+            margin-top: 9px;
+            margin-bottom: -11px;
+        }
+
+        .checkboxrow {
+            background: white;
+            padding-top: 10px;
+            padding-bottom: 14px;
+        }
+
+        .row1 {
+            margin-top: 30px;
+        }
+
+        .row.checkboxrow {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        .second-CheckboxRow {
+            display: none;
+        }
+
+        input[readonly="readonly"] {
+            background: lightgray;
+            /* color: white; */
+            /* border: 1px solid white; */
+        }
+
+        .elements {
+            width: 25%;
+        }
+
+        .centeredelements {
+            width: 25%;
+            text-align: center;
+        }
+
+        .floatelements {
+            float: right;
+        }
+
+        .autoheightelement {
+            height: auto;
+        }
+
+        .checkboxelement {
+            margin-right: 35px;
+        }
+    </style>
+    <script>
+        try {
+            //==========
+
+            var setupfield = "";
+            var licensefield = "";
+            var mlicensefield = "";
+            var singlesetupfield = "";
+            var singlelicensefield = "";
+            var singlemlicensefield = "";
+            //=========
+            var CurrencySymbol = "";
+            var DecimalSymbol = "";
+            var NumberSeparator = "";
+            var UILanguageId = "";
+            var isSaveandClose = false;
+            var producttype = "";
+
+            var contractStartDate = new Date("01-Sep-2001");
+            var contractEndDate = new Date("01-Sep-2001");
+
+            var globelcontext = opener.parent.Xrm.Utility.getGlobalContext();
+
+            function AddFormattings(x) {
+                //debugger;
+                var number = x;
+                var thousand = NumberSeparator;
+                var decimal = DecimalSymbol;
+                var places = 2;
+                var symbol = CurrencySymbol;
+
+
+                number = number || 0;
+                places = !isNaN(places = Math.abs(places)) ? places : 2;
+                symbol = symbol !== undefined ? symbol : "$";
+                thousand = thousand || ",";
+                decimal = decimal || ".";
+                var negative = number < 0 ? "-" : "",
+                    i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "",
+                    j = (j = i.length) > 3 ? j % 3 : 0;
+                return negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "") + " " + symbol;
+
+
+
+
+            }
+            function RemoveFormattings(x) {
+                //if (CurrencySymbol === '\u20AC')
+                if (DecimalSymbol === ',' && x != null) {
+
+                    // debugger
+
+                    if ((x.indexOf(CurrencySymbol) > -1)) {
+                        x = x.replace(CurrencySymbol, "");
+                    }
+
+                    if (DecimalSymbol === ',') {
+
+                        //german case
+                        x = x.replace(/\,/g, 'a');
+                        x = x.replace(/\./g, '');
+                        x = x.replace(/\a/g, '.');
+
+                        x = Number(x).toLocaleString("es-US", { minimumFractionDigits: 2 });
+                        x = x.replace(/\,/g, '');
+
+                        //x = x.replace(/\,/g, 'a');
+                        //x = x.replace(DecimalSymbol, ',');
+                        //x = x.replace(/\a/g, '');
+
+                        //x = Number(x).toLocaleString("de-DE", { minimumFractionDigits: 2 });
+                        //x = x.replace('.', '');
+                    }
+
+
+
+                }
+                else if (DecimalSymbol === "." && x != null) {
+
+                    //debugger;
+                    if ((x.indexOf(CurrencySymbol) > -1)) {
+                        x = x.replace(CurrencySymbol, "");
+                    }
+                    //x = x.replace(/\./g, 'a');
+                    //x = x.replace(/\,/g, '');
+                    //x = x.replace(/\a/g, '.');
+                    //console.log("in fucntion " + x);
+                    //x = Number(x).toLocaleString("es-US", { minimumFractionDigits: 2 });
+                    //console.log("after number function " + x);
+                    x = x.replace(',', '');
+                    ///console.log("end of if statement " + x);
+
+                }
+                else if (DecimalSymbol === "'" && x != null) {
+
+                    if ((x.indexOf(CurrencySymbol) > -1)) {
+                        x = x.replace(CurrencySymbol, "");
+                    }
+                    x = x.replace(/\'/g, 'a');
+                    x = x.replace(DecimalSymbol, '.');
+                    x = x.replace(/\a/g, '');
+                    x = Number(x).toLocaleString("es-US", { minimumFractionDigits: 2 });
+                    x = x.replace(',', '');
+                }
+
+                else if (x != null) {
+
+                    if ((x.indexOf(CurrencySymbol) > -1)) {
+                        x = x.replace(CurrencySymbol, "");
+                    }
+                    x = x.replace(/\,/g, 'a');
+                    x = x.replace(DecimalSymbol, '.');
+                    x = x.replace(/\a/g, '');
+                    x = Number(x).toLocaleString("es-US", { minimumFractionDigits: 2 });
+                    x = x.replace(',', '');
+
+                }
+
+                return x;
+            }
+
+            function MakeFieldsReadOnly() {
+                setTimeout(function () {
+                    //console.log($("#640050_pt td input[type='text']").length + "-inputs");
+                    //EQS Policy Manager
+                    // $("#640050_pt td input[type='text']").attr("readonly", "readonly");
+                    // $("#640050_pt td input[type='text']").attr("onfocus", "this.blur()");
+                    // $("#640070_pt td input[type='text']").attr("readonly", "readonly");
+                    // $("#640070_pt td input[type='text']").attr("onfocus", "this.blur()");
+                    //EQS Approval Manager
+                    $("#640080_pt td input[type='text']").attr("readonly", "readonly");
+                    $("#640080_pt td input[type='text']").attr("onfocus", "this.blur()");
+                    $("#640081_pt td input[type='text']").attr("readonly", "readonly");
+                    $("#640081_pt td input[type='text']").attr("onfocus", "this.blur()");
+
+
+                    $('#update_products').removeClass('is-active');
+                }, 2000);
+
+            }
+            //for checkbox auto check
+            //markerb1
+            function checkboxChecker(object) {
+                var classname = object.id;
+
+                if (classname === "BasicWeb") {
+                    if ($("#BasicWeb").is(':checked')) {
+                        $(".IRB").each(function () {
+                            $(this).prop("checked", true);
+                        });
+
+                    } else {
+                        $(".IRB").each(function () {
+                            if (!($(this).hasClass('IRBP') && $("#BestPracticeWeb").is(':checked')) && !($(this).hasClass('IRBC') && $("#BestInClassWeb").is(':checked')))
+                                $(this).prop("checked", false);
+                        });
+                    }
+                }
+                else if (classname === "BestPracticeWeb") {
+                    if ($("#BestPracticeWeb").is(':checked')) {
+                        $(".IRBP").each(function () {
+                            $(this).prop("checked", true);
+                        });
+
+                    } else {
+                        $(".IRBP").each(function () {
+                            if (!($(this).hasClass('IRB') && $("#BasicWeb").is(':checked')) && !($(this).hasClass('IRBC') && $("#BestInClassWeb").is(':checked')))
+                                $(this).prop("checked", false);
+                        });
+                    }
+                }
+                else if (classname === "BestInClassWeb") {
+                    if ($("#BestInClassWeb").is(':checked')) {
+                        $(".IRBC").each(function () {
+                            $(this).prop("checked", true);
+                        });
+
+                    } else {
+                        $(".IRBC").each(function () {
+                            if (!($(this).hasClass('IRBP') && $("#BestPracticeWeb").is(':checked')) && !($(this).hasClass('IRB') && $("#BasicWeb").is(':checked')))
+                                $(this).prop("checked", false);
+                        });
+                    }
+                }
+                else if (classname === "BasicTool") {
+                    if ($("#BasicTool").is(':checked')) {
+                        $(".IRTB").each(function () {
+                            $(this).prop("checked", true);
+                        });
+
+                    } else {
+                        $(".IRTB").each(function () {
+                            if (!($(this).hasClass('IRTBP') && $("#BestPracticeTool").is(':checked')) && !($(this).hasClass('IRTBC') && $("#BestInClassTool").is(':checked')))
+                                $(this).prop("checked", false);
+                        });
+                    }
+                }
+                else if (classname === "BestPracticeTool") {
+                    if ($("#BestPracticeTool").is(':checked')) {
+                        $(".IRTBP").each(function () {
+                            $(this).prop("checked", true);
+                        });
+
+                    } else {
+                        $(".IRTBP").each(function () {
+                            if (!($(this).hasClass('IRTB') && $("#BasicTool").is(':checked')) && !($(this).hasClass('IRTBC') && $("#BestInClassTool").is(':checked')))
+                                $(this).prop("checked", false);
+                        });
+                    }
+                }
+                else if (classname === "BestInClassTool") {
+                    if ($("#BestInClassTool").is(':checked')) {
+                        $(".IRTBC").each(function () {
+                            $(this).prop("checked", true);
+                        });
+
+                    } else {
+
+                        $(".IRTBC").each(function () {
+                            if (!($(this).hasClass('IRTBP') && $("#BestPracticeTool").is(':checked')) && !($(this).hasClass('IRTB') && $("#BasicTool").is(':checked')))
+                                $(this).prop("checked", false);
+                        });
+                    }
+                }
+                else if (classname === "ComplianceCockpitCheckbox") {
+                    if ($("#ComplianceCockpitCheckbox").is(':checked')) {
+                        $(".ComplianceDependent").each(function () {
+                            $(this).prop("checked", true);
+                            $('.OppProducts24').show();
+                            $('.OppProducts25').show();
+                            $('.OppProducts26').show();
+                            $('.OppProducts27').show();
+                            $('.OppProducts28').show();
+
+
+                        });
+
+                    } else {
+                        $(".ComplianceDependent").each(function () {
+
+                            $(this).prop("checked", false);
+                            $('.OppProducts24').hide();
+                            $('.OppProducts25').hide();
+                            $('.OppProducts26').hide();
+                            $('.OppProducts27').hide();
+                            $('.OppProducts28').hide();
+                        });
+                    }
+                }
+                calculateFee();
+
+            }
+
+
+            var heading1 = '<div class="scroll1"><p class="TabHeading"><b id="productselector_heading1" class="TabHeading" >Website & Apps</b></p>';
+            var heading2 = '<div class="scroll1"><p class="TabHeading"><b id="productselector_heading1" class="TabHeading">IR Tools</b></p>';
+            var heading3 = '<div class="scroll1"><p class="TabHeading"><b id="productselector_heading1" class="TabHeading">Contact Manager & Mailing</b></p>';
+            var heading4 = '<div class="scroll1"><p class="TabHeading"><b id="productselector_heading1" class="TabHeading">(Regulatory) News Distribution</b></p>';
+            var heading5 = '<div class="scroll1"><p class="TabHeading"><b id="productselector_heading1" class="TabHeading">Compliance Cockpit - Applications</b></p>';
+            var heading14 = '<div class="scroll1"><p class="TabHeading"><b id="productselector_heading1" class="TabHeading">Compliance Cockpit - Add-Ons</b></p>';
+            var heading15 = '<div class="scroll1"><p class="TabHeading"><b id="productselector_heading1" class="TabHeading">Others</b></p>';
+            var heading16 = '<div class="scroll1"><p class="TabHeading"><b id="productselector_heading1" class="TabHeading">RuleBook</b></p>';
+            var heading6 = '<div class="scroll1"><p class="TabHeading"><b id="productselector_heading1" class="TabHeading">Webcast</b></p>';
+            var heading7 = '<div class="scroll1"><p class="TabHeading"><b id="productselector_heading1" class="TabHeading">Online Reports</b></p>';
+            var heading8 = '<div class="scroll1"><p class="TabHeading"><b id="productselector_heading1" class="TabHeading">LEI</b></p>';
+            var heading9 = '<div class="scroll1"><p class="TabHeading"><b id="productselector_heading1" class="TabHeading">XML PR Cockpit</b></p>';
+            var heading10 = '<div class="scroll1"><p class="TabHeading"><b id="productselector_heading1" class="TabHeading">XML Konzerngesellschaften (T&oumlchter)</b></p>';
+            var heading11 = '<div class="scroll1"><p class="TabHeading"><b id="productselector_heading1" class="TabHeading">XML Konzern</b></p>';
+            var heading12 = '<div class="scroll1"><p class="TabHeading"><b id="productselector_heading1" class="TabHeading">XML Fonds</b></p>';
+            var heading13 = '<div class="scroll1"><p class="TabHeading"><b id="productselector_heading1" class="TabHeading">EQS IR Cockpit</b></p>';
+
+            var thead = '<table style=</script></body></html>
