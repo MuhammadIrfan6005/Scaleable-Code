@@ -1,0 +1,461 @@
+{
+	"info": {
+		"name": "Factiva Snapshots & Streams Primer",
+		"_postman_id": "54bdab10-4857-e934-d1d6-c1514f9d939f",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Post Snapshot Explain",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ca5c7c8c-9c60-422e-8b29-acb41bc21c22",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Responce ok\", function () {",
+							"    // assert that the item created status is returned",
+							"     pm.response.to.have.status(201);",
+							"     // assert that the response has a valid JSON body",
+							"     pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Job started\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.attributes.current_state).to.be.oneOf(['JOB_CREATED', 'JOB_QUEUED']);",
+							"    ",
+							"    pm.environment.set(\"explainId\", jsonData.data.id);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "user-key",
+						"value": "{{userKey}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"query\": {\n        \"where\": \"language_code='en' AND publication_date >= '2015-01-01 00:00:00' AND publication_date < '2017-01-01 00:00:00' AND body LIKE '%spill%'\",\n        \"includes\": {\n    \t\t\t\"company_codes\": [\"exxn\"] \n        \t\t},\n        \"limit\": 10000\n    }\n}"
+				},
+				"url": {
+					"raw": "{{host}}/alpha/extractions/documents/_explain",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"alpha",
+						"extractions",
+						"documents",
+						"_explain"
+					]
+				},
+				"description": "Use BigQuery to Explain a Snapshot"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Snapshot Explain",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "user-key",
+						"value": "{{userKey}}"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{host}}/alpha/extractions/documents/{{explainId}}/_explain",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"alpha",
+						"extractions",
+						"documents",
+						"{{explainId}}",
+						"_explain"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Snapshots",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Responce is ok and has json body\", function () {",
+							"    // ok = 200",
+							"     pm.response.to.be.ok; ",
+							"     // assert that the response has a valid JSON body",
+							"     pm.response.to.be.json;",
+							"});",
+							"",
+							"postman.setNextRequest(\"Post Snapshot\");",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "user-key",
+						"value": "{{userKey}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/alpha/extractions/",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"alpha",
+						"extractions",
+						""
+					]
+				},
+				"description": "Retrieves extraction information "
+			},
+			"response": []
+		},
+		{
+			"name": "Post Snapshot",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "15d5fcc1-6709-4495-8807-81dd5d7e8a5b",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Responce ok\", function () {",
+							"    // assert that the item created status is returned",
+							"     pm.response.to.have.status(201);",
+							"     // assert that the response has a valid JSON body",
+							"     pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Job started\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.attributes.current_state).to.be.oneOf(['JOB_CREATED', 'JOB_QUEUED']);",
+							"    ",
+							"    pm.environment.set(\"snapshotId\", jsonData.data.id);",
+							"});",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "user-key",
+						"value": "{{userKey}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"query\": {\n        \"where\": \"document_type = 'article' AND language_code = 'en' AND publication_date >= '2016-09-25 10:24:00' AND publication_date < '2017-09-25 10:24:00' AND (body LIKE '%Css%' OR body like '%CSS%' OR body like '%css%')\",\n        \"limit\": 10\n    }\n}"
+				},
+				"url": {
+					"raw": "{{host}}/alpha/extractions/documents/",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"alpha",
+						"extractions",
+						"documents",
+						""
+					]
+				},
+				"description": "Creates a snapshot "
+			},
+			"response": []
+		},
+		{
+			"name": "Get Snapshot",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f37ab2dd-4255-4ad6-ae04-ee18aa06fc04",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Responce ok\", function () {",
+							"    // assert that the ok status is returned",
+							"     pm.response.to.have.status(200);",
+							"     // assert that the response has a valid JSON body",
+							"     pm.response.to.be.withBody;",
+							"});",
+							"",
+							"pm.test(\"Job status ok\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.attributes.current_state).to.be.oneOf(['JOB_QUEUED','JOB_STATE_PENDING','JOB_STATE_RUNNING','JOB_STATE_DONE']);",
+							"});",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "user-key",
+						"value": "{{userKey}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/alpha/extractions/documents/{{snapshotId}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"alpha",
+						"extractions",
+						"documents",
+						"{{snapshotId}}"
+					]
+				},
+				"description": "Retrieves extraction information "
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Streams",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "user-key",
+						"value": "{{userKey}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"type": "text",
+							"value": ""
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/alpha/streams/",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"alpha",
+						"streams",
+						""
+					]
+				},
+				"description": "Retrieves all streams information "
+			},
+			"response": []
+		},
+		{
+			"name": "Post Stream",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "35bf2839-368c-4eeb-b190-ea81c8d8335f",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Responce ok\", function () {",
+							"    // assert that the item created status is returned",
+							"     pm.response.to.have.status(201);",
+							"     // assert that the response has a valid JSON body",
+							"     pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Job started\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.attributes.job_status).to.be.oneOf(['JOB_QUEUED','JOB_STATE_PENDING','JOB_STATE_RUNNING']);",
+							"    ",
+							"    pm.environment.set(\"streamId\", jsonData.data.id);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "user-key",
+						"value": "{{userKey}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"data\": {\n\t\t\"attributes\": {\n\t\t\t\"where\": \"language_code = 'en' AND body like '%Flesche1234%'\"\n\t\t}\n\t}\n}"
+				},
+				"url": {
+					"raw": "{{host}}/alpha/streams",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"alpha",
+						"streams"
+					]
+				},
+				"description": "Creates a stream from an existing extraction."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Stream",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "user-key",
+						"value": "{{userKey}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"type": "text",
+							"value": ""
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/streams/{{streamId}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"streams",
+						"{{streamId}}"
+					]
+				},
+				"description": "Retrieves existing stream information "
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Stream",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "user-key",
+						"value": "{{userKey}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/alpha/streams/{{streamId}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"alpha",
+						"streams",
+						"{{streamId}}"
+					]
+				},
+				"description": "Retrieves existing stream information "
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "cbaf2695-e798-4ef0-96bc-d67205503fb2",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "660979f0-6b9c-445b-9bd7-4ec6941fe065",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

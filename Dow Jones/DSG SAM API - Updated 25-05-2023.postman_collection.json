@@ -1,0 +1,2353 @@
+{
+	"info": {
+		"_postman_id": "1bc78126-5765-49ea-9777-49d18dcfc904",
+		"name": "DSG SAM API - Updated 25/05/2023",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6554758"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Token AuthN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"if (response && response.id_token) {",
+									"    pm.environment.set('AuthN', response.id_token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\nclient_id: \"{{insert_your_client_id}}\",\nusername: \"{{insert_your_username}}\",\npassword: \"{{insert_your_password}}\",\nconnection: \"service-account\",\ndevice: \"mac\",\ngrant_type: \"password\",\nscope: \"openid service_account_id offline_access\"\n}"
+						},
+						"url": {
+							"raw": "https://accounts.dowjones.com/oauth2/v1/token",
+							"protocol": "https",
+							"host": [
+								"accounts",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"oauth2",
+								"v1",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Auth Z",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"if (response && response.access_token) {",
+									"    pm.environment.set('JWT_Bearer', response.token_type + ' ' + response.access_token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\nassertion: \"{{insert_AuthN}}\",\nclient_id: \"{{insert_your_client_id}}\",\ngrant_type: \"urn:ietf:params:oauth:grant-type:jwt-bearer\",\nscope: \"openid pib\"\n}\n"
+						},
+						"url": {
+							"raw": "https://accounts.dowjones.com/oauth2/v1/token",
+							"protocol": "https",
+							"host": [
+								"accounts",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"oauth2",
+								"v1",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AuthN Refresh",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"if (response && response.access_token) {",
+									"    pm.environment.set('JWT_Bearer', response.token_type + ' ' + response.access_token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\nrefresh_token: \"{{refresh_token}}\",\nclient_id: \"{{client_id}}\",\ngrant_type: \"refresh_token\",\nscope: \"openid service_account_id\"\n}\n"
+						},
+						"url": {
+							"raw": "https://accounts.dowjones.com/oauth2/v1/token",
+							"protocol": "https",
+							"host": [
+								"accounts",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"oauth2",
+								"v1",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Navigation",
+			"item": [
+				{
+					"name": "Get All Cases",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.dowjones.com/risk-entity-screening-cases",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"risk-entity-screening-cases"
+							],
+							"query": [
+								{
+									"key": "page[offset]",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "page[limit]",
+									"value": "5",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Case by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.dowjones.com/risk-entity-screening-cases/{{caseID}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"risk-entity-screening-cases",
+								"{{caseID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Associations",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.dowjones.com/risk-entity-screening-associations?page[offset]=0&page[limit]=125",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"risk-entity-screening-associations"
+							],
+							"query": [
+								{
+									"key": "page[offset]",
+									"value": "0"
+								},
+								{
+									"key": "page[limit]",
+									"value": "125"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Association by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.dowjones.com/risk-entity-screening-associations/{{associationID}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"risk-entity-screening-associations",
+								"{{associationID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Associations of a Case",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.dowjones.com/risk-entity-screening-cases/{{caseID}}/risk-entity-screening-associations?page[offset]=0&page[limit]=4",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"risk-entity-screening-cases",
+								"{{caseID}}",
+								"risk-entity-screening-associations"
+							],
+							"query": [
+								{
+									"key": "page[offset]",
+									"value": "0"
+								},
+								{
+									"key": "page[limit]",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Adding Cases & Associations",
+			"item": [
+				{
+					"name": "Batch",
+					"item": [
+						{
+							"name": "Batch Post Case with Associations (create new case and batch upload associations into it)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody)",
+											"postman.setGlobalVariable(\"case-id\", jsonData.data.attributes.case_id)",
+											"postman.setGlobalVariable(\"transaction-id\", jsonData.data.id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{JWT_Bearer}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"data\": {\n\t\t\"attributes\": {\n\t\t\t\"case_info\": {\n\t\t\t\t\"associations\": [{\n\t\t\t\t\t\"country\": \"{{countryID}}\",\n\t\t\t\t\t\"external_id\": \"{{externalAssociationID}}\",\n\t\t\t\t\t\"gender\": \"{{MALE/FEMALE}}\",\n\t\t\t\t\t\"identification_details\": {\n\t\t\t\t\t\t\"type\": \"{{IDTypeCode}}\",\n\t\t\t\t\t\t\"value\": \"{{IDValue}}\"\n\t\t\t\t\t},\n\t\t\t\t\t\"industry_sector\": \"{{industrySectorCode}}\",\n\t\t\t\t\t\"names\": [{\n\t\t\t\t\t\t\"entity_name\": \"{{entityName}}\",\n\t\t\t\t\t\t\"first_name\": \"{{firstName}}\",\n\t\t\t\t\t\t\"last_name\": \"{{lastName}}\",\n\t\t\t\t\t\t\"middle_name\": \"{{middleName}}\",\n\t\t\t\t\t\t\"name_type\": \"PRIMARY\",\n\t\t\t\t\t\t\"prefix\": \"{{prefix}}\",\n\t\t\t\t\t\t\"suffix\": \"{{suffix}}\",\n\t\t\t\t\t\t\"single_string_name\": \"{{singleStringName}}\"\n\t\t\t\t\t}],\n\t\t\t\t\t\"record_type\": \"{{PERSON/ENTITY}}\",\n                    \"is_deceased\": {{true/false}},\n\t\t\t\t\t\"year_of_birth\": 0\n\t\t\t\t}],\n\t\t\t\t\"case_name\": \"{{caseName}}\",\n\t\t\t\t\"external_id\": \"{{externalCaseID}}\",\n\t\t\t\t\"has_alerts\": true,\n\t\t\t\t\"options\": {\n\t\t\t\t\t\"filter_content_category\": [\n                        {\n                        \"WL\": [\n                            {\n                            \"PEP\": [\n                                \"{{PEP_ID}}\"\n                                ]\n                            },\n                            {\n                            \"SL\": [\n                                \"{{SL_ID}}\"\n                                ]\n                            },\n                            {\n                            \"OOL\": [\n                                \"{{OOL_ID}}\"\n                                ]\n                            },\n                            {\n                            \"OEL\": [\n                                \"{{OEL_ID}}\"\n                                ]\n                            },\n                            {\n                            \"SIP\": [\n                                \"{{SIP_ID}}\"\n                                ]\n                            }\n                        ]\n                        },\n                        {\n\t\t\t\t\t\t\"AME\": [\n                            \"{{AME_ID}}\"\n                            ]\n                        },\n                        {\n\t\t\t\t\t\t\"SOC\": [\n                            \"{{SOC_ID}}\"\n                            ]\n                        }\n\t\t\t\t\t],\n\t\t\t\t\t\"has_to_match_low_quality_alias\": false,\n\t\t\t\t\t\"is_indexed\": false,\n\t\t\t\t\t\"score_threshold\": 0.6,\n\t\t\t\t\t\"search_type\": \"BROAD\"\n\t\t\t\t},\n\t\t\t\t\"owner_id\": \"{{caseOwnerID}}\",\n\t\t\t\t\"score_preferences\": {\n\t\t\t\t\t\"country\": {\n\t\t\t\t\t\t\"has_exclusions\": false,\n\t\t\t\t\t\t\"score\": 0\n\t\t\t\t\t},\n\t\t\t\t\t\"gender\": {\n\t\t\t\t\t\t\"has_exclusions\": false,\n\t\t\t\t\t\t\"score\": 0\n\t\t\t\t\t},\n\t\t\t\t\t\"identification_details\": {\n\t\t\t\t\t\t\"has_exclusions\": false,\n\t\t\t\t\t\t\"score\": 0\n\t\t\t\t\t},\n\t\t\t\t\t\"industry_sector\": {\n\t\t\t\t\t\t\"has_exclusions\": false,\n\t\t\t\t\t\t\"score\": 0\n\t\t\t\t\t},\n\t\t\t\t\t\"year_of_birth\": {\n\t\t\t\t\t\t\"has_exclusions\": false,\n\t\t\t\t\t\t\"score\": 0\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"type\": \"risk-entity-screening-cases/bulk-associations\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "https://api.dowjones.com/risk-entity-screening-cases/bulk-associations?details=true",
+									"protocol": "https",
+									"host": [
+										"api",
+										"dowjones",
+										"com"
+									],
+									"path": [
+										"risk-entity-screening-cases",
+										"bulk-associations"
+									],
+									"query": [
+										{
+											"key": "details",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Example - Filtered Batch Post Case with Associations",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody)",
+											"postman.setGlobalVariable(\"case-id\", jsonData.data.attributes.case_id)",
+											"postman.setGlobalVariable(\"transaction-id\", jsonData.data.id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{JWT_Bearer}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.dowjones.dna.risk-entity-screening-cases.v_1.0+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"data\": {\n        \"attributes\": {\n            \"case_info\": {\n                \"case_name\": \"filterExample\",\n                \"owner_id\": \"DJ\",\n                \"external_id\": \"filterExample\",\n                \"options\": {\n                    \"filter_content_category\": \n                    [\n                        {\n                        \"WL\": [\n                            {\n                            \"PEP\": [\n                                \"1\"\n                                ]\n                            },\n                            {\n                            \"SL\": [\n                                \"2258\"\n                                ]\n                            },\n                            {\n                            \"OOL\": [\n                                \"585\"\n                                ]\n                            },\n                            {\n                            \"OEL\": [\n                                \"2277\"\n                                ]\n                            },\n                            {\n                            \"SIP\": [\n                                \"1001\"\n                                ]\n                            }\n                        ]\n                        },\n                        {\n                        \"AME\": [\n                            \"33\"\n                            ]\n                        },\n                        {\n                        \"SOC\": [\n                            \"1\"\n                            ]\n                        }\n                    ],\n                    \"has_to_match_low_quality_alias\": false,\n                    \"search_type\": \"BROAD\",\n                    \"score_threshold\": 0.6,\n                    \"is_indexed\": true,\n                    \"has_screen_priority\": true\n                },\n                \"score_preferences\": {\n                    \"gender\": {\n                        \"score\": 4,\n                        \"has_exclusions\": false\n                    },\n                    \"year_of_birth\": {\n                        \"score\": 0,\n                        \"has_exclusions\": false\n                    },\n                    \"industry_sector\": {\n                        \"score\": 5,\n                        \"has_exclusions\": false\n                    },\n                    \"identification_details\": {\n                        \"score\": 0,\n                        \"has_exclusions\": false\n                    },\n                    \"deceased\": {\n                    \"score\": 0,\n                    \"has_exclusions\": true\n                },\n                    \"country\": {\n                        \"score\": 2,\n                        \"has_exclusions\": false\n                    }\n                },\n                \"associations\": [\n                    {\n                        \"record_type\": \"PERSON\",\n                        \"names\": [\n                            {\n                                \"name_type\": \"PRIMARY\",\n                                \"first_name\": \"William\",\n                                \"last_name\": \"Clinton\"\n                            }\n                        ],\n                        \"gender\": \"MALE\",\n                     \"is_deceased\": false,\n                        \"country\": \"USA\"\n                    }\n                ]\n            }\n        },\n        \"type\": \"bulk-associations\"\n    }\n}"
+								},
+								"url": {
+									"raw": "https://api.dowjones.com/risk-entity-screening-cases/bulk-associations?details=true",
+									"protocol": "https",
+									"host": [
+										"api",
+										"dowjones",
+										"com"
+									],
+									"path": [
+										"risk-entity-screening-cases",
+										"bulk-associations"
+									],
+									"query": [
+										{
+											"key": "details",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Validation Example - Batch Post Case with Associations",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody)",
+											"postman.setGlobalVariable(\"case-id\", jsonData.data.attributes.case_id)",
+											"postman.setGlobalVariable(\"transaction-id\", jsonData.data.id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{JWT_Bearer}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"data\": {\n\t\t\"attributes\": {\n\t\t\t\"case_info\": {\n\t\t\t\t\"associations\": [{\n\t\t\t\t\t\t\"country\": \"USA\",\n\t\t\t\t\t\t\"gender\": \"MALE\",\n\t\t\t\t\t\t\"names\": [{\n\t\t\t\t\t\t\t\"first_name\": \"Joseph\",\n\t\t\t\t\t\t\t\"last_name\": \"Biden\",\n\t\t\t\t\t\t\t\"name_type\": \"PRIMARY\"\n\t\t\t\t\t\t}],\n\t\t\t\t\t\t\"record_type\": \"PERSON\",\n                        \"is_deceased\": false,\n\t\t\t\t\t\t\"year_of_birth\": 1942\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"country\": \"RUSS\",\n\t\t\t\t\t\t\"gender\": \"MALE\",\n\t\t\t\t\t\t\"names\": [{\n\t\t\t\t\t\t\t\"single_string_name\": \"Владимир Путин\",\n\t\t\t\t\t\t\t\"name_type\": \"OSN\"\n\t\t\t\t\t\t}],\n\t\t\t\t\t\t\"record_type\": \"PERSON\",\n                        \"is_deceased\": false\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"country\": \"USA\",\n\t\t\t\t\t\t\"identification_details\": {\n\t\t\t\t\t\t\t\"type\": \"1018\",\n\t\t\t\t\t\t\t\"value\": \"13-0871985\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"names\": [{\n\t\t\t\t\t\t\t\"entity_name\": \"International Business Machines\",\n\t\t\t\t\t\t\t\"name_type\": \"PRIMARY\"\n\t\t\t\t\t\t}],\n\t\t\t\t\t\t\"record_type\": \"ENTITY\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"country\": \"RUSS\",\n\t\t\t\t\t\t\"names\": [{\n\t\t\t\t\t\t\t\"entity_name\": \"Gazprom\",\n\t\t\t\t\t\t\t\"name_type\": \"PRIMARY\",\n\t\t\t\t\t\t\t\"suffix\": \"PJSC\"\n\t\t\t\t\t\t}],\n\t\t\t\t\t\t\"record_type\": \"ENTITY\"\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t\"case_name\": \"exampleCase\",\n\t\t\t\t\"external_id\": \"exampleCaseExtID\",\n\t\t\t\t\"has_alerts\": true,\n\t\t\t\t\"options\": {\n\t\t\t\t\t\"filter_content_category\": [\n\t\t\t\t\t\t\"WL\",\n\t\t\t\t\t\t\"AME\",\n\t\t\t\t\t\t\"SOC\"\n\t\t\t\t\t],\n\t\t\t\t\t\"has_to_match_low_quality_alias\": false,\n\t\t\t\t\t\"is_indexed\": true,\n\t\t\t\t\t\"score_threshold\": 0.6,\n\t\t\t\t\t\"search_type\": \"BROAD\"\n\t\t\t\t},\n\t\t\t\t\"owner_id\": \"exampleCase\",\n\t\t\t\t\"score_preferences\": {\n\t\t\t\t\t\"country\": {\n\t\t\t\t\t\t\"has_exclusions\": false,\n\t\t\t\t\t\t\"score\": 0\n\t\t\t\t\t},\n\t\t\t\t\t\"gender\": {\n\t\t\t\t\t\t\"has_exclusions\": false,\n\t\t\t\t\t\t\"score\": 0\n\t\t\t\t\t},\n\t\t\t\t\t\"identification_details\": {\n\t\t\t\t\t\t\"has_exclusions\": false,\n\t\t\t\t\t\t\"score\": 0\n\t\t\t\t\t},\n\t\t\t\t\t\"industry_sector\": {\n\t\t\t\t\t\t\"has_exclusions\": false,\n\t\t\t\t\t\t\"score\": 0\n\t\t\t\t\t},\n\t\t\t\t\t\"year_of_birth\": {\n\t\t\t\t\t\t\"has_exclusions\": false,\n\t\t\t\t\t\t\"score\": 0\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"type\": \"risk-entity-screening-cases/bulk-associations\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "https://api.dowjones.com/risk-entity-screening-cases/validate-bulk-associations",
+									"protocol": "https",
+									"host": [
+										"api",
+										"dowjones",
+										"com"
+									],
+									"path": [
+										"risk-entity-screening-cases",
+										"validate-bulk-associations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Example - Batch Post Case with Associations ",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody)",
+											"postman.setGlobalVariable(\"case-id\", jsonData.data.attributes.case_id)",
+											"postman.setGlobalVariable(\"transaction-id\", jsonData.data.id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{JWT_Bearer}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"data\": {\n\t\t\"attributes\": {\n\t\t\t\"case_info\": {\n\t\t\t\t\"associations\": [{\n\t\t\t\t\t\t\"country\": \"USA\",\n\t\t\t\t\t\t\"gender\": \"MALE\",\n\t\t\t\t\t\t\"names\": [{\n\t\t\t\t\t\t\t\"first_name\": \"Joseph\",\n\t\t\t\t\t\t\t\"last_name\": \"Biden\",\n\t\t\t\t\t\t\t\"name_type\": \"PRIMARY\"\n\t\t\t\t\t\t}],\n\t\t\t\t\t\t\"record_type\": \"PERSON\",\n                        \"is_deceased\": false,\n\t\t\t\t\t\t\"year_of_birth\": 1942\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"country\": \"RUSS\",\n\t\t\t\t\t\t\"gender\": \"MALE\",\n\t\t\t\t\t\t\"names\": [{\n\t\t\t\t\t\t\t\"single_string_name\": \"Владимир Путин\",\n\t\t\t\t\t\t\t\"name_type\": \"OSN\"\n\t\t\t\t\t\t}],\n\t\t\t\t\t\t\"record_type\": \"PERSON\",\n                        \"is_deceased\": false\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"country\": \"USA\",\n\t\t\t\t\t\t\"identification_details\": {\n\t\t\t\t\t\t\t\"type\": \"1018\",\n\t\t\t\t\t\t\t\"value\": \"13-0871985\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"names\": [{\n\t\t\t\t\t\t\t\"entity_name\": \"International Business Machines\",\n\t\t\t\t\t\t\t\"name_type\": \"PRIMARY\"\n\t\t\t\t\t\t}],\n\t\t\t\t\t\t\"record_type\": \"ENTITY\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"country\": \"RUSS\",\n\t\t\t\t\t\t\"names\": [{\n\t\t\t\t\t\t\t\"entity_name\": \"Gazprom\",\n\t\t\t\t\t\t\t\"name_type\": \"PRIMARY\",\n\t\t\t\t\t\t\t\"suffix\": \"PJSC\"\n\t\t\t\t\t\t}],\n\t\t\t\t\t\t\"record_type\": \"ENTITY\"\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t\"case_name\": \"exampleCase\",\n\t\t\t\t\"external_id\": \"exampleCaseExtID\",\n\t\t\t\t\"has_alerts\": true,\n\t\t\t\t\"options\": {\n\t\t\t\t\t\"filter_content_category\": [\n\t\t\t\t\t\t\"WL\",\n\t\t\t\t\t\t\"AME\",\n\t\t\t\t\t\t\"SOC\"\n\t\t\t\t\t],\n\t\t\t\t\t\"has_to_match_low_quality_alias\": false,\n\t\t\t\t\t\"is_indexed\": true,\n\t\t\t\t\t\"score_threshold\": 0.6,\n\t\t\t\t\t\"search_type\": \"BROAD\"\n\t\t\t\t},\n\t\t\t\t\"owner_id\": \"exampleCase\",\n\t\t\t\t\"score_preferences\": {\n\t\t\t\t\t\"country\": {\n\t\t\t\t\t\t\"has_exclusions\": false,\n\t\t\t\t\t\t\"score\": 0\n\t\t\t\t\t},\n\t\t\t\t\t\"gender\": {\n\t\t\t\t\t\t\"has_exclusions\": false,\n\t\t\t\t\t\t\"score\": 0\n\t\t\t\t\t},\n\t\t\t\t\t\"identification_details\": {\n\t\t\t\t\t\t\"has_exclusions\": false,\n\t\t\t\t\t\t\"score\": 0\n\t\t\t\t\t},\n\t\t\t\t\t\"industry_sector\": {\n\t\t\t\t\t\t\"has_exclusions\": false,\n\t\t\t\t\t\t\"score\": 0\n\t\t\t\t\t},\n\t\t\t\t\t\"year_of_birth\": {\n\t\t\t\t\t\t\"has_exclusions\": false,\n\t\t\t\t\t\t\"score\": 0\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"type\": \"risk-entity-screening-cases/bulk-associations\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "https://api.dowjones.com/risk-entity-screening-cases/bulk-associations?details=true",
+									"protocol": "https",
+									"host": [
+										"api",
+										"dowjones",
+										"com"
+									],
+									"path": [
+										"risk-entity-screening-cases",
+										"bulk-associations"
+									],
+									"query": [
+										{
+											"key": "details",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Batch Post Associations (into an existing case)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody)",
+											"postman.setGlobalVariable(\"case-id\", jsonData.data.attributes.case_id)",
+											"postman.setGlobalVariable(\"transaction-id\", jsonData.data.id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{JWT_Bearer}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"data\": {\n\t\t\"attributes\": {\n\t\t\t\"associations\": [\n\t\t\t\t{\n\t\t\t\t\"country\": \"string\",\n\t\t\t\t\"external_id\": \"string\",\n\t\t\t\t\"gender\": \"MALE\",\n\t\t\t\t\"identification_details\": {\n\t\t\t\t\t\"type\": \"{{IDType_code}}\",\n\t\t\t\t\t\"value\": \"string\"\n\t\t\t\t},\n\t\t\t\t\"industry_sector\": \"string\",\n\t\t\t\t\"names\": [\n\t\t\t\t\t{\n\t\t\t\t\t\"entity_name\": \"{{entityName}}\",\n\t\t\t\t\t\"first_name\": \"{{firstName}}\",\n\t\t\t\t\t\"last_name\": \"{{lastName}}\",\n\t\t\t\t\t\"middle_name\": \"{{middleName}}\",\n\t\t\t\t\t\"name_type\": \"PRIMARY\",\n\t\t\t\t\t\"prefix\": \"{{prefix}}\",\n\t\t\t\t\t\"suffix\": \"{{suffix}}\",\n\t\t\t\t\t\"single_string_name\": \"{{singleStringName}}\"\n\t\t\t\t\t}\n\t\t\t\t\t],\n\t\t\t\t\"record_type\": \"{{PERSON/ENTITY}}\",\n                \"is_deceased\": {{true/false}},\n\t\t\t\t\"year_of_birth\": 0\n\t\t\t\t}\n\t\t\t]\n\t\t},\n    \"type\": \"risk-entity-screening-cases/bulk-associations\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "https://api.dowjones.com/risk-entity-screening-cases/{{case-id}}/bulk-associations",
+									"protocol": "https",
+									"host": [
+										"api",
+										"dowjones",
+										"com"
+									],
+									"path": [
+										"risk-entity-screening-cases",
+										"{{case-id}}",
+										"bulk-associations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Validation Example - Batch Post Associations (into an existing case)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody)",
+											"postman.setGlobalVariable(\"case-id\", jsonData.data.attributes.case_id)",
+											"postman.setGlobalVariable(\"transaction-id\", jsonData.data.id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{JWT_Bearer}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"data\": {\n    \"attributes\": {\n\t\t\"associations\": [\n\t\t\t{\n\t\t\t\"country\": \"USA\",\n\t\t\t\"external_id\": \"testAssociation\",\n\t\t\t\"gender\": \"MALE\",\n\t\t\t\"names\": [\n\t\t\t\t{\n\t\t\t\t\"first_name\": \"Darth\",\n\t\t\t\t\"last_name\": \"Vader\",\n\t\t\t\t\"name_type\": \"PRIMARY\"\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"record_type\": \"PERSON\",\n            \"is_deceased\": false\n\t\t\t},\n\t\t\t{\n\t\t\t\"country\": \"USA\",\n\t\t\t\"external_id\": \"testAssociation\",\n\t\t\t\"names\": [\n\t\t\t\t{\n\t\t\t\t\"entity_name\": \"Death Star\",\n\t\t\t\t\"name_type\": \"PRIMARY\"\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"record_type\": \"ENTITY\"\n\t\t\t}\n\t\t]\n    },\n    \"type\": \"risk-entity-screening-cases/bulk-associations\"\n  }\n}"
+								},
+								"url": {
+									"raw": "https://api.dowjones.com/risk-entity-screening-cases/{{caseID}}/validate-bulk-associations",
+									"protocol": "https",
+									"host": [
+										"api",
+										"dowjones",
+										"com"
+									],
+									"path": [
+										"risk-entity-screening-cases",
+										"{{caseID}}",
+										"validate-bulk-associations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Example - Batch Post Associations (into an existing case)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody)",
+											"postman.setGlobalVariable(\"case-id\", jsonData.data.attributes.case_id)",
+											"postman.setGlobalVariable(\"transaction-id\", jsonData.data.id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{JWT_Bearer}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"data\": {\n    \"attributes\": {\n\t\t\"associations\": [\n\t\t\t{\n\t\t\t\"country\": \"USA\",\n\t\t\t\"external_id\": \"testAssociation\",\n\t\t\t\"gender\": \"MALE\",\n\t\t\t\"names\": [\n\t\t\t\t{\n\t\t\t\t\"first_name\": \"Darth\",\n\t\t\t\t\"last_name\": \"Vader\",\n\t\t\t\t\"name_type\": \"PRIMARY\"\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"record_type\": \"PERSON\",\n            \"is_deceased\": false\n\t\t\t},\n\t\t\t{\n\t\t\t\"country\": \"USA\",\n\t\t\t\"external_id\": \"testAssociation\",\n\t\t\t\"names\": [\n\t\t\t\t{\n\t\t\t\t\"entity_name\": \"Death Star\",\n\t\t\t\t\"name_type\": \"PRIMARY\"\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"record_type\": \"ENTITY\"\n\t\t\t}\n\t\t]\n    },\n    \"type\": \"risk-entity-screening-cases/bulk-associations\"\n  }\n}"
+								},
+								"url": {
+									"raw": "https://api.dowjones.com/risk-entity-screening-cases/{{caseID}}/bulk-associations",
+									"protocol": "https",
+									"host": [
+										"api",
+										"dowjones",
+										"com"
+									],
+									"path": [
+										"risk-entity-screening-cases",
+										"{{caseID}}",
+										"bulk-associations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Batch Correlate Association to Case",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody)",
+											"postman.setGlobalVariable(\"case-id\", jsonData.data.attributes.case_id)",
+											"postman.setGlobalVariable(\"transaction-id\", jsonData.data.id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{JWT_Bearer}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"data\": [\n    {\n      \"id\": \"{{associationID}}\",\n      \"type\": \"risk-entity-screening-associations\"\n    },\n    {\n      \"id\": \"{{associationID}}\",\n      \"type\": \"risk-entity-screening-associations\"\n    }\n  ]\n}"
+								},
+								"url": {
+									"raw": "https://api.dowjones.com/risk-entity-screening-cases/{{caseID}}/risk-entity-screening-associations",
+									"protocol": "https",
+									"host": [
+										"api",
+										"dowjones",
+										"com"
+									],
+									"path": [
+										"risk-entity-screening-cases",
+										"{{caseID}}",
+										"risk-entity-screening-associations"
+									]
+								},
+								"description": "Links the an Association to a selected Case"
+							},
+							"response": []
+						},
+						{
+							"name": "Batch Transaction Status (to check state of Batch upload)",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{JWT_Bearer}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://api.dowjones.com/risk-entity-screening-cases/{{case-id}}/bulk-associations/{{transaction-id}}?details=true",
+									"protocol": "https",
+									"host": [
+										"api",
+										"dowjones",
+										"com"
+									],
+									"path": [
+										"risk-entity-screening-cases",
+										"{{case-id}}",
+										"bulk-associations",
+										"{{transaction-id}}"
+									],
+									"query": [
+										{
+											"key": "details",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Single",
+					"item": [
+						{
+							"name": "Add Case ",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody)",
+											"postman.setGlobalVariable(\"case-id\", jsonData.data.id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{JWT_Bearer}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"case_name\": \"{{caseName}}\",\n      \"external_id\": \"{{externalID}}\",\n      \"has_alerts\": true,\n      \"is_case_valid\": true,\n      \"options\": {\n        \"filter_content_category\": [\n\t\t\t\"WL\",\n\t\t\t\"AME\"\n        ],\n        \"has_to_match_low_quality_alias\": true,\n        \"is_indexed\": true,\n        \"score_threshold\": 0.6,\n        \"search_type\": \"{{BROAD/NEAR/PRECISE}}\"\n      },\n      \"owner_id\": \"{{OwnerID}}\",\n      \"score_preferences\": {\n        \"country\": {\n          \"has_exclusions\": false,\n          \"score\": 0\n        },\n        \"deceased\": {\n            \"has_exclusions\": false,\n            \"score\": 0\n        },\n        \"gender\": {\n          \"has_exclusions\": false,\n          \"score\": 0\n        },\n        \"identification_details\": {\n          \"has_exclusions\": false,\n          \"score\": 0\n        },\n        \"industry_sector\": {\n          \"has_exclusions\": false,\n          \"score\": 0\n        },\n        \"year_of_birth\": {\n          \"has_exclusions\": false,\n          \"score\": 0\n        }\n      }\n    },\n    \"type\": \"risk-entity-screening-cases\"\n  }\n}\n"
+								},
+								"url": {
+									"raw": "https://api.dowjones.com/risk-entity-screening-cases",
+									"protocol": "https",
+									"host": [
+										"api",
+										"dowjones",
+										"com"
+									],
+									"path": [
+										"risk-entity-screening-cases"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Example - Add Case",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody)",
+											"postman.setGlobalVariable(\"case-id\", jsonData.data.id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{JWT_Bearer}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"case_name\": \"RU_SAN_Monitor\",\n      \"external_id\": \"Russia Sanctions\",\n      \"has_alerts\": true,\n      \"is_case_valid\": true,\n      \"options\": {\n        \"filter_content_category\": [\n\t\t\t\"SL\",\n\t\t\t\"OEL\",\n            \"OOL\"\n        ],\n        \"has_to_match_low_quality_alias\": true,\n        \"is_indexed\": true,\n        \"score_threshold\": 0.8,\n        \"search_type\": \"PRECISE\"\n      },\n      \"owner_id\": \"John Smith\",\n      \"score_preferences\": {\n        \"country\": {\n          \"has_exclusions\": true,\n          \"score\": 0\n        },\n        \"deceased\": {\n            \"has_exclusions\": false,\n            \"score\": 0\n        },\n        \"gender\": {\n          \"has_exclusions\": false,\n          \"score\": 0\n        },\n        \"identification_details\": {\n          \"has_exclusions\": false,\n          \"score\": 0\n        },\n        \"industry_sector\": {\n          \"has_exclusions\": false,\n          \"score\": 0\n        },\n        \"year_of_birth\": {\n          \"has_exclusions\": false,\n          \"score\": 0\n        }\n      }\n    },\n    \"type\": \"risk-entity-screening-cases\"\n  }\n}\n"
+								},
+								"url": {
+									"raw": "https://api.dowjones.com/risk-entity-screening-cases",
+									"protocol": "https",
+									"host": [
+										"api",
+										"dowjones",
+										"com"
+									],
+									"path": [
+										"risk-entity-screening-cases"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Association",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody)",
+											"postman.setGlobalVariable(\"association-id\", jsonData.data.id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{JWT_Bearer}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"data\": {\n\t\t\"attributes\": {\n\t\t\t\"country\": \"{{countryCode}}\",\n\t\t\t\"external_id\": \"{{externalID}}\",\n\t\t\t\"gender\": \"{{MALE/FEMALE}}\",\n\t\t\t\"identification_details\": {\n\t\t\t\t\"type\": \"{{IDValueCode}}\",\n\t\t\t\t\"value\": \"{{IDValue}}\"\n\t\t\t},\n\t\t\t\"industry_sector\": \"{{Industry_Code}}\",\n\t\t\t\"names\": [\n\t\t\t\t{\n\t\t\t\t\"entity_name\": \"{{entityName}}\",\n\t\t\t\t\"first_name\": \"{{firstName}}\",\n\t\t\t\t\"last_name\": \"{{lastName}}\",\n\t\t\t\t\"middle_name\": \"{{middleName}}\",\n\t\t\t\t\"name_type\": \"PRIMARY\",\n\t\t\t\t\"prefix\": \"{{namePrefix}}\",\n\t\t\t\t\"suffix\": \"{{nameSuffix}}\",\n\t\t\t\t\"single_string_name\": \"{{singleStringName}}\"\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"record_type\": \"{{PERSON/ENITIY}}\",\n            \"is_deceased\": {{true/false}},\n\t\t\t\"year_of_birth\": 0\n    },\n    \"type\": \"risk-entity-screening-associations\"\n  }\n}"
+								},
+								"url": {
+									"raw": "https://api.dowjones.com/risk-entity-screening-associations",
+									"protocol": "https",
+									"host": [
+										"api",
+										"dowjones",
+										"com"
+									],
+									"path": [
+										"risk-entity-screening-associations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Example - Add Association",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody)",
+											"postman.setGlobalVariable(\"association-id\", jsonData.data.id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{JWT_Bearer}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"data\": {\n\t\t\"attributes\": {\n\t\t\t\"country\": \"USA\",\n\t\t\t\"external_id\": \"TestRel321\",\n\t\t\t\"gender\": \"MALE\",\n\t\t\t\"names\": [{\n\t\t\t\t\"first_name\": \"Joseph\",\n                \"last_name\": \"Biden\",\n\t\t\t\t\"name_type\": \"PRIMARY\"\n\t\t\t}],\n\t\t\t\"record_type\": \"PERSON\",\n            \"is_deceased\": false,\n\t\t\t\"year_of_birth\": 1942,\n\t\t\t\"has_alerts\": false\n\t\t},\n\t\t\"type\": \"risk-entity-screening-associations\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "https://api.dowjones.com/risk-entity-screening-associations",
+									"protocol": "https",
+									"host": [
+										"api",
+										"dowjones",
+										"com"
+									],
+									"path": [
+										"risk-entity-screening-associations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Correlate Association to Case",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody)",
+											"postman.setGlobalVariable(\"case-id\", jsonData.data.attributes.case_id)",
+											"postman.setGlobalVariable(\"transaction-id\", jsonData.data.id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{JWT_Bearer}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"data\": [{\n    \t\"id\": \"{{association-id}}\",\n    \t\"type\": \"risk-entity-screening-associations\"\n    }]\n  }\n}\n"
+								},
+								"url": {
+									"raw": "https://api.dowjones.com/risk-entity-screening-cases/{{caseID}}/risk-entity-screening-associations",
+									"protocol": "https",
+									"host": [
+										"api",
+										"dowjones",
+										"com"
+									],
+									"path": [
+										"risk-entity-screening-cases",
+										"{{caseID}}",
+										"risk-entity-screening-associations"
+									]
+								},
+								"description": "Links the an Association to a selected Case"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Transaction status (to check correlation) Copy",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{JWT_Bearer}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://api.dowjones.com/risk-entity-screening-cases/{{caseID}}/transactions/{{transactionID}}?details=true",
+									"protocol": "https",
+									"host": [
+										"api",
+										"dowjones",
+										"com"
+									],
+									"path": [
+										"risk-entity-screening-cases",
+										"{{caseID}}",
+										"transactions",
+										"{{transactionID}}"
+									],
+									"query": [
+										{
+											"key": "details",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Updating Cases & Association",
+			"item": [
+				{
+					"name": "Modify Case",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"case_name\": \"{{caseName}}\",\n      \"external_id\": \"{{externalCaseID}}\",\n      \"has_alerts\": true,\n      \"options\": {\n        \"filter_content_category\": [\n          \"WL\",\n\t\t  \"AME\",\n\t\t  \"SOC\"\n\t\t],\n        \"has_to_match_low_quality_alias\": false,\n        \"is_indexed\": true,\n        \"score_threshold\": 0.6,\n        \"search_type\": \"{{BROAD/NEAR/PRECISE}}\"\n      },\n      \"score_preferences\": {\n        \"country\": {\n          \"has_exclusions\": false,\n          \"score\": 0\n        },\n        \"gender\": {\n          \"has_exclusions\": false,\n          \"score\": 0\n        },\n        \"identification_details\": {\n          \"has_exclusions\": false,\n          \"score\": 0\n        },\n        \"industry_sector\": {\n          \"has_exclusions\": false,\n          \"score\": 0\n        },\n        \"year_of_birth\": {\n          \"has_exclusions\": false,\n          \"score\": 0\n        }\n      }\n    },\n    \"type\": \"risk-entity-screening-cases\"\n  }\n}"
+						},
+						"url": {
+							"raw": "https://api.dowjones.com/risk-entity-screening-cases/{{caseID}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"risk-entity-screening-cases",
+								"{{caseID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify Association",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"data\": {\n    \"attributes\": {\n        \"country\": \"{{countryID}}\",\n        \"external_id\": \"{{externalID}}\",\n        \"gender\": \"{{MALE/FEMALE}}\",\n        \"identification_details\": {\n            \"type\": \"{{IDTypeCode}}\",\n            \"value\": \"{{IDValue}}\"\n            },\n        \"industry_sector\": \"{{industryCode}}\",\n        \"names\": [\n            {\n\t\t    \"entity_name\": \"{{entityName}}\",\n\t\t    \"first_name\": \"{{firstName}}\",\n\t\t    \"last_name\": \"{{lastName}}\",\n\t\t    \"middle_name\": \"{{middleName}}\",\n\t\t    \"name_type\": \"PRIMARY\",\n\t\t    \"prefix\": \"{{namePrefix}}\",\n\t\t    \"suffix\": \"{{nameSuffix}}\",\n\t\t    \"single_string_name\": \"{{singleStringName}}\"\n            }\n        ],\n    \"record_type\": \"{{PERSON/ENTITY}}\",\n    \"year_of_birth\": 0\n    },\n    \"type\": \"risk-entity-screening-associations\"\n  }\n}"
+						},
+						"url": {
+							"raw": "https://api.dowjones.com/risk-entity-screening-associations/{{associationID}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"risk-entity-screening-associations",
+								"{{associationID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Checking for Matches",
+			"item": [
+				{
+					"name": "Get Matches (by case)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody)",
+									"var matches = jsonData.data[0].attributes.matches;",
+									"if (matches.length > 0) {",
+									"    postman.setGlobalVariable(\"match-id\", matches[0].match_id)",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.dowjones.com/risk-entity-screening-cases/{{caseID}}/matches?filter[has_alerts]=true&filter[is_match_valid]=true",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"risk-entity-screening-cases",
+								"{{caseID}}",
+								"matches"
+							],
+							"query": [
+								{
+									"key": "page[offset]",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "page[limit]",
+									"value": "100",
+									"disabled": true
+								},
+								{
+									"key": "filter[has_alerts]",
+									"value": "true"
+								},
+								{
+									"key": "filter[is_match_valid]",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Matches (by association)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody)",
+									"var matches = jsonData.data[0].attributes.matches;",
+									"if (matches.length > 0) {",
+									"    postman.setGlobalVariable(\"match-id\", matches[0].match_id)",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.dowjones.com/risk-entity-screening-cases/{{caseID}}/matches?filter[has_alerts]=true&filter[is_match_valid]=true&associationId={{associationID}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"risk-entity-screening-cases",
+								"{{caseID}}",
+								"matches"
+							],
+							"query": [
+								{
+									"key": "page[offset]",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "page[limit]",
+									"value": "100",
+									"disabled": true
+								},
+								{
+									"key": "filter[has_alerts]",
+									"value": "true"
+								},
+								{
+									"key": "filter[is_match_valid]",
+									"value": "true"
+								},
+								{
+									"key": "associationId",
+									"value": "{{associationID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Matches (date range)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody)",
+									"var matches = jsonData.data[0].attributes.matches;",
+									"if (matches.length > 0) {",
+									"    postman.setGlobalVariable(\"match-id\", matches[0].match_id)",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.dowjones.dna.risk-entity-screening-cases.v_1.1+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.dowjones.com/risk-entity-screening-cases?filter[last_match_activity_on][from]=2021-01-01T00:00:00Z&filter[last_match_activity_on][to]=2021-01-12T00:00:00Z",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"risk-entity-screening-cases"
+							],
+							"query": [
+								{
+									"key": "page[offset]",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "page[limit]",
+									"value": "100",
+									"disabled": true
+								},
+								{
+									"key": "filter[last_match_activity_on][from]",
+									"value": "2021-01-01T00:00:00Z"
+								},
+								{
+									"key": "filter[last_match_activity_on][to]",
+									"value": "2021-01-12T00:00:00Z"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch Match Feedback",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"data\": {\r\n\t\t\"attributes\": {\r\n\t\t\t\"comment\": \"{{matchCommment}}\",\r\n\t\t\t\"current_state\": \"{{caseStatus}}\",\r\n\t\t\t\"risk_rating\": 0\r\n\t\t},\r\n\t\t\"type\": \"risk-entity-screening-cases/matches\"\r\n\t}\r\n}"
+						},
+						"url": {
+							"raw": "https://api.dowjones.com/risk-entity-screening-cases/{{caseID}}/matches/{{matchID}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"risk-entity-screening-cases",
+								"{{caseID}}",
+								"matches",
+								"{{matchID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Patch Match Feedback",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.dowjones.dna.bulk-match-update.v_1.2+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"data\": [\r\n    {\r\n        \"id\": \"{{matchID}}\",\r\n        \"attributes\": {\r\n            \"comment\": \"{{matchCommment}}\",\r\n            \"current_state\": \"{{caseStatus}}\",\r\n            \"risk_rating\": {{numeric value 1-5}}\r\n        },\r\n        \"type\": \"risk-entity-screening-cases/matches\"\r\n    },\r\n        {\r\n        \"id\": \"{{matchID}}\",\r\n        \"attributes\": {\r\n            \"comment\": \"{{matchCommment}}\",\r\n            \"current_state\": \"{{caseStatus}}\",\r\n            \"risk_rating\": {{numeric value 1-5}}\r\n        },\r\n        \"type\": \"risk-entity-screening-cases/matches\"\r\n    }\r\n  ]\r\n}"
+						},
+						"url": {
+							"raw": "https://api.dowjones.com/risk-entity-screening-cases/{{CaseID}}/bulk-match-update",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"risk-entity-screening-cases",
+								"{{CaseID}}",
+								"bulk-match-update"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "View Profile",
+			"item": [
+				{
+					"name": "Get Profile Information",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.dowjones.com/riskentities/profiles/{{PEIDNumber}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"riskentities",
+								"profiles",
+								"{{PEIDNumber}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile Revisions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.dowjones.com/profiles/{{PEIDNumber}}/revisions",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"profiles",
+								"{{PEIDNumber}}",
+								"revisions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile (Parts)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "cache-control",
+								"type": "text",
+								"value": "no-cache"
+							},
+							{
+								"key": "content-type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{JWT_Bearer}}"
+							}
+						],
+						"url": {
+							"raw": "https://api.dowjones.com/riskentities/profiles/{{PEIDNumber}}?parts={{profileAttributes}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"riskentities",
+								"profiles",
+								"{{PEIDNumber}}"
+							],
+							"query": [
+								{
+									"key": "parts",
+									"value": "{{profileAttributes}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Deleting Cases & Associations",
+			"item": [
+				{
+					"name": "De-correlate Single Association",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.dowjones.com/risk-entity-screening-cases/{{caseID}}/risk-entity-screening-associations/{{associationID}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"risk-entity-screening-cases",
+								"{{caseID}}",
+								"risk-entity-screening-associations",
+								"{{associationID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "De-correlate Bulk Associations",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": [\n    {\n      \"id\": \"{{associationID}}\",\n      \"type\": \"risk-entity-screening-associations\"\n    },\n    {\n      \"id\": \"{{associationID}}\",\n      \"type\": \"risk-entity-screening-associations\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "https://api.dowjones.com/risk-entity-screening-cases/{{caseID}}/risk-entity-screening-associations/delete",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"risk-entity-screening-cases",
+								"{{caseID}}",
+								"risk-entity-screening-associations",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Transaction status (to check decorrelation)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.dowjones.com/risk-entity-screening-cases/{{caseID}}/transactions/{{transactionID}}?details=true",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"risk-entity-screening-cases",
+								"{{caseID}}",
+								"transactions",
+								"{{transactionID}}"
+							],
+							"query": [
+								{
+									"key": "details",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Association",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.dowjones.com/risk-entity-screening-associations/{{associationID}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"risk-entity-screening-associations",
+								"{{associationID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Case",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.dowjones.com/risk-entity-screening-cases/{{caseID}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"risk-entity-screening-cases",
+								"{{caseID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Taxonomy",
+			"item": [
+				{
+					"name": "Taxonomy ID Types",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.dowjones.com/taxonomy/riskentities/lists?id=IdType",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"taxonomy",
+								"riskentities",
+								"lists"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "IdType"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Taxonomy Country Types",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{JWT_Bearer}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://api.dowjones.com/taxonomy/riskentities/lists?id=CountryTerritory",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"taxonomy",
+								"riskentities",
+								"lists"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "CountryTerritory"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Taxonomy Industry Codes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{JWT_Bearer}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://api.dowjones.com/taxonomy/factiva-industries/list?language=en&parts=All",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"taxonomy",
+								"factiva-industries",
+								"list"
+							],
+							"query": [
+								{
+									"key": "language",
+									"value": "en"
+								},
+								{
+									"key": "parts",
+									"value": "All"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OccupationCategories (PEP)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.dowjones.com/taxonomy/riskentities/lists?id=OccupationCategories",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"taxonomy",
+								"riskentities",
+								"lists"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "OccupationCategories"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SpecialInterestCategories",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.dowjones.com/taxonomy/riskentities/lists?id=SpecialInterestCategories",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"taxonomy",
+								"riskentities",
+								"lists"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "SpecialInterestCategories"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SanctionLists",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.dowjones.com/taxonomy/riskentities/lists?id=SanctionLists",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"taxonomy",
+								"riskentities",
+								"lists"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "SanctionLists"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OtherOfficialLists",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.dowjones.com/taxonomy/riskentities/lists?id=OtherOfficialLists",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"taxonomy",
+								"riskentities",
+								"lists"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "OtherOfficialLists"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OtherExclusionLists",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.dowjones.com/taxonomy/riskentities/lists?id=OtherExclusionLists",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"taxonomy",
+								"riskentities",
+								"lists"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "OtherExclusionLists"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "StateOwnerships",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.dowjones.com/taxonomy/riskentities/lists?id=StateOwnerships",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"taxonomy",
+								"riskentities",
+								"lists"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "StateOwnerships"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adverse Media Categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT_Bearer}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.dowjones.com/taxonomy/riskentities/lists?id=AdverseMediaCategories",
+							"protocol": "https",
+							"host": [
+								"api",
+								"dowjones",
+								"com"
+							],
+							"path": [
+								"taxonomy",
+								"riskentities",
+								"lists"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "AdverseMediaCategories"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "JWT_Bearer",
+			"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjJEN0IwQTFERkJCNzlDRDFBQjM4NzNCMTcyODMyRjkxMENEQkRBREIiLCJ0eXAiOiJKV1QifQ.eyJwaWIiOnsiYXBjIjoiUk5DIiwiY3RjIjoiUCIsIm1hc3Rlcl9hcHBfaWQiOiJYTWtIcjJhYVk3aVBaVElyUXpkckltOXhiNVpMSFV3QiIsInNlcnZpY2VfYWNjb3VudF9pZCI6IjlaWloxMjE1MDAiLCJlbmNyeXB0ZWRfdG9rZW4iOiJTMDJZdEpxM0dialpUcW5OOTJ2TlRZck45QW1KY2JhUFRVbU5wMm1OcFVjM0hibVpUclRSVkpXU1VORlhxRkRRcXpWVGJSNVRxRlZWRTZjIn0sImlzcyI6Imh0dHBzOi8vYWNjb3VudHMuZG93am9uZXMuY29tL29hdXRoMi92MiIsInN1YiI6ImF1dGgwfDVkMzYwM2E4Yjc2ZGQyNTlkZDJkZTYwNyIsImF1ZCI6IlhNa0hyMmFhWTdpUFpUSXJRemRySW05eGI1WkxIVXdCIiwiYXpwIjoiWE1rSHIyYWFZN2lQWlRJclF6ZHJJbTl4YjVaTEhVd0IiLCJpYXQiOjE2Nzk1NjcwMzMsImV4cCI6MTY3OTU3MDYzM30.XcNd5zkw6dJx7zNtLZjAB9lF7JRkhD433tgw5y460v-L6lttYklxDUt9-gkxiUv7nFwEhKxGX8cH_Cf8LorGOvpow35m7SHAExXkeMZcAw2lStMcfqvmtMN6f0OqKvc5k0gwzwqoT5fZLM_KnZB-Cm-f1Cz5dl1T_jf3WRYtYzO3gfyvVxHb--UXI9sESuBUZNzW7Qt-F6S1SgVpRG4IvQpS2B2LUSaGzRhX23UwPpb7fYknxj0D6O-K_doGzxl4jY15fJprFKbo5_BOrdM4evyO7vLVTVpCp4wkQFTg3Z9WTBj2JFOPXDozhiqpTURM3A59BvsWcu3S2K98mWYVkg",
+			"type": "string"
+		}
+	]
+}
