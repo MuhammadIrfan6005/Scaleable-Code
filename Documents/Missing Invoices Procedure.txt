@@ -1,0 +1,12 @@
+1- Get the Nav Ids's (Advance Find)
+2- Check if invoice is missing or just invoice PDF.
+3- Open textPad --> Search -- Find in Files.
+4- RgPositionen.xml (Invoice Line Item)
+5- Rechnung.xml (Invoice)
+6- Select folder (Archieved)
+7- Check Invocie and Invoice Line Item in folders.
+8- Move to source folder from Archieved. Invocie and all Invoice Line Items related to it.
+9- RechnungErrors or RgPositionen errors in MigrationDB
+10- Move PDF to Invoice PDF
+11- For Germen we only handle Euro Currency, for Swiss CHF and Euro, UAE= Euro, USD, AED for UK = GBP and Euro
+12- Only difference in all Incoice container is Currency and PriceList
