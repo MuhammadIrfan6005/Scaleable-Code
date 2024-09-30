@@ -1,0 +1,1141 @@
+<html><head>
+</head>
+
+<body onfocusout="parent.setEmailRange();" style="overflow-wrap: break-word;">
+
+    <style type="text/css">
+        P {
+            margin: 0;
+        }
+    </style>
+
+    <title>Exsiting Contacts</title>
+    <script src="ClientGlobalContext.js.aspx"></script>
+    <link rel="stylesheet" href="ss_ProductContractPageStyle">
+    <script src="ss_jquery"></script>
+    <script src="ss_d3.version3.min"></script>
+    <script src="ss_d3.tip.v0.6.3.js"></script>
+    <script src="ss_d3pie"></script>
+    <script src="jquery-3.5.1.min.js"></script>
+
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+        .column-12 {
+            width: 100%;
+            margin: 10px;
+        }
+
+        span {
+            font-size: 10px;
+            margin-left: 2px;
+        }
+
+        span strong {
+            float: right;
+            margin-right: 3px;
+        }
+
+        .column-1 {
+            width: 9%;
+            height: 90px;
+            float: left;
+            /* padding: 10px; */
+            margin-right: 1%;
+            margin-bottom: 10;
+            background: #d8d4d4;
+            /*border-radius: 15px;
+            box-shadow: 5px 5px 2px #888888;*/
+            cursor: pointer;
+        }
+
+        .column-1 p {
+            padding: 10% 5% 5% 10%;
+            color: black;
+            text-align: center;
+            font-size: 11px;
+            font-weight: bold;
+            height: 50%;
+            cursor: pointer;
+        }
+
+        .green {
+            background: #92D050;
+        }
+
+        .red {
+            background: #FF4B4B;
+        }
+
+        .grey {
+            background: #d8d4d4;
+        }
+
+
+        svg {
+            width: 100%;
+            height: 100%;
+            overflow-x: overlay;
+            margin-top: -40px;
+        }
+
+        path.slice {
+            stroke-width: 2px;
+        }
+
+        polyline {
+            opacity: .3;
+            stroke: black;
+            stroke-width: 2px;
+            fill: none;
+        }
+    </style>
+    <script>
+
+        var _Accountid = "";//"5A8F8B46-2443-E511-80E3-3863BB351E10";   //Daimler AG   5A8F8B46-2443-E511-80E3-3863BB351E10
+        var page = 1;   //for invoice fetch
+        var pagingcookie = "";  //for invoice fetch
+        var segment = "";
+        var currencySymbol = "";
+        var currencySymbolId = "";
+        var DecimalSymbol = "";
+        var NumberSeparator = "";
+        var formLabel = "";
+        var tabtype = "";
+        var globelcontext = parent.Xrm.Utility.getGlobalContext();
+        var checkproduct = false;
+        var CRMCustomParameters = [];
+        var GetParameters = function () {
+            try {
+                debugger;
+                var Parameters = GetGlobalContext().getQueryStringParameters();
+                if (typeof Parameters !== "undefined") {
+                    CRMCustomParameters = ParseParameters(Parameters.data);
+                }
+            }
+            catch (error) {
+                errorHandler(error)
+            }
+        }
+        var ParseParameters = function (Query) {
+            try {
+                var ResultParameters = {};
+                if (Query != undefined && Query != null) {
+                        var QuerySplit = Query.split("&");
+                        for (var i = 0; i < QuerySplit.length; i++) {
+                            var ParameterPair = QuerySplit[i].split("=");
+                            ResultParameters[ParameterPair[0]] = ParameterPair.length > 1 ? ParameterPair[1] : null;
+                        }
+                }
+                return ResultParameters;
+
+            }
+            catch (error) {
+                errorHandler(error);
+            }
+        }
+       $(document).ready(function (){
+        Onload();
+       });
+        function Onload() {
+            debugger;
+
+            var formtype = parent.Xrm.Page.ui.getFormType();
+
+            formLabel = parent.Xrm.Page.ui.formSelector.getCurrentItem().getLabel();
+            console.log("Form Lable   " + formLabel);
+            if (formLabel == "EQS - IR DE" || formLabel == "EQS - IR UK" || formLabel == "EQS - Asia") {
+                //$("#LEI").css('visibility', 'hidden');
+                $("#ESEF").hide();
+                $("#Approval").hide();
+                if (formLabel == "EQS - IR UK") {
+                    $("#LEI").hide();
+                    //SS_Jawad Chnages
+                    $("#k3").hide();
+                }
+                $("#Media").hide();
+                $("#Others").hide();
+                $(".column-1").css("width", "11%");
+                $("#Translation").hide();
+            }
+            else if (formLabel == "EQS - XML") {
+                GetParameters();
+                tabtype = CRMCustomParameters["TabType"];
+                if (tabtype == "Product") {
+                    $("#App").hide();
+                    $("#Audio").hide();
+                    $("#Charts").hide();
+                    $("#Contact").hide();
+                    $("#EQS").hide();
+                    $("#Corp").hide();
+                    $("#Fact").hide();
+                    $("#Insider").hide();
+                    $("#IR").hide();
+                    $("#Newsfeed").hide();
+                    $("#Online").hide();
+                    $("#Others").hide();
+                    $("#Portal").hide();
+                    $("#Quick").hide();
+                    $("#Regulatory").hide();
+                    $("#Telco").hide();
+                    //$("#Safe").hide();
+                    $("#Video").hide();
+                    $("#Media").hide();
+                    $("#Others").hide();
+                    $("#ESEF").hide();
+                    $("#Approval").hide();
+                    $(".column-1").css("width", "32%");
+
+                    // $("#pie").css("width", "35%");
+                    $("#content").css("width", "35%");
+                }
+                if (tabtype == "OtherProduct") {
+                    $("#LEI").hide();
+                    $("#XML").hide();
+                    $("#Translation").hide();
+                    $("#Integrity").hide();
+                    $("#Policy").hide();
+
+                    $("#Media").hide();
+                    $("#Others").hide();
+                    $("#ESEF").hide();
+                    $("#Approval").hide();
+                    $(".column-1").css("width", "11%");
+
+                    //ss_Jawad Changes
+                    $("#k3").hide();
+
+                }
+            }
+            else if (formLabel == "EQS - PR DE") {
+                //ss_Jawad Changes
+                $("#k3").hide();
+                $("#ESEF").hide();
+                $("#Approval").hide();
+            }
+
+            //ss_Jawad Changes 
+
+            else if (formLabel == "EQS - UAE") {
+                $("#k3").hide();
+                $("#ESEF").hide();
+                $("#Approval").hide();
+            }
+            else if (formLabel == "EQS - 3Q5") {
+                $("#k3").hide();
+                $("#ESEF").hide();
+                $("#Approval").hide();
+            }
+            else if (formLabel == "EQS - IR DE Test") {
+                $("#k3").hide();
+                $("#ESEF").hide();
+                $("#Approval").hide();
+            }
+            else if (formLabel == "EQS - Swiss") {
+                $("#k3").hide();
+                $("#ESEF").hide();
+                $("#Approval").hide();
+            }
+            else if (formLabel == "EQS - Media Network") {
+                $("#k3").hide();
+                $("#ESEF").hide();
+                $("#Approval").hide();
+            }
+            else if (formLabel == "TEST - XML Checklist") {
+                $("#k3").hide();
+                $("#ESEF").hide();
+                $("#Approval").hide();
+            }
+            //End ss_Jawad Chages
+            else if (formLabel == "EQS - Compliance") {
+                $("#App").hide();
+                $("#Audio").hide();
+                $("#Charts").hide();
+                $("#Contact").hide();
+                $("#EQS").hide();
+                $("#Corp").hide();
+                $("#Fact").hide();
+                $("#IR").hide();
+                $("#LEI").hide();
+                $("#Translation").hide();
+                $("#Newsfeed").hide();
+                $("#Online").hide();
+                $("#Others").hide();
+                $("#Portal").hide();
+                $("#Quick").hide();
+                $("#Telco").hide();
+                $("#Video").hide();
+                $("#Media").hide();
+                $("#ESEF").hide();
+                $("#Approval").hide();
+
+                //ss_Jawad Changes
+                $("#k3").hide();
+
+
+                $(".column-1").css("width", "25%");
+
+                // $("#pie").css("width", "35%");
+                $("#content").css("width", "45%");
+
+            }
+            if (formtype != 1) {
+                _Accountid = parent.Xrm.Page.data.entity.getId().replace("{", "").replace("}", "");
+                showLoadingMessage();
+                //retireveGroupStatus();
+                //FindInvoicesandContracts();
+                checkoppproducts();
+                
+            }
+            else {
+                $("#content").html("<p>To enable this content create record first!</p>");
+            }
+        }
+        function FindInvoicesandContracts() // My Account
+        {
+            var today = new Date();
+            var formatedold = today.setMonth(today.getMonth() - 12);
+            var pDate = new Date(formatedold);
+            var currentYearFormated = new Date();
+            var LatestDate = (pDate.getMonth() + 1) + "/" + pDate.getDate() + "/" + pDate.getFullYear();
+            var query = "";
+            if (formLabel == "EQS - XML") {
+                if (tabtype == "Product") {
+                    query = '<filter type="and" >' +
+                        '<condition attribute="ss_crmproductgroups" operator="in" >' +
+                        ' <value>10</value>' +
+                        ' <value>19</value>' +
+                        ' <value>21</value>' +
+                        ' <value>22</value>' +
+                        ' <value>23</value>' +
+                        '</condition>' +
+                        ' </filter>';
+                }
+                else if (tabtype == "OtherProduct") {
+                    query = '<filter type="and" >' +
+                        '<condition attribute="ss_crmproductgroups" operator="in" >' +
+                        ' <value>1</value>' +
+                        ' <value>2</value>' +
+                        ' <value>3</value>' +
+                        ' <value>4</value>' +
+                        ' <value>5</value>' +
+                        ' <value>28</value>' +
+                        ' <value>6</value>' +
+                        ' <value>7</value>' +
+                        ' <value>8</value>' +
+                        ' <value>9</value>' +
+                        ' <value>11</value>' +
+                        ' <value>12</value>' +
+                        ' <value>14</value>' +
+                        ' <value>15</value>' +
+                        '<value>16</value>' +
+                        ' <value>17</value>' +
+                        ' <value>18</value>' +
+                        ' <value>20</value>' +
+                        '</condition>' +
+                        ' </filter>';
+                }
+
+            }
+            else if (formLabel == "EQS - IR DE") {
+                query = '<filter type="and" >' +
+                    '<condition attribute="ss_crmproductgroups" operator="in" >' +
+                    ' <value>1</value>' +
+                    ' <value>2</value>' +
+                    ' <value>3</value>' +
+                    ' <value>4</value>' +
+                    ' <value>5</value>' +
+                    ' <value>28</value>' +
+                    ' <value>6</value>' +
+                    ' <value>7</value>' +
+                    ' <value>8</value>' +
+                    ' <value>9</value>' +
+                    ' <value>10</value>' +
+                    '  <value>11</value>' +
+                    ' <value>12</value>' +
+                    ' <value>14</value>' +
+                    ' <value>15</value>' +
+                    '<value>16</value>' +
+                    ' <value>17</value>' +
+                    ' <value>18</value>' +
+                    ' <value>19</value>' +
+                    ' <value>20</value>' +
+                    ' <value>21</value>' +
+                    ' <value>22</value>' +
+                    ' <value>23</value>' +
+                    ' </condition>' +
+                    ' </filter>';
+            }
+            else if (formLabel == "EQS - Swiss" || formLabel == "EQS - 3Q5" || formLabel == "EQS - Media Network" || formLabel == "EQS - IR RU" || formLabel == "EQS - PR DE" || formLabel == "EQS - Asia"){
+                query = '<filter type="and" >' +
+                    '<condition attribute="ss_crmproductgroups" operator="in" >' +
+                    ' <value>1</value>' +
+                    ' <value>2</value>' +
+                    ' <value>3</value>' +
+                    ' <value>4</value>' +
+                    ' <value>5</value>' +
+                    ' <value>28</value>' +
+                    ' <value>6</value>' +
+                    ' <value>7</value>' +
+                    ' <value>8</value>' +
+                    ' <value>9</value>' +
+                    ' <value>10</value>' +
+                    '  <value>11</value>' +
+                    ' <value>12</value>' +
+                    ' <value>14</value>' +
+                    ' <value>15</value>' +
+                    '<value>16</value>' +
+                    ' <value>17</value>' +
+                    ' <value>18</value>' +
+                    ' <value>19</value>' +
+                    ' <value>20</value>' +
+                    ' <value>21</value>' +
+                    ' <value>22</value>' +
+                    ' <value>23</value>' +
+                    ' </condition>' +
+                    ' </filter>';
+            }
+            else if (formLabel == "EQS - IR UK") {
+                query = '<filter type="and" >' +
+                    '<condition attribute="ss_crmproductgroups" operator="in" >' +
+                    ' <value>1</value>' +
+                    ' <value>2</value>' +
+                    ' <value>3</value>' +
+                    ' <value>4</value>' +
+                    ' <value>5</value>' +
+                    ' <value>28</value>' +
+                    ' <value>6</value>' +
+                    ' <value>7</value>' +
+                    ' <value>8</value>' +
+                    ' <value>9</value>' +
+                    ' <value>10</value>' +
+                    '  <value>11</value>' +
+                    ' <value>12</value>' +
+                    ' <value>14</value>' +
+                    ' <value>15</value>' +
+                    '<value>16</value>' +
+                    ' <value>17</value>' +
+                    ' <value>18</value>' +
+                    ' <value>19</value>' +
+                    ' <value>20</value>' +
+                    ' <value>21</value>' +
+                    ' <value>22</value>' +
+                    ' </condition>' +
+                    ' </filter>';
+            }
+            else if (formLabel == "EQS - Compliance") {
+                query = '<filter type="and" >' +
+                    '<condition attribute="ss_crmproductgroups" operator="in" >' +
+                    ' <value>8</value>' +
+                    ' <value>16</value>' +
+                    ' <value>19</value>' +
+                    ' <value>20</value>' +
+                    ' <value>22</value>' +
+                    ' </condition>' +
+                    ' </filter>';
+            }
+
+            var FetchInvoices = '<fetch page="' + page + '"   mapping="logical">' +
+                '<entity name="invoicedetail" >' +
+                '<attribute name="productid" />' +
+                '<attribute name="extendedamount" />' +
+                '<attribute name="productname" />' +
+                '<filter>' +
+                '<condition attribute="productid" operator="not-null" />' +
+                '</filter>' +
+                '<link-entity name="invoice" from="invoiceid" to="invoiceid" link-type="inner" alias="invoice" >' +
+                '<attribute name="accountid" />' +
+                '<attribute name="name" />' +
+                '<attribute name="ss_postingdate" />' +
+                '<filter type="and"><condition attribute="ss_postingdate" operator="on-or-after" value="' + LatestDate + '" /><filter type="or" >' +
+                '<condition attribute="accountid" operator="eq" value="' + _Accountid + '" />' +
+                '<condition attribute="customerid" operator="eq" value="' + _Accountid + '" />' +
+                '</filter></filter>' +
+                '</link-entity>' +
+                '<order attribute="productid" />' +
+                '<link-entity name="product" from="productid" to="productid" link-type="inner" >' +
+                '<attribute name="ss_crmproductgroupsname" />' +
+                '<attribute name="ss_crmproductgroups" />' +
+                '<attribute name="productnumber" />';
+            if (query != "") {
+                FetchInvoices += query;
+            }
+            FetchInvoices += '</link-entity>' +
+                '</entity>' +
+                '</fetch>';
+
+
+            var req = new XMLHttpRequest();
+            req.open("GET", globelcontext.getClientUrl() + "/api/data/v8.0/invoicedetails?fetchXml=" + encodeURI(FetchInvoices), true);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Prefer", "odata.include-annotations=\"OData.Community.Display.V1.FormattedValue\"");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    if (this.status === 200) {
+                        var results = JSON.parse(this.response);
+                        var morerecords = false;
+                        if (results.value['@Microsoft.Dynamics.CRM.fetchxmlpagingcookie']) {
+                            morerecords = true;
+                        }
+                        debugger;
+                        var PreviousProductID = "empty";
+                        var PreviousInvoicePostingDate = "";
+                        var CRMProductName = "";
+                        var preCRMProductName = "";
+                        var preAmount = 0;
+                        var productnamenew = "";
+                        for (var x = 0; x < results.value.length; x++) {
+                            var ProductID = "";
+                            var ContractFrom = "";
+                            var ContractTo = "";
+                            var InvoicePostingDate = "";
+                            var baseAmount = 0;
+                            if (results.value[x]['invoice_x002e_ss_postingdate@OData.Community.Display.V1.FormattedValue']) {
+                                InvoicePostingDate = results.value[x]['invoice_x002e_ss_postingdate']
+                            }//product2_x002e_ss_crmproductgroups@OData.Community.Display.V1.FormattedValue
+                            if (results.value[x]['product2_x002e_ss_crmproductgroups@OData.Community.Display.V1.FormattedValue']) {
+                                CRMProductName = results.value[x]['product2_x002e_ss_crmproductgroups@OData.Community.Display.V1.FormattedValue'];
+                                console.log("Product Group Name is => " + CRMProductName);
+                            }
+                            if (results.value[x]['_productid_value']) {
+                                ProductID = results.value[x]['_productid_value']
+                                console.log("Product ID is = > " + ProductID);
+                            }
+                            if (results.value[x]['extendedamount']) {
+                                baseAmount = results.value[x]['extendedamount'];
+                            } //
+                            if (results.value[x]['productname']) {
+                                productnamenew = results.value[x]['productname'];
+                                console.log("Product name is => " + productnamenew);
+                            }
+                            if (currencySymbolId == "") {
+                                if (results.value[x]['_transactioncurrencyid_value']) {
+                                    currencySymbolId = results.value[x]['_transactioncurrencyid_value'];
+
+                                    //   currencySymbol = currencyFormmated[1];
+                                }
+                            }
+                            if (ProductID == PreviousProductID) //old products reoccuring
+                            {
+                                //console.log("flag1 "+productName);
+                                var prevPostingDate = new Date(PreviousInvoicePostingDate).toUTCString();
+                                prevPostingDate = new Date(prevPostingDate);
+                                var NewPostingDate = new Date(InvoicePostingDate).toUTCString();
+                                NewPostingDate = new Date(NewPostingDate);
+                                if (prevPostingDate < NewPostingDate) {
+                                    PreviousInvoicePostingDate = InvoicePostingDate;
+                                }
+                                if (InvoicePostingDate != "") {
+                                    var NewPDate = new Date(InvoicePostingDate);
+                                    NewPDate = new Date(NewPDate);
+                                    if (NewPDate != "" && NewPDate < currentYearFormated && NewPDate > pDate) //invoice exists within 12 months
+                                    {
+                                        var newAmount = Number(preAmount) + Number(baseAmount);
+                                        preAmount = newAmount;
+                                        //console.log("name:"+productName);
+                                        console.log("flag2");
+                                    }
+                                }
+                            }
+                            else  //new
+                            {
+                                if (PreviousProductID != "empty")   //for first
+                                {
+                                    //Turn the Light ON!
+                                    updateFields(preCRMProductName, PreviousInvoicePostingDate, preAmount);
+                                }
+                                    
+                            
+                                PreviousProductID = ProductID;
+                                PreviousInvoicePostingDate = InvoicePostingDate;
+                                preCRMProductName = CRMProductName
+                                if (InvoicePostingDate != "") {
+                                    var NewPostingDate = new Date(InvoicePostingDate);
+                                    NewPostingDate = new Date(NewPostingDate);
+                                    if (NewPostingDate != "" && NewPostingDate < currentYearFormated && NewPostingDate > pDate) //invoice exists within 12 months
+                                    {
+                                        preAmount = baseAmount;
+                                    }
+                                    else
+                                        preAmount = 0;
+                                    // preAmount = baseAmount;
+                                }
+                                else
+                                    preAmount = 0;
+
+                            }
+                            if (x == results.value.length - 1) {
+                                updateFields(preCRMProductName, PreviousInvoicePostingDate, preAmount);
+                            }
+
+                        }
+                        if (morerecords == true) {
+                            pagingcookie = results.value['@Microsoft.Dynamics.CRM.fetchxmlpagingcookie'];
+                            pagingcookie = pagingcookie.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/\'/g, '&quot;').replace(/&amp;/g, "&amp;amp;");
+                            page++;
+                        } else {
+                            if(CRMProductName == null || CRMProductName == "")
+                                {
+                                    window.parent.Xrm.Page.getAttribute("ss_producttiles").setValue("");
+                                }
+                            addcurrencySymbol();
+                            hideLoadingMessage();
+                        }
+                    }
+                    else {
+                        alert(this.statusText + "Web Api failed ss_ProductTiles #611. Could not fetch invoice details");
+                        hideLoadingMessage();
+                    }
+                }
+            };
+            req.send();
+        }
+        var prodName = "";
+        var statuscode = "";
+        function checkoppproducts()
+        {
+            var fetchData = {
+            accountid: _Accountid
+        };
+                        var fetchXml = [
+                    "<fetch top='50'>",
+                    "  <entity name='account'>",
+                    "    <link-entity name='opportunity' from='parentaccountid' to='accountid' alias='opp'>",
+                    "      <attribute name='name' />",
+                    "      <attribute name='statuscode' />",
+                    "      <attribute name='statecode' />",
+                    "      <filter>",
+                    "        <condition attribute='accountid' operator='eq' value='", fetchData.accountid,"'/>",
+                    "      </filter>",
+                    "      <link-entity name='opportunityproduct' from='opportunityid' to='opportunityid'        alias='accopp'>",
+                    "        <attribute name='productname' />",
+                    "        <link-entity name='product' from='productid' to='productid'>",
+                    "          <attribute name='ss_crmproductgroupsname' />",
+                    "          <attribute name='ss_crmproductgroups' />",
+                    "        </link-entity>",
+                    "      </link-entity>",
+                    "    </link-entity>",
+                    "  </entity>",
+                    "</fetch>",
+                        ].join("");
+                    var statecode = "";
+                    fetchXml = "?fetchXml=" + encodeURIComponent(fetchXml);
+                    parent.Xrm.WebApi.online.retrieveMultipleRecords("account", fetchXml).then(
+                    function success(result)
+			        {
+                        if(result.entities.length > 0)
+				        {
+                            
+                            for(var i=0; i<result.entities.length; i++)
+                            {
+                                prodName += result.entities[i]["accopp.productname"] + ",";
+                            }
+                            console.log(`Product Names are ${prodName} `);
+                            statecode=result.entities[0]["opp.statecode"];
+                            statuscode = result.entities[0]["opp.statuscode"];
+                        }
+                        if(prodName !="" && prodName!=null)
+                        {
+                            checkproduct = true;
+                        }
+                        changecolors(checkproduct, statuscode, statecode, prodName, result);
+                        
+                   },
+                    function(error)
+				{
+					console.log("Error is => " + console.error);
+				}
+			)
+        }
+        function changecolors(checkproduct, statuscode, statecode, prodName, result)
+        {
+            for(i = 0; i < result.entities.length; i++){
+                var groupname = "";
+                                groupname = result.entities[i]["product3.ss_crmproductgroups@OData.Community.Display.V1.FormattedValue"];
+                                var str = groupname.split(' ');
+                                var id = "#" + str[0];
+                                //for production
+                                if (statuscode === 717800010 && checkproduct ){
+                                    //for eqs test2
+                                //if (statuscode === 717800005 && checkproduct ) {
+                                    $(id).css('background', '#ff8f66');
+                                }
+                                //for production
+                                else if(statecode === 2 && statuscode != 717800010 && checkproduct){
+                                    //for eqs test2
+                                //else if(statecode === 2 && statuscode != 717800005 && checkproduct){
+                                    $(id).css('background', '#FF4B4B'); //#e6513e
+                                }
+                                else if (checkproduct) 
+                                {
+                                    $(id).css('background', '#008FF0');
+                                }
+                                else
+                                {
+                                    $(id).css('background', '#d8d4d4');
+                                }
+                            }
+                            
+            FindInvoicesandContracts();
+        }
+        function addcurrencySymbol() {
+            retrieveSymbol();
+
+            var allDivs = $(".column-1");
+            var values = [];
+            var names = [];
+            for (var i = 0; i < allDivs.length; i++) {
+                var getval = "#" + allDivs[i].id + " span strong";
+                var prevalue = $(getval).html();
+                prevalue = Number(prevalue);
+                if (prevalue != 0) {
+                    values.push(prevalue);
+                    var getname = "#" + allDivs[i].id + " p"
+                    var productName = $(getname).html();
+                    names.push(productName);
+                }
+
+                var newVal = Number(prevalue);
+                newVal = currencySymbol + (newVal).formatMoney(2, DecimalSymbol, NumberSeparator);
+
+                $(getval).html(newVal);
+            }
+            var contentval = [];
+            for (var i = 0; i < values.length; i++) {
+                var productNames = names[i];
+                productNames = productNames.replace("&amp;", "&");
+                contentval.push({ label: productNames, value: values[i] })
+            }
+            if (contentval.length > 0) {
+                var pie = new d3pie("pie", {
+                    header: {
+                        title: {
+                            text: ""
+                        },
+                        location: "pie-center"
+                    },
+                    size: {
+                        pieInnerRadius: "65%"
+                    },
+                    data: {
+                        sortOrder: "label-asc",
+                        content: contentval
+                    }
+                });
+            }
+            else {
+                $("#pie").html("<p style='margin-top:40%'>There is no data to show in this graphs.</p>");
+            }
+        }
+        // function retireveGroupStatus() {
+        //     var req = new XMLHttpRequest();
+        //     req.open("GET", globelcontext.getClientUrl() + "/api/data/v8.1/ss_accountcontractextras?$select=modifiedon,ss_contractstartingdate,ss_comments,_ss_accountcontractextra_value,ss_accountcontractextraid,ss_competitor,ss_name,ss_productstatus&$filter=_ss_accountcontractextra_value eq " + _Accountid, true);
+        //     req.setRequestHeader("OData-MaxVersion", "4.0");
+        //     req.setRequestHeader("OData-Version", "4.0");
+        //     req.setRequestHeader("Accept", "application/json");
+        //     req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+        //     req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+        //     req.onreadystatechange = function () {
+        //         if (this.readyState === 4) {
+        //             req.onreadystatechange = null;
+        //             if (this.status === 200) {
+        //                 var results = JSON.parse(this.response);
+        //                 for (var i = 0; i < results.value.length; i++) {
+        //                     var ss_competitor = results.value[i]["ss_competitor"];
+        //                     var ss_name = results.value[i]["ss_name"];
+        //                     var ss_productstatus = results.value[i]["ss_productstatus"];
+        //                     var modifiedon = results.value[i]["modifiedon@OData.Community.Display.V1.FormattedValue"];
+        //                     var ss_accountcontractextraid = results.value[i]["ss_accountcontractextraid"];
+        //                     var str = ss_name.split(" ");
+        //                     var id = "#" + str[0];
+        //                     if (ss_productstatus == 1) {
+        //                         $(id).css('background', '#FF6400');
+        //                     }
+
+        //                     if (ss_productstatus == 3) {
+        //                         $(id).css('background', '#FFFF66');
+        //                     }
+        //                     if (ss_productstatus == 5) {
+        //                         $(id).css('background', '#008FF0');
+        //                     }
+        //                     if (ss_productstatus == 2 || ss_productstatus == 4) {
+        //                         $(id).css('background', '#FF4B4B'); //#e6513e
+        //                     }
+        //                     if (results.value[i]["ss_contractstartingdate"] != null && results.value[i]["ss_contractstartingdate"] != "") {
+        //                         $(id).css('background', '#92D050');
+        //                     }
+
+        //                 }
+        //                 FindInvoicesandContracts();
+        //             } else {
+        //                 // parent.Xrm.Utility.alertDialog(this.statusText);
+
+        //                 if (this.statusText != "" || null) {
+        //                     var alertStrings = { confirmButtonLabel: "Ok", text: this.statusText + "Web Api failed ss_ProductTiles #611. Could not get data from entity ss_accountcontractextras" };
+        //                     var alertOptions = { height: 120, width: 260 };
+        //                     Xrm.Navigation.openAlertDialog(alertStrings, alertOptions).then(
+        //                         function success(result) {
+        //                             //     console.log("Alert dialog closed");
+        //                         },
+        //                         function (error) {
+        //                             //        console.log(error.message);
+        //                             alert("Web Api failed ss_ProductTiles #612. Could not get data from entity ss_accountcontractextras");
+        //                         });
+        //                 }
+        //             }
+        //         }
+        //     };
+        //     req.send();
+        // }
+        var prodtile = "";
+        function updateproducttiles(res)
+        {
+            console.log("In Update Product Tiles");
+            if (res === "Policy Channel")
+                                {
+                                    prodtile +="PM,";
+                                }
+
+                                if(res === "App")
+                                {
+                                    prodtile += "AP,";
+                                }
+                                if(res === "Audio Webcast")
+                                {
+                                    prodtile += "AW,";
+                                }
+                                if(res === "Charts & Invest. Calc.")
+                                {
+                                    prodtile += "CIC,";
+                                }
+                                if(res === "Contact Manager")
+                                {
+                                    prodtile += "CM,";
+                                }
+                                if(res === "Corp Web & Micro")
+                                {
+                                    prodtile += "CWM,";
+                                }
+                                if(res === "EQS IR Cockpit")
+                                {
+                                    prodtile += "IRC,";
+                                }
+                                if(res === "Fact Sheet")
+                                {
+                                    prodtile += "FS,";
+                                }
+                                if(res === "Insider Manager")
+                                {
+                                    prodtile += "IM,";
+                                   
+                                }
+                                if(res === "IR Website")
+                                {
+                                    prodtile +="IRW,";
+                                }
+                                if(res === "LEI")
+                                {
+                                    prodtile +="LEI,";
+                                }
+                                if(res === "Translation")
+                                {
+                                    prodtile += "TR,";
+                                }
+                                if(res ==="K3 K4 Meldung")
+                                {
+                                    prodtile += "K34,";
+                                }
+                                if(res === "Newsfeed")
+                                {
+                                    prodtile +="NF,";
+                                }
+                                if(res === "Online Report")
+                                {
+                                    prodtile += "OR,";
+                                }
+                                if(res === "Others")
+                                {
+                                    prodtile += "OT,";
+                                }
+                                if(res === "Portal Network")
+                                {
+                                    prodtile += "PN,";
+                                }
+                                if(res === "Quick Analyzer")
+                                {
+                                    prodtile += "QA,";
+                                }
+                                if(res === "Regulatory & News")
+                                {
+                                    prodtile += "RN,";
+                                }
+                                if(res === "Telco")
+                                {
+                                    prodtile += "TCO,";
+                                }
+                                if(res === "Video Webcast")
+                                {
+                                    prodtile += "VW,";
+                                }
+                                if(res === "XML Conversion")
+                                {
+                                    prodtile += "XML,";
+                                }
+                                if(res === "Media Plan")
+                                {
+                                    prodtile +="MP,";
+                                }
+                                if(res === "Integrity Line")
+                                {
+                                    prodtile += "IL,";
+                                }
+                                prodtile = prodtile.split(',').filter(function(allItems,i,a){
+                                    return i==a.indexOf(allItems);
+                                }).join(',');
+                                window.parent.Xrm.Page.getAttribute("ss_producttiles").setValue(prodtile);
+        }
+        function updateFields(crmgroupname, PreviousInvoicePostingDate, baseAmount) {
+            var str = crmgroupname.split(" ");
+            var UTCPreviousInvoicePostingDate = "";
+            if (PreviousInvoicePostingDate != "") {
+                UTCPreviousInvoicePostingDate = new Date(PreviousInvoicePostingDate).toUTCString();
+                UTCPreviousInvoicePostingDate = new Date(UTCPreviousInvoicePostingDate);
+            }
+            var today = new Date();
+            var formatedold = today.setMonth(today.getMonth() - 12);
+            var lastYear = new Date(formatedold);
+            var id = "#" + str[0];
+            var ytd = id + " span strong";
+            var prevale = $(ytd).html();
+
+            if (UTCPreviousInvoicePostingDate != "" && UTCPreviousInvoicePostingDate > lastYear)    //invoice exists within 12 months
+            {
+                $(id).css('background', '#92D050');
+                
+                //  var newVal = Number(prevale) + Number(baseAmount);
+                //  $(ytd).html(newVal);
+            }
+            if (UTCPreviousInvoicePostingDate != "") {
+                var turnOverId = "#" + str[0] + "_turnover";
+                var oldValue = Number($(turnOverId).html());
+                if (oldValue == 0) {
+                    $(ytd).html(baseAmount);
+                }
+                else {
+                    var newVal = Number(prevale) + Number(baseAmount);
+                    $(ytd).html(newVal);
+                }
+            }
+            updateproducttiles(crmgroupname);
+        }
+        function showLoadingMessage() {
+            msgDiv.style.display = "block";
+        }
+        function hideLoadingMessage() {
+            msgDiv.style.display = "none";
+        }
+        function openContractExtrasWindow(id) {
+            var form_type = parent.Xrm.Page.ui.getFormType();
+            if (form_type != 1) {
+
+                var customParameters = encodeURIComponent("\"" + id + "\"");
+                var url = "/webresources/ss_ProductContractPageHTML?data=" + customParameters;
+                window.open(url, null, "fullscreen=yes, resizable=yes, scrollbars=yes");
+
+            }
+        }
+        function retrieveSymbol() {
+            if (currencySymbolId != "" && currencySymbolId != undefined) {
+                var req = new XMLHttpRequest();
+                req.open("GET", globelcontext.getClientUrl() + "/api/data/v8.1/transactioncurrencies(" + currencySymbolId + ")?$select=currencysymbol", false);
+                req.setRequestHeader("OData-MaxVersion", "4.0");
+                req.setRequestHeader("OData-Version", "4.0");
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+                req.onreadystatechange = function () {
+                    if (this.readyState === 4) {
+                        req.onreadystatechange = null;
+                        if (this.status === 200) {
+                            var result = JSON.parse(this.response);
+                            currencySymbol = result["currencysymbol"];
+                            formatingSymbols();
+                        } else {
+                            //parent.Xrm.Utility.alertDialog(this.statusText);
+
+                            if (this.statusText != "" || null) {
+
+                                var alertStrings = { confirmButtonLabel: "Ok", text: this.statusText + "Web Api failed ss_ProductTiles #613. Could not get record from entity ss_ProductTiles." };
+                                var alertOptions = { height: 120, width: 260 };
+                                Xrm.Navigation.openAlertDialog(alertStrings, alertOptions).then(
+                                    function success(result) {
+                                        //     console.log("Alert dialog closed");
+                                    },
+                                    function (error) {
+                                        //     console.log(error.message);
+                                    });
+                            }
+                        }
+                    }
+                };
+                req.send();
+            }
+            else {
+                formatingSymbols();
+
+            }
+        }
+        Number.prototype.formatMoney = function (c, d, t) {
+            var n = this,
+                //   c = isNaN(c = Math.abs(c)) ? 2 : c,
+                //    d = d == undefined ? "." : d,
+                //  t = t == undefined ? "," : t,
+                s = n < 0 ? "-" : "",
+                i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "",
+                j = (j = i.length) > 3 ? j % 3 : 0;
+            return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+        };
+        function formatingSymbols() {
+            var userId = globelcontext.userSettings.userId.replace("}", "").replace("{", "");       //parent.Xrm.Page.context.getUserId().replace("}", "").replace("{", "");
+
+            var req = new XMLHttpRequest();
+            req.open("GET", globelcontext.getClientUrl() + "/api/data/v8.1/usersettingscollection?$select=decimalsymbol,numberseparator&$filter=systemuserid eq " + userId, false);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 200) {
+                        var results = JSON.parse(this.response);
+                        for (var i = 0; i < results.value.length; i++) {
+                            DecimalSymbol = results.value[i]["decimalsymbol"];
+                            NumberSeparator = results.value[i]["numberseparator"];
+
+                        }
+                    } else {
+                        //parent.Xrm.Utility.alertDialog(this.statusText);
+                        if (this.statusText != "" || null) {
+                            var alertStrings = { confirmButtonLabel: "Ok", text: this.statusText + " Web Api failed ss_ProductTiles #614. Could not get record from entity usersettingscollection" };
+                            var alertOptions = { height: 120, width: 260 };
+                            Xrm.Navigation.openAlertDialog(alertStrings, alertOptions).then(
+                                function success(result) {
+                                    //     console.log("Alert dialog closed");
+                                },
+                                function (error) {
+                                    //     console.log(error.message);
+                                });
+                        }
+                    }
+                }
+            };
+            req.send();
+        }
+
+    </script>
+
+    <div style="clear: both;"></div>
+    <br>
+    <div id="main" style="width:100%">
+        <div id="content" style="width:70%; float:left">
+            <div class="loaderStyle" id="msgDiv"><img alt="" src="/_imgs/advfind/progress.gif"><br></div>
+            <div class="column-12">
+                <div class="column-1" onclick="openContractExtrasWindow('App')" id="App">
+                    <p>App</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <div class="column-1" onclick="openContractExtrasWindow('Audio')" id="Audio">
+                    <p>Audio Webcast</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <div class="column-1" onclick="openContractExtrasWindow('Charts')" id="Charts">
+                    <p>Charts &amp; Invest. Calc. </p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <div class="column-1" onclick="openContractExtrasWindow('Contact')" id="Contact">
+                    <p>Contact Manager</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <div class="column-1" onclick="openContractExtrasWindow('Corp')" id="Corp">
+                    <p>Corp Web &amp; Micro</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <div class="column-1" onclick="openContractExtrasWindow('EQS')" id="EQS">
+                    <p>EQS IR Cockpit</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <div class="column-1" onclick="openContractExtrasWindow('Fact')" id="Fact">
+                    <p>Fact Sheet</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <div class="column-1" onclick="openContractExtrasWindow('Insider')" id="Insider">
+                    <p>Insider Manager</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <div class="column-1" onclick="openContractExtrasWindow('IR')" id="IR">
+                    <p>IR Website</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <div class="column-1" onclick="openContractExtrasWindow('LEI')" id="LEI">
+                    <p>LEI</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <!--   <div class="column-1 " id="whitediv" style="background:white;visibility:hidden;"><p style="color:white">Telco</p><span style="color:white">Past 12M:<strong style="color:white">?0,00</strong></span></div>-->
+                <div class="column-1" onclick="openContractExtrasWindow('Translation')" id="Translation">
+                    <p>Translation</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <div class="column-1" onclick="openContractExtrasWindow('k3')" id="k3">
+                    <p>K3 K4 Meldung</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+            </div>
+            <div class="column-12">
+                <div class="column-1" onclick="openContractExtrasWindow('Newsfeed')" id="Newsfeed">
+                    <p>Newsfeed</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <div class="column-1" onclick="openContractExtrasWindow('Online')" id="Online">
+                    <p>Online Report</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <div class="column-1" onclick="openContractExtrasWindow('Others')" id="Others">
+                    <p>Others</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <div class="column-1" onclick="openContractExtrasWindow('Portal')" id="Portal">
+                    <p>Portal Network</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <div class="column-1" onclick="openContractExtrasWindow('Quick')" id="Quick">
+                    <p>Quick Analyzer</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <div class="column-1" onclick="openContractExtrasWindow('Regulatory')" id="Regulatory">
+                    <p>Regulatory &amp; News</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <div class="column-1" onclick="openContractExtrasWindow('Telco')" id="Telco">
+                    <p>Telco</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <div class="column-1" onclick="openContractExtrasWindow('Video')" id="Video">
+                    <p>Video Webcast</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <div class="column-1" onclick="openContractExtrasWindow('XML')" id="XML">
+                    <p>XML Conversion</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <div class="column-1" onclick="openContractExtrasWindow('Media')" id="Media">
+                    <p>Media Plan</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                <div class="column-1" onclick="openContractExtrasWindow('Integrity')" id="Integrity">
+                    <p>Integrity Line</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+
+                <div class="column-1" onclick="openContractExtrasWindow('Policy')" id="Policy">
+                    <p>Policy Manager</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+
+                <div class="column-1" onclick="openContractExtrasWindow('ESEF')" id="ESEF">
+                    <p>ESEF</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+                
+                <div class="column-1" onclick="openContractExtrasWindow('Approval')" id="Approval">
+                    <p>Approval Manager</p><span>Past 12M:<strong>0</strong></span>
+                </div>
+            </div>
+        </div>
+        <div style="width:30%; float:left">
+            <div style="width:90%; float:right">
+                <div id="pie"></div>
+            </div>
+        </div>
+    </div>
+
+
+</body></html>

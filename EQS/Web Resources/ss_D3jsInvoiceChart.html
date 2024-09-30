@@ -1,0 +1,280 @@
+<html>
+<head>
+    <title>
+    </title>
+    <script src="ss_Sdk.Soap.vsdoc"></script>
+    <script src="ss_d3.version3.min"></script>
+    <script src="ss_jquery"></script>
+    <script src="ss_Sdk.RetrieveMultiple"></script>
+    <style>
+        body {
+            font-family: Segoe UI,Tahoma,Arial !important;
+            font-size: 12px;
+            margin: 5px;
+        }
+
+        .bar {
+            fill: #5b97d5;
+            /*font-size: 11px !important;*/
+            width: 55px;
+        }
+
+            .bar:hover {
+                fill: brown;
+            }
+
+        /*.axis {
+            font: 10px sans-serif;
+        }*/
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+
+        .x.axis path {
+            display: none;
+        }
+    </style>
+
+    <script>
+
+        var globelcontext= parent.Xrm.Utility.getGlobalContext();
+
+        var postingdate = 0;
+        var totalAmount = 0;
+        var data = [];
+        var NumberSeparator = "";
+        var DecimalSymbol = "";
+        var clientUrl = globelcontext.getClientUrl();
+        var accountId = parent.Xrm.Page.data.entity.getId();
+        var currency = parent.Xrm.Page.getAttribute("transactioncurrencyid").getValue();
+        if (currency != null) {
+            if (currency[0].name == "Euro (EUR)") {
+                NumberSeparator = ".";
+                DecimalSymbol = ",";
+            }
+            else {
+                NumberSeparator = ",";
+                DecimalSymbol = ".";
+            }
+            currency = (currency[0].id).replace(/[{}]/g, "");
+        }
+        debugger;
+        var currencysymbol = "";
+        var dict = [];
+        var exchangerate = 0.0;
+        function onLoad() {
+            if (currency != null) {
+                var formType = parent.Xrm.Page.ui.getFormType();
+                if (formType != 1) {
+                    var userId = globelcontext.userSettings.userId;
+                    userId = userId.replace(/[{}]/g, "");
+                    var req = new XMLHttpRequest();
+                    req.open("GET", globelcontext.getClientUrl() + "/api/data/v8.0/transactioncurrencies(" + currency + ")?$select=currencysymbol,exchangerate", false);
+                    req.setRequestHeader("OData-MaxVersion", "4.0");
+                    req.setRequestHeader("OData-Version", "4.0");
+                    req.setRequestHeader("Accept", "application/json");
+                    req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    req.setRequestHeader("Prefer", "odata.include-annotations=*");
+                    req.onreadystatechange = function () {
+                        if (this.readyState === 4) {
+                            req.onreadystatechange = null;
+                            if (this.status === 200) {
+                                var result = JSON.parse(this.response);
+                                currencysymbol = result["currencysymbol"];
+                                exchangerate = result["exchangerate"];
+                                var exchangerate_formatted = result["exchangerate@OData.Community.Display.V1.FormattedValue"];
+                            }
+                            else {
+                                alert(this.statusText + "Web Api failed ss_D3jsInvoiceChart #611.Could not get data from entity transcationcurrencies");
+                            }
+                        }
+                    };
+                    req.send();
+
+                    var fetchXml = "<fetch >" +
+                                   "<entity name='invoice'>" +
+                                   "<attribute name='totalamount' alias='SumTotalamount' />" +
+                                   "<attribute name='ss_postingdate' alias='ss_postingdateAlias'/>" +
+                                   "<attribute name='transactioncurrencyid' />" +
+                                   "<filter>" +
+                                   "<condition attribute='customerid' operator='eq' value='" + accountId + "' />" +
+                                   "<condition attribute='ss_postingdate' operator='not-null' />" +
+                                   "</filter>" +
+                                   "</entity>" +
+                                   "</fetch>";
+
+
+                    var req1 = new XMLHttpRequest();
+                    req1.open("GET", globelcontext.getClientUrl() + "/api/data/v8.0/invoices?fetchXml=" + encodeURI(fetchXml), false);
+                    req1.setRequestHeader("OData-MaxVersion", "4.0");
+                    req1.setRequestHeader("OData-Version", "4.0");
+                    req1.setRequestHeader("Accept", "application/json");
+                    req1.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    req1.setRequestHeader("Prefer", "odata.include-annotations=*");
+                    req1.onreadystatechange = function () {
+                        if (this.readyState === 4) {
+                            req1.onreadystatechange = null;
+                            if (this.status === 200) {
+                                var result = JSON.parse(this.response);
+                                if (result.value.length > 0) {
+                                    for (var i = 0; i < result.value.length; i++) {
+                                        var yrz = result.value[i]["ss_postingdateAlias"];
+                                        //var full_yr = yrz.substr(yrz.length-4);
+                                        var full_yr = yrz.substr(0, 4);
+
+                                        if (result.value[i]["SumTotalamount"]) {
+                                            if (result.value[i]["_transactioncurrencyid_value"] == currency.toLowerCase()) {
+                                                totalAmount = result.value[i]["SumTotalamount"]
+                                            }
+                                            else {
+                                                totalAmount = result.value[i]["SumTotalamount"];
+                                                var req2 = new XMLHttpRequest();
+                                                req2.open("GET", globelcontext.getClientUrl() + "/api/data/v8.0/transactioncurrencies(" + result.value[i]["_transactioncurrencyid_value"] + ")?$select=currencysymbol,exchangerate", false);
+                                                req2.setRequestHeader("OData-MaxVersion", "4.0");
+                                                req2.setRequestHeader("OData-Version", "4.0");
+                                                req2.setRequestHeader("Accept", "application/json");
+                                                req2.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                                                req2.setRequestHeader("Prefer", "odata.include-annotations=*");
+                                                req2.onreadystatechange = function () {
+                                                    if (this.readyState === 4) {
+                                                        req2.onreadystatechange = null;
+                                                        if (this.status === 200) {
+                                                            var result = JSON.parse(this.response);
+                                                            //var currencysymbol = result["currencysymbol"];
+                                                            var exchangerate_invoice = result["exchangerate"];
+                                                            var exchangerate_formatted = result["exchangerate@OData.Community.Display.V1.FormattedValue"];
+                                                            totalAmount = (totalAmount / exchangerate_invoice) * exchangerate;
+                                                        }
+                                                        else {
+                                                            alert(this.statusText + "Web Api failed ss_D3jsInvoiceChart #612.Could not fetch data from invoices");
+                                                        }
+                                                    }
+                                                };
+                                                req2.send();
+                                            }
+                                        }
+                                        else {
+                                            totalAmount = 0.00;
+                                        }
+                                        if (full_yr in dict) {
+                                            dict[full_yr] = dict[full_yr] + totalAmount;
+                                        }
+                                        else {
+                                            dict[full_yr] = totalAmount;
+                                        }
+
+                                    }
+                                    for (var key in dict) {
+                                        var foramatedAmount = (dict[key]).formatMoney(2, DecimalSymbol, NumberSeparator);
+                                        foramatedAmount = (foramatedAmount + currencysymbol).toString();
+                                        var a = {
+                                            Postingdate: key,
+                                            TotalAmount: dict[key],
+                                            Formated: foramatedAmount
+                                        };
+                                        data.push(a);
+                                    }
+                                    var margin = { top: 20, right: 20, bottom: 30, left: 60 },
+                                    width = 350 - margin.left - margin.right,
+                                    height = 230 - margin.top - margin.bottom;
+
+                                    var x = d3.scale.ordinal()
+                                        .rangeRoundBands([0, width], .1);
+
+                                    var y = d3.scale.linear()
+                                        .range([height, 0]);
+
+                                    var xAxis = d3.svg.axis()
+                                        .scale(x)
+                                        .orient("bottom");
+
+                                    var yAxis = d3.svg.axis()
+                                        .scale(y)
+                                        .orient("left")
+                                        .ticks(10, "");
+
+                                    var svg = d3.select("body").append("svg")
+                                        .attr("width", width + margin.left + margin.right)
+                                        .attr("height", height + margin.top + margin.bottom)
+                                        .append("g")
+                                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                                    x.domain(data.map(function (d) { return d.Postingdate; }));
+                                    y.domain([0, d3.max(data, function (d) { return d.TotalAmount; })]);
+
+                                    svg.append("g")
+                                      .attr("class", "x axis")
+                                      .attr("transform", "translate(0," + height + ")")
+                                      .call(xAxis);
+
+                                    svg.append("g")
+                                      .attr("class", "y axis")
+                                      .call(yAxis)
+                                    .append("text")
+                                      .attr("transform", "rotate(-90)")
+                                      .attr("y", 6)
+                                      .attr("dy", ".71em")
+                                      .style("text-anchor", "end")
+                                      .text("");
+
+
+
+                                    svg.selectAll(".bar")
+                                        .data(data)
+                                      .enter().append("rect")
+                                        .attr("class", "bar")
+                                        .attr("x", function (d) { return x(d.Postingdate); })
+                                        .attr("width", x.rangeBand())
+                                        .attr("y", function (d) { return y(d.TotalAmount); })
+                                        .attr("height", function (d) { return height - y(d.TotalAmount); });
+
+                                    svg.selectAll("text.bar")
+                                        .data(data)
+                                      .enter().append("text")
+                                        .attr("class", "bar")
+                                        .attr("text-anchor", "middle")
+                                        .attr("x", function (d) { return x(d.Postingdate) + x.rangeBand() / 2; })
+                                        .attr("y", function (d) { return y(d.TotalAmount) - 5; })
+                                        .text(function (d) { return d.Formated; });
+                                }
+                                else {
+                                    document.body.innerHTML = "<p style='text-align: center;'>A chart cannot be displayed because the view or filter criteria that you selected did not return any records.</p>";
+                                }
+                                //var invoiceid = result["invoiceid"];
+                            }
+                            else {
+                                alert(this.statusText);
+                            }
+                        }
+                    };
+                    req1.send();
+
+                }
+            }
+            else {
+                document.body.innerHTML = "<p style='text-align: center;'>A chart cannot be displayed because the view or filter criteria that you selected did not return any records.</p>";
+
+            }
+        }
+        function type(d) {
+            d.frequency = +d.Postingdate;
+            return d;
+        }
+        Number.prototype.formatMoney = function (c, d, t) {
+            var n = this,
+                s = n < 0 ? "-" : "",
+                i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "",
+                j = (j = i.length) > 3 ? j % 3 : 0;
+            return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+        };
+
+    </script>
+</head>
+
+<body onload="onLoad()">
+
+</body>
+</html>

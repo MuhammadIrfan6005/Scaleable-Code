@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Survey Responses</title>
+	<script src="ClientGlobalContext.js.aspx"></script>
+	<style type="text/css">
+	.customTable{
+		width: 100%;
+	}
+
+.customTable > thead > tr > th {
+    border-top: 1px solid rgba(128, 128, 128, 0.21);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.21);
+    font-weight: 400;
+    border-right: 1px solid rgba(128, 128, 128, 0.21);
+    text-align: left;
+    font-family: "Segoe UI",Arial,Sans-Serif;
+    color: grey;
+    font-size: 12px;
+    cursor: pointer;
+}
+.customTable > tbody > tr > td {
+    padding-top: 3px;
+    padding-left: 7px;
+    /* min-width: 200px; */
+    font-family: "Segoe UI",Arial,Sans-Serif;
+    color: black;
+    font-size: 11px;
+}
+span.lead {
+    font-weight: bold;
+    color: #00b7c3;
+}
+div#campaignsBody {
+    background: #eaeaea;
+    font-family: Segoe\000020UI\000020Semibold,Tahoma,sans\00002Dserif;
+    padding-top: 1px;
+    padding-left: 13px;
+    padding-right: 13px;
+    padding-bottom: 5px;
+}
+span.marketing {
+    font-weight: 800;
+    color: #16bf27;
+}
+p.camp {
+    background: white;
+    /* margin-top: 16px; */
+    /* margin-bottom: 8px; */
+    padding: 7px;
+    border-radius: 5px;
+}
+	</style>
+	<script type="text/javascript">
+		function checkFormStatus(){
+			let FormStatus = parent.Xrm.Page.ui.getFormType();
+			if(FormStatus == 2){
+				getCampaignActivities();
+			}else{
+				var noRecord = "Please create record first";
+				document.getElementById('campaignsBody').innerHTML = noRecord;
+			}
+		}
+		function getCampaignActivities(){
+			
+			var leadid = parent.Xrm.Page.data.entity.getId();
+            leadid = leadid.replace(/[{}]/g, "");
+            Xrm.WebApi.online.retrieveMultipleRecords("ss_hubspotcampaignactivity", "?$select=ss_activitycreatedat,ss_email,_ss_lead_value,ss_name,ss_subject,ss_type&$filter=_ss_lead_value eq "+leadid+"&$orderby=ss_activitycreatedat desc").then(
+				    function success(results) {
+				        getResponsesCallBack(results);
+				    },
+				    function(error) {
+				        Xrm.Utility.alertDialog(error.message);
+				    }
+				);
+			}
+			function getResponsesCallBack(results){
+			//console.log(results);
+			var campaignsBody = '<h2>Marketing Email</h2>';
+			var campNames = [];
+			var ss_name;
+			var isNew;
+			if(results.entities.length > 0){
+				for (var i = 0; i < results.entities.length; i++) {
+					var ss_activitycreatedat = results.entities[i]["ss_activitycreatedat@OData.Community.Display.V1.FormattedValue"];
+		            var ss_email = results.entities[i]["ss_email"];
+		            var _ss_lead_value = results.entities[i]["_ss_lead_value"];
+		            var _ss_lead_value_formatted = results.entities[i]["_ss_lead_value@OData.Community.Display.V1.FormattedValue"];
+		            var _ss_lead_value_lookuplogicalname = results.entities[i]["_ss_lead_value@Microsoft.Dynamics.CRM.lookuplogicalname"];
+		            ss_name = results.entities[i]["ss_name"];
+
+		            var ss_subject = results.entities[i]["ss_subject"];
+		            var ss_type = results.entities[i]["ss_type"];
+		            var ss_lead = results.entities[i]["_ss_lead_value@OData.Community.Display.V1.FormattedValue"];
+
+		            // var isnew = true;
+		            // for(var j=0; j < campNames.length; j++){
+		            // 	if(campNames[j] == ss_name){
+		            // 		isnew = false;
+		            // 	}
+		            // }
+		            // campNames[i] = ss_name;
+
+		            // if(isnew){
+		            // 	campaignsBody += '<p>Marketing Email: '+ss_name+'</p>';
+		            // }
+
+		            
+		            if(ss_type == "OPEN"){
+		            	ss_type = "Opened";
+		            }
+		            if(ss_type == "SENT"){
+		            	ss_type = "Sent";
+		            } 
+		            if(ss_type == "DELIVERED"){
+		            	ss_type = "Delivered";
+		            }
+					campaignsBody += '<p class="camp"><span class="lead">'+ss_lead+'</span> '+ss_type +' <span class="marketing">'+ss_name+'</span> at '+ss_activitycreatedat+'</p>';
+			            
+				    }
+				document.getElementById('campaignsBody').innerHTML = campaignsBody;
+			}else{
+				campaignsBody += 'No Record Found!!!';
+				document.getElementById('campaignsBody').innerHTML = campaignsBody;
+			}
+		}
+		// function openSurveyResponse(row) {
+  //           var id = row.id;
+  //           Xrm.Utility.openEntityForm("ss_hubspotcampaignactivity", id);
+  //       }
+
+	</script>
+	</head>
+<body onload="checkFormStatus()">
+	<div id="campaignsBody">
+		
+	</div>
+	<!-- <table class="customTable">
+		<thead>
+			<tr>
+				<th>Survey</th>
+				<th>Contact</th>
+				<th class="ratinghead">Satisfaction Rating</th>
+				<th class="npshead">NPS Type</th>
+				<th class="scorehead">Score as Percentage</th>
+			</tr>
+			
+		</thead>
+		<tbody id="responsesTblbody">
+			
+		</tbody>
+	</table> -->
+</body>
+</html>

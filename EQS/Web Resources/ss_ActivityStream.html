@@ -1,0 +1,3192 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>
+    </title>
+    <link rel="stylesheet" href="ss_bootstrap.min.css">
+    <script src="ss_jquery"></script>
+    <script src="ClientGlobalContext.js.aspx"></script>
+    <!--<script src="bbo_SDK.REST.js"></script>-->
+    <script src="ss_bootstrap.min.js"></script>
+    <!--<script src="ss_CrmFetchKit.bundle.min.js"></script>-->
+    <script src="new_FileSaver"></script>
+    <style>
+        body {
+            font-family: Segoe UI,Tahoma,Arial;
+            font-size: 11px;
+            margin: 5px;
+        }
+
+        .filterDrp {
+            margin-bottom: 15px;
+        }
+
+        .right {
+            text-align: right;
+        }
+
+        a {
+            color: grey;
+        }
+
+        li:hover {
+            background-color: darkgray;
+        }
+
+        .container {
+            width: 600px;
+        }
+
+        img {
+            vertical-align: bottom !important;
+        }
+
+        .nav-pills > li > a {
+            border-radius: 0px;
+        }
+
+
+        #moreRecords {
+            color: #005592;
+            text-align: right;
+            display: none;
+        }
+
+        .container {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        /*.nav-pills>li {
+                float: left;
+                width: 100%;
+            }*/
+        .loaderStyle {
+            text-align: center;
+            cursor: wait;
+            background-color: transparent;
+            font-size: 12px;
+            position: absolute;
+            display: none;
+            left: 200px;
+            top: 300px;
+            width: 50px;
+            height: 50px;
+        }
+
+            .loaderStyle img {
+                margin-top: 10px;
+                border: none;
+            }
+
+        #main {
+            height: 480px;
+            overflow-y: auto;
+        }
+
+        #delete-input-btn {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        p {
+            font-size: small;
+            font-weight: 600;
+            margin: 0 0 5px;
+        }
+
+        .padd {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .well {
+            margin-right: 5px;
+            margin-bottom: 5px;
+            padding: 10px;
+            /*max-width:345px;*/
+        }
+
+            .well table {
+                width: auto !important;
+            }
+
+        .well_email {
+            max-height: 170px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .navbar-nav > li > a, .navbar-brand {
+            padding-top: 4px !important;
+            padding-bottom: 0 !important;
+            height: 30px;
+        }
+
+        .navbar {
+            min-height: 28px !important;
+        }
+
+        .in.collapse + a.btn.showdetails:before {
+            content: 'Hide details ?';
+        }
+
+        .collapse + a.btn.showdetails:before {
+            content: 'Show details ?';
+        }
+
+        .btn {
+            padding: 0px;
+            font-size: 12px;
+            color: #337ab7;
+        }
+
+        .PreTagDesign {
+            display: inline;
+            white-space: pre-wrap;
+            padding: 0px;
+            margin: 0px;
+            font-size: 13px;
+            line-height: 1.42857143;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #333;
+            background-color: #f5f5f5;
+            border: 0px;
+            border-radius: 0px;
+        }
+
+        .nav > li > a {
+            position: relative;
+            display: block;
+            padding: 7px 10px;
+        }
+
+        .pull-right {
+            float: left !important;
+        }
+    </style>
+
+    <script>
+        
+        var globelcontext= parent.Xrm.Utility.getGlobalContext();
+        
+        var min = "";
+        var max = "";
+        var selectedYear = "";
+        var table = "";
+        var result = "";
+        var UILanguageId = "";
+        var filter = "";
+        var page = 1;
+        var fetchXml = "";
+        var fetchXmlNotes = "";
+        var activitiesResults = [];
+        var notesResults = "";
+        var pageCookie = "";
+        var entityName = parent.Xrm.Page.data.entity.getEntityName();
+        var retrieveCondition = "";
+        var selectedTab = "Activities";	//Activities & Notes
+        var win = ""; //for update note
+        var isTimelineDisabled = 0;	//this var is for form fype 1
+        var retrievesActivitiescheck = false;
+        var notesFlag = false;
+        var PreviousIds = [];
+        var PreviousIdsNotes = [];
+        var notesIndexs = [];
+        var activitesIndex = [];
+        var notesDateCheck = false;
+        var loadMoreCheck = false;
+        var userRoles = [];
+        var unchangeOfFilter = false;
+        var systemUserRole;
+        var isadministrator = false;
+        //  var userRoleFilter = "";
+        //Retrieveing Language ID from UserSetting, and change the language of the fields in case of returned id(1031/germen).
+
+        function RoleFilter() {
+            isadministrator = false;
+            page = 1;
+            PreviousIds = [];
+            PreviousIdsNotes = [];
+            pageCookie = "";
+            page = 1;
+            table = "";
+            unchangeOfFilter = true;
+            loadMoreCheck = false;
+            document.getElementById("moreRecords").style.display = "none";
+
+            table = "";
+            document.getElementById("activities").innerHTML = "";
+
+            var systemUserRole = globelcontext.userSettings.securityRoles;
+
+
+            //userRoleFilter = "";
+            //var userRoleFilter = "?$select=name,roleid&$filter=";
+            //var filter = "";
+            //for (var i = 0; i < systemUserRole.length; i++) {
+            //    filter += (filter == "" ? "" : " or ") + "roleid eq " + systemUserRole[i];
+            //}
+            //userRoleFilter = userRoleFilter + filter;
+
+            if (entityName == "account") {
+                retrieveAccountRecords();
+            }
+            else if (entityName == "opportunity") {
+                OpportunityRecords();
+            }
+
+            else if (entityName == "contact") {
+                ContactRecords();
+            }
+
+            else if (entityName == "lead") {
+                leadRecords();
+            }
+            else if (entityName == "ss_visitreport") {
+                visitRecords();
+            }
+            // retrieveUserSettings();
+
+
+        }
+        function retrieveUserSettings() {
+
+            table = "";
+
+            var formType = parent.Xrm.Page.ui.getFormType();
+            if (formType == 1) {
+                isTimelineDisabled = 1;
+                if (UILanguageId == 1031) {
+                    document.getElementById("moreRecords").style.display = "none";
+                    document.getElementById("activities").innerHTML = "So aktivieren Sie diese Inhalte zu erstellen den Datensatz.";
+                }
+                else {
+                    document.getElementById("moreRecords").style.display = "none";
+                    document.getElementById("activities").innerHTML = "To enable this content create the record.";
+                }
+                return;
+            }
+            // old method for get user id   parent.Xrm.Page.context.getUserId();
+            var userId = globelcontext.userSettings.userId;
+            userId = userId.replace(/[{}]/g, "");
+            var req = new XMLHttpRequest();
+            req.open("GET", encodeURI(globelcontext.getClientUrl() + "/api/data/v8.0/usersettingscollection(" + userId + ")?$select=uilanguageid"), true);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("Prefer", "odata.include-annotations=\"OData.Community.Display.V1.FormattedValue\"");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 200) {
+                        var result = JSON.parse(this.response);
+                        UILanguageId = result["uilanguageid"];
+                        if (UILanguageId == 1031) {
+
+                            document.getElementById("titletop").innerHTML = "<div id='titletop'><h6><b>Aktivität Zeitleiste</b></h6></div><div>";
+                            document.getElementById("gridHeader").innerHTML = "<ul class='nav nav-pills'>" +
+							"<li><a style='padding:5px 6px;' href='#' onclick=\"openNewActivity('phonecall')\"><span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Anruf</a></li>" +
+							"<li><a style='padding:5px 6px;' href='#' onclick=\"openNewTask()\"><span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Aufgabe</a></li>" +
+							//"<li><a style='padding:5px 6px;' href='#' onclick=\"openNewActivity('email')\"><span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Email</a></li>" +
+							//"<li><a style='padding:5px 6px;' href='#' onclick=\"openNewActivity('letter')\"><span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Brief</a></li>" +
+                            "<li><a style='padding:5px 6px;' href='#' onclick=\"openNewAppointment()\"><span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Termin</a></li>" +
+                            "<li><a style='padding:5px 6px;' href='#' onclick=\"openNewNotification()\"><span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Info</a></li>" + //Notification in German
+							"<li id='note'><a style='padding:5px 6px;' href='#' onclick='openNewNote()'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span>Anhang</a></li>" +
+							"</ul></div>";
+
+
+                            document.getElementById("moreRecords").innerHTML = "<a href='#' onclick='retrieveActivities()'>Ältere Aktivitäten anzeigen... </a>";
+                        }
+                        yearstoPopulate();
+                        // retrieveUserRoles();
+                    }
+                    else {
+                        alert(this.statusText);
+                    }
+                }
+            };
+            req.send();
+
+        }
+        ////yearstoPopulate() this method is called from retrieveYear method when we get both the maximum and minimum years.
+        // Now here we populate the years from maximum to minimum year in the header, and also checks whether the most rescent record is of current year?
+        function yearstoPopulate() {
+            var today = new Date();
+            var CurrentYear = today.getFullYear();
+            var list = "<li></li>";
+
+            if (UILanguageId == 1031) {
+                list += "<li class='active'><a href='#' onclick='YearSelected(\"ALL\")'>Alle Jahre</a></li>";
+            }
+            else {
+                list += "<li class='active'><a href='#' onclick='YearSelected(\"ALL\")'>All Years</a></li>";
+            }
+
+            list += "<li><a href='#' onclick='YearSelected(" + CurrentYear + ")'>" + CurrentYear + "</a></li>";
+
+            selectedYear = "ALL";	//at start this would populate
+            max = CurrentYear - 1;
+            min = max - 2;	//2 more years tabs other than current year
+            for (var i = max; i > min ; i--) {
+                list += "<li><a href='#' onclick='YearSelected(" + i + ")'>" + i + "</a></li>";
+            }
+            if (UILanguageId == 1031) {
+                list += "<li><a href='#' onclick='YearSelected(" + min + ")'>" + "Vorjahren" + "</a></li>";
+            }
+            else {
+                list += "<li><a href='#' onclick='YearSelected(" + min + ")'>" + "Past Years" + "</a></li>";
+            }
+
+            //if (UILanguageId == 1031)
+            //    list += "<li><a href='#' onclick='switchtab();'>Anhang</a></li>";
+            //else
+            //    list += "<li><a href='#' onclick='switchtab();'>Attachment</a></li>";
+
+            document.getElementById('myList').innerHTML = list;
+            //for highlighting the selected year
+            $("#myList a").on("click", function () {
+                $(".nav-years").find(".active").removeClass("active");
+                $(this).parent().addClass("active");
+            });
+            if (entityName == "account") {
+                retrieveAccountRecords();
+            }
+            else if (entityName == "opportunity") {
+                OpportunityRecords();
+            }
+
+            else if (entityName == "contact") {
+                ContactRecords();
+            }
+
+            else if (entityName == "lead") {
+                leadRecords();
+            }
+            else if (entityName == "ss_visitreport") {
+                visitRecords();
+            }
+
+        }
+
+        function retrieveUserRoles() {
+
+            var currentUserRoles =globelcontext.userSettings.securityRoles;//getUserRoles()
+            var descQuery = "?$select=name&$filter=";
+            var filter = "";
+            for (var i = 0; i < currentUserRoles.length; i++) {
+                filter += (filter == "" ? "" : " or ") + "roleid eq " + currentUserRoles[i];
+            }
+
+
+            descQuery = descQuery + filter;
+
+            var req2 = new XMLHttpRequest();
+            req2.open("GET", globelcontext.getClientUrl() + "/api/data/v8.2/roles" + descQuery, false);
+            req2.setRequestHeader("OData-MaxVersion", "4.0");
+            req2.setRequestHeader("OData-Version", "4.0");
+            req2.setRequestHeader("Accept", "application/json");
+            req2.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req2.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+            req2.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    if (this.status === 200) {
+                        var results = JSON.parse(this.response);
+                        for (var i = 0; i < results.value.length; i++) {
+                            var name = results.value[i]["name"];
+                            var roleid = results.value[i]["roleid"];
+
+                            if (name == "System Administrator") {
+                                isadministrator = true;
+                            }
+                        }
+                    } else {
+                        //Xrm.Utility.alertDialog(this.statusText);
+                        var errorOptions = { message: "Web Api Failed, Could not get data from entity roles; ss_ActivityStream #611. ", details: this.statusText };
+                        Xrm.Navigation.openErrorDialog(errorOptions).then(
+                            function (success) {
+                                //console.log(success);
+                            },
+                            function (error) {
+                                console.log(error.message + "Web Api Failed ss_TrackingActivitiesBasedOnProductCategories #611. Could not get data from entity ss_accountcontractextras");
+                            });
+                    }
+                }
+            };
+            req2.send();
+
+
+
+
+            table = "";
+            var userId =globelcontext.userSettings.userId;
+            userId = userId.replace(/[{}]/g, "");
+            var _businessunitid_value = "";
+
+
+            var req1 = new XMLHttpRequest();
+            req1.open("GET", globelcontext.getClientUrl() + "/api/data/v8.1/systemusers(" + userId + ")?$select=_businessunitid_value", false);
+            req1.setRequestHeader("OData-MaxVersion", "4.0");
+            req1.setRequestHeader("OData-Version", "4.0");
+            req1.setRequestHeader("Accept", "application/json");
+            req1.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req1.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+            req1.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    if (this.status === 200) {
+                        var result = JSON.parse(this.response);
+                        _businessunitid_value = result["_businessunitid_value"];
+                        var _businessunitid_value_formatted = result["_businessunitid_value@OData.Community.Display.V1.FormattedValue"];
+                        var _businessunitid_value_lookuplogicalname = result["_businessunitid_value@Microsoft.Dynamics.CRM.lookuplogicalname"];
+                    } else {
+                        //Xrm.Utility.alertDialog(this.statusText);
+
+                        var errorOptions = { message: "Web Api failed, Could not get data from entity systemusers;  ss_Activity Stream #612.", details: this.statusText };
+                        Xrm.Navigation.openErrorDialog(errorOptions).then(
+                            function (success) {
+                                //console.log(success);
+                            },
+                            function (error) {
+                                //console.log(error);
+                            });
+                    }
+                }
+            };
+            req1.send();
+
+            var req = new XMLHttpRequest();
+            //,&$filter=_businessunitid_value eq " + _businessunitid_value
+
+            req.open("GET", globelcontext.getClientUrl() + "/api/data/v8.0/roles?$select=name,roleid&$filter=_businessunitid_value eq " + _businessunitid_value, false);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("Prefer", "odata.include-annotations=\"OData.Community.Display.V1.FormattedValue\"");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 200) {
+                        var results = JSON.parse(this.response);
+                        var select = "<option id='all' selected>All</option>";
+                        var salesir = "";
+                        var salespr = "";
+                        var salescc = "";
+                        var salesxml = "";
+                        var salesru = "";
+                        var salesuk = "";
+                        var salesus = "";
+                        var salesmidle = "";
+
+
+                        var rolesCount = 0;
+                        for (var i = 0; i < results.value.length; i++) {
+                            if (results.value[i]["name"] == "Sales RU") {
+                                salesru = "<option id='" + results.value[i]["roleid"] + "'>" + results.value[i]["name"] + "</option>";
+                            }
+                            else if (results.value[i]["name"] == "Sales CC") {
+                                salescc = "<option id='" + results.value[i]["roleid"] + "'>" + results.value[i]["name"] + "</option>";
+                            }
+                            else if (results.value[i]["name"] == "Sales IR") {
+                                salesir = "<option id='" + results.value[i]["roleid"] + "'>" + results.value[i]["name"] + "</option>";
+                            }
+                            else if (results.value[i]["name"] == "Sales XML") {
+                                salesxml = "<option id='" + results.value[i]["roleid"] + "'>" + results.value[i]["name"] + "</option>";
+                            }
+                            else if (results.value[i]["name"] == "Sales PR") {
+                                salespr = "<option id='" + results.value[i]["roleid"] + "'>" + results.value[i]["name"] + "</option>";
+                            }
+                            else if (results.value[i]["name"] == "Sales UK") {
+                                salesuk = "<option id='" + results.value[i]["roleid"] + "'>" + results.value[i]["name"] + "</option>";
+                            }
+                            else if (results.value[i]["name"] == "Sales US") {
+                                salesus = "<option id='" + results.value[i]["roleid"] + "'>" + results.value[i]["name"] + "</option>";
+                            }
+                            else if (results.value[i]["name"] == "Sales Middle East") {
+                                salesmidle = "<option id='" + results.value[i]["roleid"] + "'>" + results.value[i]["name"] + "</option>";
+                            }
+                            //else if (results.value[i]["name"] == "System Administrator") {
+                            //    isadministrator = true;
+                            //}
+
+
+                        }
+                        //var salesir = "";
+                        //var salespr = "";
+                        //var salescc = "";
+                        //var salesxml = "";
+                        //var salesru = "";
+                        //var salesuk = "";
+                        //var salesus = "";
+                        //var salesmidle = "";
+
+                        if (salesmidle == "") {
+                            salesmidle = "<option id='1111'>Sales Middle East</option>"
+                        }
+                        if (salesus == "") {
+                            salesus = "<option id='1111'>Sales US</option>"
+                        }
+                        if (salesuk == "") {
+                            salesuk = "<option id='1111'>Sales UK</option>"
+                        }
+                        if (salespr == "") {
+                            salespr = "<option id='1111'>Sales PR</option>"
+                        }
+                        if (salesxml == "") {
+                            salesxml = "<option id='1111'>Sales XML</option>"
+                        }
+                        if (salescc == "") {
+                            salescc = "<option id='1111'>Sales CC</option>"
+                        }
+                        if (salesir == "") {
+                            salesir = "<option id='1111'>Sales IR</option>"
+                        }
+                        if (salesru == "") {
+                            salesru = "<option id='1111'>Sales RU</option>"
+                        }
+                        select += salesru + salescc + salesir + salesxml + salespr + salesuk + salesus + salesmidle;
+                        document.getElementById("filterDrpDwn").innerHTML = select;
+                        retrieveUserSettings();
+                    }
+                    else {
+                        //Xrm.Utility.alertDialog(this.statusText);
+
+                        var errorOptions = { message: "Web Api failed, Could not get data from entity roles; ss_ActivityStream #613.", details: this.statusText };
+                        Xrm.Navigation.openErrorDialog(errorOptions).then(
+                            function (success) {
+                                //console.log(success);
+                            },
+                            function (error) {
+                                //console.log(error);
+                            });
+                    }
+                }
+            }
+            req.send();
+
+
+        }
+        // YearSelected() method is called when user selects any year from the header, so it calls retrieveActivities() method to get the records of the selected year.
+        function YearSelected(year) {
+
+            if (selectedYear == year) {			//the already active tab is clicked again
+                if (selectedTab == "Notes")
+                    switchtab();
+
+                return;
+            }
+            else {
+                selectedYear = year;
+                if (selectedTab == "Notes")
+                    switchtab();
+                else {
+                    PreviousIds = [];
+                    PreviousIdsNotes = [];
+                    pageCookie = "";
+                    page = 1;
+                    table = "";
+                    document.getElementById("moreRecords").style.display = "none";
+                    //retrieveActivities(fetchXml);
+                    if (entityName == "account") {
+                        retrieveAccountRecords();
+                    }
+                    else if (entityName == "opportunity") {
+                        OpportunityRecords();
+                    }
+
+                    else if (entityName == "contact") {
+                        ContactRecords();
+                    }
+
+                    else if (entityName == "lead") {
+                        leadRecords();
+                    }
+                    else if (entityName == "ss_visitreport") {
+                        visitRecords();
+                    }
+
+                }
+            }
+        }
+        function leadRecords() {
+            var id = parent.Xrm.Page.data.entity.getId();
+            if (isTimelineDisabled == 1)		//if it was disabled first
+            {
+                isTimelineDisabled = 0;
+                retrieveUserSettings();
+                return;
+            }
+            retrievesActivitiescheck = false;
+            if (loadMoreCheck == false) {
+                notesFlag = false;
+            }
+            showLoadingMessage();
+            var startDate = "01/01/" + selectedYear + " 00:00:00";
+            var endDate = "12/31/" + selectedYear + " 23:59:59";
+            startDate = startDate.toString();
+            endDate = endDate.toString();
+
+            if (selectedYear == min) {
+                var Date = "01/01/" + selectedYear + " 00:00:00";
+                Date = Date.toString();
+                var datequery = "    <condition attribute='createdon' operator='lt' value='" + Date + "' />";
+
+            } else if (selectedYear == "ALL") {
+                var datequery = "";	//to show complete list
+            }
+            else {
+                var datequery = " <condition attribute='createdon' operator='ge' value='" + startDate + "' /><condition attribute='createdon' operator='le' value='" + endDate + "' />";
+            }
+
+
+            var securityRoleID = $("#filterDrpDwn").find(":selected").attr("id")
+            var securityRoleFilter = "";
+            var systemUserRole = globelcontext.userSettings.securityRoles;
+
+            if (unchangeOfFilter == false && isadministrator == false) {
+                securityRoleFilter = '<filter type="or" >' +
+                                     '<condition entityname="teamroles" attribute="roleid" operator="in" >';
+
+                for (var i = 0; i < systemUserRole.length; i++) {
+                    securityRoleFilter += '<value>' + systemUserRole[i] + '</value>';
+                }
+                securityRoleFilter += ' </condition>' +
+                                      '<condition entityname="systemuserroles" attribute="roleid" operator="in" >';
+                for (var i = 0; i < systemUserRole.length; i++) {
+                    securityRoleFilter += '<value>' + systemUserRole[i] + '</value>';
+                }
+
+                securityRoleFilter += '</condition>' +
+                                     ' </filter>';
+            }
+
+
+
+
+            fetchXml = "<fetch mapping='logical' count='100' page='" + page + "' >" +
+                          "<entity name='activitypointer' >" +
+                          "<attribute name='description' />" +
+                          "<attribute name='subject' />" +
+                          " <attribute name='activitytypecode' alias='typecode'  />" +
+                          " <attribute name='createdby' />" +
+                          "<attribute name='regardingobjectid' />" +
+                          " <attribute name='activityid' />" +
+                          " <attribute name='statecode' />" +
+                          " <attribute name='createdon' />" +
+                          " <attribute name='modifiedon' />" +
+                          "  <filter type='and' >" + datequery +
+                          " <condition attribute='activitytypecode' operator='in' >" +
+                          " <value>4212</value>" +
+                          "  <value>4210</value>" +
+                          "  <value>4202</value>" +
+                          "  <value>4207</value>" +
+                          "  <value>4201</value>" +
+                          "  <value>10034</value>" +
+                          "  </condition>" +
+
+                          " <condition entityname='activityparty' attribute='participationtypemask' operator='in' >" +
+                          " <value>2</value>" +
+                         "  <value>8</value>" +
+                         "  <value>1</value>" +
+                               "</condition>" +
+                         "<filter type='or'>" +
+                         "<condition entityname='lead' attribute='leadid' operator='eq' value='" + id + "' />" +
+                         "</filter>";
+
+
+        
+            if (securityRoleID != "all" && securityRoleID != undefined && securityRoleID != "1111") {
+                fetchXml += '<filter type="or" >' +
+                               '<condition entityname="teamroles" attribute="roleid" operator="eq" value="' + securityRoleID + '" />' +
+                              ' <condition entityname="systemuserroles" attribute="roleid" operator="eq" value="' + securityRoleID + '" />' +
+                            ' </filter>';
+            }
+
+            fetchXml += "  </filter>" +
+                          "  <order attribute='statecode' descending='true' />" +	//open opportunities to appear first
+                          "  <order attribute='modifiedon' descending='true' />" +
+                          "  <link-entity name='activityparty' from='activityid' to='activityid' link-type='outer' >" +
+                          "    <attribute name='partyid' />" +
+                          "    <attribute name='participationtypemask' />" +
+
+
+                          "</link-entity>" +
+                          "<link-entity name='lead' from='leadid' to='regardingobjectid' link-type='outer' />";
+
+            if ((securityRoleID != "all" && securityRoleID != undefined && securityRoleID != "1111")) {
+                fetchXml += " <link-entity name='systemuser' from='systemuserid' to='owninguser' link-type='inner' >" +
+                            " <attribute name='fullname' />" +
+                                "<link-entity name='systemuserroles' from='systemuserid' to='systemuserid' link-type='outer' intersect='true' >" +
+                                "  <attribute name='roleid' />" +
+                                "</link-entity>" +
+                            " <link-entity name='teammembership' from='systemuserid' to='systemuserid' link-type='outer' intersect='true' >" +
+                                "  <link-entity name='team' from='teamid' to='teamid' >" +
+                                " <attribute name='name' />" +
+                                "  <link-entity name='teamroles' from='teamid' to='teamid' link-type='outer' intersect='true' />" +
+                                " </link-entity>" +
+                            " </link-entity>" +
+                            " </link-entity>";
+            }
+            fetchXml += " </entity>" +
+            "</fetch>";
+
+            fetchXmlNotes = "<fetch mapping='logical' >" +
+                      "<entity name='annotation' >" +
+                        "<attribute name='annotationid' />" +
+                        "<attribute name='createdby' />" +
+                        "<attribute name='createdon' />" +
+                        "<attribute name='filename' />" +
+                        "<attribute name='filesize' />" +
+                        "<attribute name='isdocument' />" +
+                        "<attribute name='mimetype' />" +
+                        "<attribute name='modifiedon' />" +
+                        "<attribute name='notetext' />" +
+                        "<attribute name='objectid' />" +
+                        "<attribute name='objectidtypecode' />" +
+                        "<attribute name='subject' />" +
+                    "<filter type='and' >" + datequery +
+                        "<filter type='or' >" +
+                        "<condition attribute='objectid' operator='eq' value='" + id + "' />" +
+                        "</filter>";
+
+            if (securityRoleID != "all" && securityRoleID != undefined && securityRoleID != "1111") {
+                fetchXmlNotes += '<filter type="or" >' +
+                               '<condition entityname="teamroles" attribute="roleid" operator="eq" value="' + securityRoleID + '" />' +
+                              ' <condition entityname="systemuserroles" attribute="roleid" operator="eq" value="' + securityRoleID + '" />' +
+                            ' </filter>';
+            }
+            fetchXmlNotes += "</filter>" +
+             "<order attribute='modifiedon' descending='true' />";
+            if ((securityRoleID != "all" && securityRoleID != undefined && securityRoleID != "1111")) {
+                fetchXmlNotes += " <link-entity name='systemuser' from='systemuserid' to='owninguser' link-type='inner' >" +
+                            " <attribute name='fullname' />" +
+                                "<link-entity name='systemuserroles' from='systemuserid' to='systemuserid' link-type='outer' intersect='true' >" +
+                                "  <attribute name='roleid' />" +
+                                "</link-entity>" +
+                            " <link-entity name='teammembership' from='systemuserid' to='systemuserid' link-type='outer' intersect='true' >" +
+                                "  <link-entity name='team' from='teamid' to='teamid' >" +
+                                " <attribute name='name' />" +
+                                "  <link-entity name='teamroles' from='teamid' to='teamid' link-type='outer' intersect='true' />" +
+                                " </link-entity>" +
+                            " </link-entity>" +
+                            " </link-entity>";
+            }
+            fetchXmlNotes += " </entity>" +
+             "</fetch>";
+
+            if (securityRoleID == "1111") {
+                document.getElementById("activities").innerHTML = "No Record Found for the selected year..!";
+                hideLoadingMessage();
+            }
+            else {
+                retrieveActivities();
+
+            }
+        }
+
+        function visitRecords() {
+            var id = parent.Xrm.Page.data.entity.getId();
+
+            if (isTimelineDisabled == 1)		//if it was disabled first
+            {
+                isTimelineDisabled = 0;
+                retrieveUserSettings();
+                return;
+            }
+            retrievesActivitiescheck = false;
+            if (loadMoreCheck == false) {
+                notesFlag = false;
+            }
+            showLoadingMessage();
+            var startDate = "01/01/" + selectedYear + " 00:00:00";
+            var endDate = "12/31/" + selectedYear + " 23:59:59";
+            startDate = startDate.toString();
+            endDate = endDate.toString();
+
+            if (selectedYear == min) {
+                var Date = "01/01/" + selectedYear + " 00:00:00";
+                Date = Date.toString();
+                var datequery = "    <condition attribute='createdon' operator='lt' value='" + Date + "' />";
+
+            } else if (selectedYear == "ALL") {
+                var datequery = "";	//to show complete list
+            }
+            else {
+                var datequery = " <condition attribute='createdon' operator='ge' value='" + startDate + "' /><condition attribute='createdon' operator='le' value='" + endDate + "' />";
+            }
+
+
+            var securityRoleID = $("#filterDrpDwn").find(":selected").attr("id")
+            var securityRoleFilter = "";
+            var systemUserRole = globelcontext.userSettings.securityRoles;
+
+            if (unchangeOfFilter == false && isadministrator == false) {
+                securityRoleFilter = '<filter type="or" >' +
+                                     '<condition entityname="teamroles" attribute="roleid" operator="in" >';
+
+                for (var i = 0; i < systemUserRole.length; i++) {
+                    securityRoleFilter += '<value>' + systemUserRole[i] + '</value>';
+                }
+                securityRoleFilter += ' </condition>' +
+                                      '<condition entityname="systemuserroles" attribute="roleid" operator="in" >';
+                for (var i = 0; i < systemUserRole.length; i++) {
+                    securityRoleFilter += '<value>' + systemUserRole[i] + '</value>';
+                }
+
+                securityRoleFilter += '</condition>' +
+                                     ' </filter>';
+            }
+
+
+
+
+            fetchXml = "<fetch mapping='logical' count='100' page='" + page + "' >" +
+                          "<entity name='activitypointer' >" +
+                          "<attribute name='description' />" +
+                          "<attribute name='subject' />" +
+                          " <attribute name='activitytypecode' alias='typecode'  />" +
+                          " <attribute name='createdby' />" +
+                          "<attribute name='regardingobjectid' />" +
+                          " <attribute name='activityid' />" +
+                          " <attribute name='statecode' />" +
+                          " <attribute name='createdon' />" +
+                          " <attribute name='modifiedon' />" +
+                          "  <filter type='and' >" + datequery +
+                          " <condition attribute='activitytypecode' operator='in' >" +
+                          " <value>4212</value>" +
+                          "  <value>4210</value>" +
+                          "  <value>4202</value>" +
+                          "  <value>4207</value>" +
+                          "  <value>4201</value>" +
+                          "  <value>10034</value>" +
+                          "  </condition>" +
+
+                          " <condition entityname='activityparty' attribute='participationtypemask' operator='in' >" +
+                          " <value>2</value>" +
+                         "  <value>8</value>" +
+                         "  <value>1</value>" +
+                               "</condition>" +
+                         "<filter type='or'>" +
+                         "<condition entityname='ss_visitreport' attribute='ss_visitreportid' operator='eq' value='" + id + "' />" +
+                         "</filter>";
+
+
+            if (securityRoleID != "all" && securityRoleID != undefined && securityRoleID != "1111") {
+                fetchXml += '<filter type="or" >' +
+                               '<condition entityname="teamroles" attribute="roleid" operator="eq" value="' + securityRoleID + '" />' +
+                              ' <condition entityname="systemuserroles" attribute="roleid" operator="eq" value="' + securityRoleID + '" />' +
+                            ' </filter>';
+            }
+
+            fetchXml += "  </filter>" +
+                          "  <order attribute='statecode' descending='true' />" +	//open opportunities to appear first
+                          "  <order attribute='modifiedon' descending='true' />" +
+                          "  <link-entity name='activityparty' from='activityid' to='activityid' link-type='outer' >" +
+                          "    <attribute name='partyid' />" +
+                          "    <attribute name='participationtypemask' />" +
+
+
+                          "</link-entity>" +
+                          "<link-entity name='ss_visitreport' from='ss_visitreportid' to='regardingobjectid' link-type='outer' />";
+
+            if ((securityRoleID != "all" && securityRoleID != undefined && securityRoleID != "1111")) {
+                fetchXml += " <link-entity name='systemuser' from='systemuserid' to='owninguser' link-type='inner' >" +
+                            " <attribute name='fullname' />" +
+                                "<link-entity name='systemuserroles' from='systemuserid' to='systemuserid' link-type='outer' intersect='true' >" +
+                                "  <attribute name='roleid' />" +
+                                "</link-entity>" +
+                            " <link-entity name='teammembership' from='systemuserid' to='systemuserid' link-type='outer' intersect='true' >" +
+                                "  <link-entity name='team' from='teamid' to='teamid' >" +
+                                " <attribute name='name' />" +
+                                "  <link-entity name='teamroles' from='teamid' to='teamid' link-type='outer' intersect='true' />" +
+                                " </link-entity>" +
+                            " </link-entity>" +
+                            " </link-entity>";
+            }
+            fetchXml += " </entity>" +
+            "</fetch>";
+
+            fetchXmlNotes = "<fetch mapping='logical' >" +
+                      "<entity name='annotation' >" +
+                        "<attribute name='annotationid' />" +
+                        "<attribute name='createdby' />" +
+                        "<attribute name='createdon' />" +
+                        "<attribute name='filename' />" +
+                        "<attribute name='filesize' />" +
+                        "<attribute name='isdocument' />" +
+                        "<attribute name='mimetype' />" +
+                        "<attribute name='modifiedon' />" +
+                        "<attribute name='notetext' />" +
+                        "<attribute name='objectid' />" +
+                        "<attribute name='objectidtypecode' />" +
+                        "<attribute name='subject' />" +
+                    "<filter type='and' >" + datequery +
+                        "<filter type='or' >" +
+                        "<condition attribute='objectid' operator='eq' value='" + id + "' />" +
+                        "</filter>";
+
+             if (securityRoleID != "all" && securityRoleID != undefined && securityRoleID != "1111") {
+                fetchXmlNotes += '<filter type="or" >' +
+                               '<condition entityname="teamroles" attribute="roleid" operator="eq" value="' + securityRoleID + '" />' +
+                              ' <condition entityname="systemuserroles" attribute="roleid" operator="eq" value="' + securityRoleID + '" />' +
+                            ' </filter>';
+            }
+            fetchXmlNotes += "</filter>" +
+             "<order attribute='modifiedon' descending='true' />";
+            if ((securityRoleID != "all" && securityRoleID != undefined && securityRoleID != "1111")) {
+                fetchXmlNotes += " <link-entity name='systemuser' from='systemuserid' to='owninguser' link-type='inner' >" +
+                            " <attribute name='fullname' />" +
+                                "<link-entity name='systemuserroles' from='systemuserid' to='systemuserid' link-type='outer' intersect='true' >" +
+                                "  <attribute name='roleid' />" +
+                                "</link-entity>" +
+                            " <link-entity name='teammembership' from='systemuserid' to='systemuserid' link-type='outer' intersect='true' >" +
+                                "  <link-entity name='team' from='teamid' to='teamid' >" +
+                                " <attribute name='name' />" +
+                                "  <link-entity name='teamroles' from='teamid' to='teamid' link-type='outer' intersect='true' />" +
+                                " </link-entity>" +
+                            " </link-entity>" +
+                            " </link-entity>";
+            }
+            fetchXmlNotes += " </entity>" +
+             "</fetch>";
+
+            if (securityRoleID == "1111") {
+                document.getElementById("activities").innerHTML = "No Record Found for the selected year..!";
+                hideLoadingMessage();
+            }
+            else {
+                retrieveActivities();
+
+            }
+        }
+        //Updated Sorting
+        function OpportunityRecords() {
+            var id = parent.Xrm.Page.data.entity.getId();
+            if (isTimelineDisabled == 1)		//if it was disabled first
+            {
+                isTimelineDisabled = 0;
+                retrieveUserSettings();
+                return;
+            }
+            retrievesActivitiescheck = false;
+            if (loadMoreCheck == false) {
+                notesFlag = false;
+            }
+            showLoadingMessage();
+            var startDate = "01/01/" + selectedYear + " 00:00:00";
+            var endDate = "12/31/" + selectedYear + " 23:59:59";
+            startDate = startDate.toString();
+            endDate = endDate.toString();
+
+            if (selectedYear == min) {
+                var Date = "01/01/" + selectedYear + " 00:00:00";
+                Date = Date.toString();
+                var datequery = "    <condition attribute='createdon' operator='lt' value='" + Date + "' />";
+
+            } else if (selectedYear == "ALL") {
+                var datequery = "";	//to show complete list
+            }
+            else {
+                var datequery = " <condition attribute='createdon' operator='ge' value='" + startDate + "' /><condition attribute='createdon' operator='le' value='" + endDate + "' />";
+            }
+
+            var securityRoleID = $("#filterDrpDwn").find(":selected").attr("id")
+            var securityRoleFilter = "";
+            var systemUserRole = globelcontext.userSettings.securityRoles;
+
+            if (unchangeOfFilter == false && isadministrator == false) {
+                securityRoleFilter = '<filter type="or" >' +
+                                     '<condition entityname="teamroles" attribute="roleid" operator="in" >';
+
+                for (var i = 0; i < systemUserRole.length; i++) {
+                    securityRoleFilter += '<value>' + systemUserRole[i] + '</value>';
+                }
+                securityRoleFilter += ' </condition>' +
+                                      '<condition entityname="systemuserroles" attribute="roleid" operator="in" >';
+                for (var i = 0; i < systemUserRole.length; i++) {
+                    securityRoleFilter += '<value>' + systemUserRole[i] + '</value>';
+                }
+
+                securityRoleFilter += '</condition>' +
+                                     ' </filter>';
+            }
+
+
+            fetchXml = "<fetch mapping='logical' count='100' page='" + page + "' >" +
+                          "<entity name='activitypointer' >" +
+                          "<attribute name='description' />" +
+                          "<attribute name='subject' />" +
+                          " <attribute name='activitytypecode' alias='typecode'  />" +
+                          " <attribute name='createdby' />" +
+                          "<attribute name='regardingobjectid' />" +
+                          " <attribute name='activityid' />" +
+                          " <attribute name='statecode' />" +
+                          " <attribute name='createdon' />" +
+                          " <attribute name='modifiedon' />" +
+                          "  <filter type='and' >" + datequery +
+                          " <condition attribute='activitytypecode' operator='in' >" +
+                          " <value>4212</value>" +
+                          "  <value>4210</value>" +
+                          "  <value>4202</value>" +
+                          "  <value>4207</value>" +
+                          "  <value>4201</value>" +
+                          "  <value>10034</value>" +
+                          "  </condition>" +
+
+                          " <condition entityname='activityparty' attribute='participationtypemask' operator='in' >" +
+                          " <value>2</value>" +
+                         "  <value>8</value>" +
+                         "  <value>1</value>" +
+                               "</condition>" +
+                         "<filter type='or'>" +
+                         "<condition entityname='opportunity' attribute='opportunityid' operator='eq' value='" + id + "' />" +
+                         "</filter>";
+
+                    if (securityRoleID != "all" && securityRoleID != undefined && securityRoleID != "1111") {
+                fetchXml += '<filter type="or" >' +
+                               '<condition entityname="teamroles" attribute="roleid" operator="eq" value="' + securityRoleID + '" />' +
+                              ' <condition entityname="systemuserroles" attribute="roleid" operator="eq" value="' + securityRoleID + '" />' +
+                            ' </filter>';
+            }
+
+
+            fetchXml += "  </filter>" +
+          "  <order attribute='statecode' descending='true' />" +	//open opportunities to appear first
+          "  <order attribute='modifiedon' descending='true' />" +
+          "  <link-entity name='activityparty' from='activityid' to='activityid' link-type='outer' >" +
+          "    <attribute name='partyid' />" +
+          "    <attribute name='participationtypemask' />" +
+
+          "  </link-entity>" +
+          "<link-entity name='opportunity' from='opportunityid' to='regardingobjectid' link-type='outer' />";
+
+            if ((securityRoleID != "all" && securityRoleID != undefined && securityRoleID != "1111")) {
+                fetchXml += " <link-entity name='systemuser' from='systemuserid' to='owninguser' link-type='inner' >" +
+                            " <attribute name='fullname' />" +
+                                "<link-entity name='systemuserroles' from='systemuserid' to='systemuserid' link-type='outer' intersect='true' >" +
+                                "  <attribute name='roleid' />" +
+                                "</link-entity>" +
+                            " <link-entity name='teammembership' from='systemuserid' to='systemuserid' link-type='outer' intersect='true' >" +
+                                "  <link-entity name='team' from='teamid' to='teamid' >" +
+                                " <attribute name='name' />" +
+                                "  <link-entity name='teamroles' from='teamid' to='teamid' link-type='outer' intersect='true' />" +
+                                " </link-entity>" +
+                            " </link-entity>" +
+                            " </link-entity>";
+            }
+            fetchXml += " </entity>" +
+                         "</fetch>";
+
+            fetchXmlNotes = "<fetch mapping='logical'  >" +
+                      "<entity name='annotation' >" +
+                        "<attribute name='annotationid' />" +
+                        "<attribute name='createdby' />" +
+                        "<attribute name='createdon' />" +
+                        "<attribute name='filename' />" +
+                        "<attribute name='filesize' />" +
+                        "<attribute name='isdocument' />" +
+                        "<attribute name='mimetype' />" +
+                        "<attribute name='modifiedon' />" +
+                        "<attribute name='notetext' />" +
+                        "<attribute name='objectid' />" +
+                        "<attribute name='objectidtypecode' />" +
+                        "<attribute name='subject' />" +
+                    "<filter type='and' >" + datequery +
+                        "<filter type='or' >" +
+                        "<condition attribute='objectid' operator='eq' value='" + id + "' />" +
+                        "</filter>";
+
+            if (securityRoleID != "all" && securityRoleID != undefined && securityRoleID != "1111") {
+                fetchXmlNotes += '<filter type="or" >' +
+                               '<condition entityname="teamroles" attribute="roleid" operator="eq" value="' + securityRoleID + '" />' +
+                              ' <condition entityname="systemuserroles" attribute="roleid" operator="eq" value="' + securityRoleID + '" />' +
+                            ' </filter>';
+            }
+
+
+            fetchXmlNotes += "</filter>" +
+              "<order attribute='modifiedon' descending='true' />";
+            if ((securityRoleID != "all" && securityRoleID != undefined && securityRoleID != "1111")) {
+                fetchXmlNotes += " <link-entity name='systemuser' from='systemuserid' to='owninguser' link-type='inner' >" +
+                            " <attribute name='fullname' />" +
+                                "<link-entity name='systemuserroles' from='systemuserid' to='systemuserid' link-type='outer' intersect='true' >" +
+                                "  <attribute name='roleid' />" +
+                                "</link-entity>" +
+                            " <link-entity name='teammembership' from='systemuserid' to='systemuserid' link-type='outer' intersect='true' >" +
+                                "  <link-entity name='team' from='teamid' to='teamid' >" +
+                                " <attribute name='name' />" +
+                                "  <link-entity name='teamroles' from='teamid' to='teamid' link-type='outer' intersect='true' />" +
+                                " </link-entity>" +
+                            " </link-entity>" +
+                            " </link-entity>";
+            }
+            fetchXmlNotes += " </entity>" +
+                          "</fetch>";
+
+            if (securityRoleID == "1111") {
+                document.getElementById("activities").innerHTML = "No Record Found for the selected year..!";
+                hideLoadingMessage();
+            }
+            else {
+                retrieveActivities();
+
+            }
+        }
+        //Updated Sorting
+        function retrieveAccountRecords() {
+            var id = parent.Xrm.Page.data.entity.getId();
+
+            if (isTimelineDisabled == 1)		//if it was disabled first
+            {
+                isTimelineDisabled = 0;
+                retrieveUserSettings();
+                return;
+            }
+
+            retrievesActivitiescheck = false;
+            if (loadMoreCheck == false) {
+                notesFlag = false;
+            }
+            showLoadingMessage();
+            var startDate = "01/01/" + selectedYear + " 00:00:00";
+            var endDate = "12/31/" + selectedYear + " 23:59:59";
+            startDate = startDate.toString();
+            endDate = endDate.toString();
+
+            if (selectedYear == min) {
+                var Date = "01/01/" + selectedYear + " 00:00:00";
+                Date = Date.toString();
+                var datequery = "    <condition attribute='createdon' operator='lt' value='" + Date + "' />";
+
+            } else if (selectedYear == "ALL") {
+                var datequery = "";	//to show complete list
+            }
+            else {
+                var datequery = " <condition attribute='createdon' operator='ge' value='" + startDate + "' /><condition attribute='createdon' operator='le' value='" + endDate + "' />";
+            }
+
+            var securityRoleID = $("#filterDrpDwn").find(":selected").attr("id")
+            var securityRoleFilter = "";
+            var systemUserRole = globelcontext.userSettings.securityRoles;
+
+
+            if (unchangeOfFilter == false && isadministrator == false) {
+                securityRoleFilter = '<filter type="or" >' +
+                                     '<condition entityname="teamroles" attribute="roleid" operator="in" >';
+
+                for (var i = 0; i < systemUserRole.length; i++) {
+                    securityRoleFilter += '<value>' + systemUserRole[i] + '</value>';
+                }
+                securityRoleFilter += ' </condition>' +
+                                      '<condition entityname="systemuserroles" attribute="roleid" operator="in" >';
+                for (var i = 0; i < systemUserRole.length; i++) {
+                    securityRoleFilter += '<value>' + systemUserRole[i] + '</value>';
+                }
+
+                securityRoleFilter += '</condition>' +
+                                     ' </filter>';
+            }
+
+
+
+            //     if (selectedTab == "Activities") {
+            fetchXml = "<fetch mapping='logical' count='100' page='" + page + "' >" +
+                          "<entity name='activitypointer' >" +
+                          "<attribute name='description' />" +
+                          "<attribute name='subject' />" +
+                          " <attribute name='activitytypecode' alias='typecode'  />" +
+                          " <attribute name='createdby' />" +
+                          "<attribute name='regardingobjectid' />" +
+                          " <attribute name='activityid' />" +
+                          " <attribute name='statecode' />" +
+                          " <attribute name='createdon' />" +
+                          " <attribute name='modifiedon' />" +
+                          "  <filter type='and' >" + datequery +
+                          " <condition attribute='activitytypecode' operator='in' >" +
+                          " <value>4212</value>" +
+                          "  <value>4210</value>" +
+                          "  <value>4202</value>" +
+                          "  <value>4207</value>" +
+                          "  <value>4201</value>" +
+                          "  <value>10034</value>" +
+                          "  </condition>" +
+
+                          " <condition entityname='activityparty' attribute='participationtypemask' operator='in' >" +
+                          " <value>2</value>" +
+                         "  <value>8</value>" +
+                         "  <value>1</value>" +
+                               "</condition>" +
+                         "<filter type='or'>" +
+                         "<condition entityname='account' attribute='accountid' operator='eq' value='" + id + "' />" +
+                         "<condition entityname='contact' attribute='parentcustomerid' operator='eq' value='" + id + "' />" +
+                         "<condition entityname='quote' attribute='customerid' operator='eq' value='" + id + "' />" +
+                         "<condition entityname='opportunity' attribute='parentaccountid' operator='eq' value='" + id + "' />" +
+                         "</filter>";
+
+            if (securityRoleID != "all" && securityRoleID != undefined && securityRoleID != "1111") {
+                fetchXml += '<filter type="or" >' +
+                               '<condition entityname="teamroles" attribute="roleid" operator="eq" value="' + securityRoleID + '" />' +
+                              ' <condition entityname="systemuserroles" attribute="roleid" operator="eq" value="' + securityRoleID + '" />' +
+                            ' </filter>';
+            }
+
+            fetchXml += "  </filter>" +
+                          "  <order attribute='statecode' descending='true' />" +	//open opportunities to appear first
+                          "  <order attribute='modifiedon' descending='true' />" +
+                          "  <link-entity name='activityparty' from='activityid' to='activityid' link-type='outer' >" +
+                          "    <attribute name='partyid' />" +
+                          "    <attribute name='participationtypemask' />" +
+                          "<link-entity name='contact' from='contactid' to='partyid' link-type='outer' />" +
+                          "<link-entity name='opportunity' from='opportunityid' to='partyid' link-type='outer' />" +
+                          "<link-entity name='quote' from='quoteid' to='partyid' link-type='outer' />" +
+                          "<link-entity name='account' from='accountid' to='partyid' link-type='outer' />" +
+
+
+
+                          "  </link-entity>";
+            if ((securityRoleID != "all" && securityRoleID != undefined && securityRoleID != "1111")) {
+                fetchXml += " <link-entity name='systemuser' from='systemuserid' to='owninguser' link-type='inner' >" +
+                            " <attribute name='fullname' />" +
+                                "<link-entity name='systemuserroles' from='systemuserid' to='systemuserid' link-type='outer' intersect='true' >" +
+                                "  <attribute name='roleid' />" +
+                                "</link-entity>" +
+                            " <link-entity name='teammembership' from='systemuserid' to='systemuserid' link-type='outer' intersect='true' >" +
+                                "  <link-entity name='team' from='teamid' to='teamid' >" +
+                                " <attribute name='name' />" +
+                                "  <link-entity name='teamroles' from='teamid' to='teamid' link-type='outer' intersect='true' />" +
+                                " </link-entity>" +
+                            " </link-entity>" +
+                            " </link-entity>";
+            }
+            fetchXml += " </entity>" +
+                             "</fetch>";
+
+            fetchXmlNotes = "<fetch mapping='logical'  >" +
+                      "<entity name='annotation' >" +
+                        "<attribute name='annotationid' />" +
+                        "<attribute name='createdby' />" +
+                        "<attribute name='createdon' />" +
+                        "<attribute name='filename' />" +
+                        "<attribute name='filesize' />" +
+                        "<attribute name='isdocument' />" +
+                        "<attribute name='mimetype' />" +
+                        "<attribute name='modifiedon' />" +
+                        "<attribute name='notetext' />" +
+                        "<attribute name='objectid' />" +
+                        "<attribute name='objectidtypecode' />" +
+                        "<attribute name='subject' />" +
+                        "<filter type='and' >" + datequery +
+                        "<filter type='or' >" +
+                        "<condition entityname='contact' attribute='parentcustomerid' operator='eq' value='" + id + "' />" +
+                        "<condition entityname='account' attribute='accountid' operator='eq' value='" + id + "' />" +
+                        "<condition entityname='quote' attribute='customerid' operator='eq' value='" + id + "' />" +
+                        "<condition entityname='opportunity' attribute='parentaccountid' operator='eq' value='" + id + "' />" +
+                        "</filter>";
+     if (securityRoleID != "all" && securityRoleID != undefined && securityRoleID != "1111") {
+                fetchXmlNotes += '<filter type="or" >' +
+                               '<condition entityname="teamroles" attribute="roleid" operator="eq" value="' + securityRoleID + '" />' +
+                              ' <condition entityname="systemuserroles" attribute="roleid" operator="eq" value="' + securityRoleID + '" />' +
+                            ' </filter>';
+            }
+
+            fetchXmlNotes += "</filter>" +
+         "<order attribute='modifiedon' descending='true' />" +
+         "<link-entity name='account' from='accountid' to='objectid' link-type='outer' />" +
+         "<link-entity name='quote' from='quoteid' to='objectid' link-type='outer' />" +
+         "<link-entity name='opportunity' from='opportunityid' to='objectid' link-type='outer' />" +
+         "<link-entity name='contact' from='contactid' to='objectid' link-type='outer' />";
+
+            if ((securityRoleID != "all" && securityRoleID != undefined && securityRoleID != "1111")) {
+                fetchXmlNotes += " <link-entity name='systemuser' from='systemuserid' to='owninguser' link-type='inner' >" +
+                            " <attribute name='fullname' />" +
+                                "<link-entity name='systemuserroles' from='systemuserid' to='systemuserid' link-type='outer' intersect='true' >" +
+                                "  <attribute name='roleid' />" +
+                                "</link-entity>" +
+                            " <link-entity name='teammembership' from='systemuserid' to='systemuserid' link-type='outer' intersect='true' >" +
+                                "  <link-entity name='team' from='teamid' to='teamid' >" +
+                                " <attribute name='name' />" +
+                                "  <link-entity name='teamroles' from='teamid' to='teamid' link-type='outer' intersect='true' />" +
+                                " </link-entity>" +
+                            " </link-entity>" +
+                            " </link-entity>";
+            }
+            fetchXmlNotes += " </entity>" +
+                             "</fetch>";
+            //     }
+
+            if (securityRoleID == "1111") {
+                document.getElementById("activities").innerHTML = "No Record Found for the selected year..!";
+                hideLoadingMessage();
+            }
+            else {
+                retrieveActivities();
+
+            }
+        }
+        function ContactRecords() {
+            var id = parent.Xrm.Page.data.entity.getId();
+
+            if (isTimelineDisabled == 1)		//if it was disabled first
+            {
+                isTimelineDisabled = 0;
+                retrieveUserSettings();
+                return;
+            }
+            retrievesActivitiescheck = false;
+            if (loadMoreCheck == false) {
+                notesFlag = false;
+            }
+            showLoadingMessage();
+            var startDate = "01/01/" + selectedYear + " 00:00:00";
+            var endDate = "12/31/" + selectedYear + " 23:59:59";
+            startDate = startDate.toString();
+            endDate = endDate.toString();
+
+            if (selectedYear == min) {
+                var Date = "01/01/" + selectedYear + " 00:00:00";
+                Date = Date.toString();
+                var datequery = "    <condition attribute='createdon' operator='lt' value='" + Date + "' />";
+
+            } else if (selectedYear == "ALL") {
+                var datequery = "";	//to show complete list
+            }
+            else {
+                var datequery = " <condition attribute='createdon' operator='ge' value='" + startDate + "' /><condition attribute='createdon' operator='le' value='" + endDate + "' />";
+            }
+
+            var securityRoleID = $("#filterDrpDwn").find(":selected").attr("id")
+            var securityRoleFilter = "";
+            var systemUserRole = globelcontext.userSettings.securityRoles;
+
+
+            if (unchangeOfFilter == false && isadministrator == false) {
+                securityRoleFilter = '<filter type="or" >' +
+                                     '<condition entityname="teamroles" attribute="roleid" operator="in" >';
+
+                for (var i = 0; i < systemUserRole.length; i++) {
+                    securityRoleFilter += '<value>' + systemUserRole[i] + '</value>';
+                }
+                securityRoleFilter += ' </condition>' +
+                                      '<condition entityname="systemuserroles" attribute="roleid" operator="in" >';
+                for (var i = 0; i < systemUserRole.length; i++) {
+                    securityRoleFilter += '<value>' + systemUserRole[i] + '</value>';
+                }
+
+                securityRoleFilter += '</condition>' +
+                                     ' </filter>';
+            }
+
+            fetchXml = "<fetch mapping='logical' count='100' page='" + page + "' >" +
+                       "<entity name='activitypointer' >" +
+                       "<attribute name='description' />" +
+                       "<attribute name='subject' />" +
+                    " <attribute name='activitytypecode' alias='typecode'  />" +
+                    " <attribute name='createdby' />" +
+                    "<attribute name='regardingobjectid' />" +
+                    " <attribute name='activityid' />" +
+                    " <attribute name='statecode' />" +
+                    " <attribute name='createdon' />" +
+                    " <attribute name='modifiedon' />" +
+                    "  <filter type='and' >" + datequery +
+                    " <condition attribute='activitytypecode' operator='in' >" +
+                    " <value>4212</value>" +
+                    "  <value>4210</value>" +
+                    "  <value>4202</value>" +
+                    "  <value>4207</value>" +
+                    "  <value>4201</value>" +
+                    "  <value>10034</value>" +
+                    "  </condition>" +
+
+                    " <condition entityname='activityparty' attribute='participationtypemask' operator='in' >" +
+                    " <value>2</value>" +
+                    "  <value>8</value>" +
+                    "  <value>1</value>" +
+                    "</condition>" +
+                    "<filter type='or'>" +
+                    "<condition entityname='opportunity' attribute='parentcontactid' operator='eq' value='" + id + "' />" +
+                    "<condition entityname='contact' attribute='contactid' operator='eq' value='" + id + "' />" +
+                    "</filter>";
+
+          if (securityRoleID != "all" && securityRoleID != undefined && securityRoleID != "1111") {
+                fetchXml += '<filter type="or" >' +
+                               '<condition entityname="teamroles" attribute="roleid" operator="eq" value="' + securityRoleID + '" />' +
+                              ' <condition entityname="systemuserroles" attribute="roleid" operator="eq" value="' + securityRoleID + '" />' +
+                            ' </filter>';
+            }
+
+
+            fetchXml += "  </filter>" +
+                    "  <order attribute='statecode' descending='true' />" +	//open opportunities to appear first
+                    "  <order attribute='modifiedon' descending='true' />" +
+                    "  <link-entity name='activityparty' from='activityid' to='activityid' link-type='outer' >" +
+                    "    <attribute name='partyid' />" +
+                    "    <attribute name='participationtypemask' />" +
+                    "<link-entity name='contact' from='contactid' to='partyid' link-type='outer' />" +
+                    "<link-entity name='opportunity' from='opportunityid' to='partyid' link-type='outer' />" +
+
+
+                    "  </link-entity>";
+
+            if ((securityRoleID != "all" && securityRoleID != undefined && securityRoleID != "1111")) {
+                fetchXml += " <link-entity name='systemuser' from='systemuserid' to='owninguser' link-type='inner' >" +
+                            " <attribute name='fullname' />" +
+                                "<link-entity name='systemuserroles' from='systemuserid' to='systemuserid' link-type='outer' intersect='true' >" +
+                                "  <attribute name='roleid' />" +
+                                "</link-entity>" +
+                            " <link-entity name='teammembership' from='systemuserid' to='systemuserid' link-type='outer' intersect='true' >" +
+                                "  <link-entity name='team' from='teamid' to='teamid' >" +
+                                " <attribute name='name' />" +
+                                "  <link-entity name='teamroles' from='teamid' to='teamid' link-type='outer' intersect='true' />" +
+                                " </link-entity>" +
+                            " </link-entity>" +
+                            " </link-entity>";
+            }
+            fetchXml += " </entity>" +
+                           "</fetch>";
+
+
+            fetchXmlNotes = "<fetch mapping='logical' >" +
+                      "<entity name='annotation' >" +
+                        "<attribute name='annotationid' />" +
+                        "<attribute name='createdby' />" +
+                        "<attribute name='createdon' />" +
+                        "<attribute name='filename' />" +
+                        "<attribute name='filesize' />" +
+                        "<attribute name='isdocument' />" +
+                        "<attribute name='mimetype' />" +
+                        "<attribute name='modifiedon' />" +
+                        "<attribute name='notetext' />" +
+                        "<attribute name='objectid' />" +
+                        "<attribute name='objectidtypecode' />" +
+                        "<attribute name='subject' />" +
+                    "<filter type='and' >" + datequery +
+                        "<filter type='or' >" +
+                        "<condition entityname='opportunity' attribute='parentcontactid' operator='eq' value='" + id + "' />" +
+                        "<condition entityname='contact' attribute='contactid' operator='eq' value='" + id + "' />" +
+                        "</filter>";
+
+           if (securityRoleID != "all" && securityRoleID != undefined && securityRoleID != "1111") {
+                fetchXmlNotes += '<filter type="or" >' +
+                               '<condition entityname="teamroles" attribute="roleid" operator="eq" value="' + securityRoleID + '" />' +
+                              ' <condition entityname="systemuserroles" attribute="roleid" operator="eq" value="' + securityRoleID + '" />' +
+                            ' </filter>';
+            }
+            fetchXmlNotes += "</filter>" +
+                            "<order attribute='modifiedon' descending='true' />" +
+                            "<link-entity name='opportunity' from='opportunityid' to='objectid' link-type='outer' />" +
+                            "<link-entity name='contact' from='contactid' to='objectid' />";
+
+            if ((securityRoleID != "all" && securityRoleID != undefined && securityRoleID != "1111")) {
+                fetchXmlNotes += " <link-entity name='systemuser' from='systemuserid' to='owninguser' link-type='inner' >" +
+                            " <attribute name='fullname' />" +
+                                "<link-entity name='systemuserroles' from='systemuserid' to='systemuserid' link-type='outer' intersect='true' >" +
+                                "  <attribute name='roleid' />" +
+                                "</link-entity>" +
+                            " <link-entity name='teammembership' from='systemuserid' to='systemuserid' link-type='outer' intersect='true' >" +
+                                "  <link-entity name='team' from='teamid' to='teamid' >" +
+                                " <attribute name='name' />" +
+                                "  <link-entity name='teamroles' from='teamid' to='teamid' link-type='outer' intersect='true' />" +
+                                " </link-entity>" +
+                            " </link-entity>" +
+                            " </link-entity>";
+            }
+            fetchXmlNotes += " </entity>" +
+                        "</fetch>";
+
+            //retrieveCondition = "<condition attribute='objectid' operator='in' >" + filter + "</condition>";
+            if (securityRoleID == "1111") {
+                document.getElementById("activities").innerHTML = "No Record Found for the selected year..!";
+                hideLoadingMessage();
+            }
+            else {
+                retrieveActivities();
+
+            }
+
+        }
+        ////retrieveActivities() in this method we retireve Activites and populate them in our subgrid.
+        //var activitiesResults = "";
+        //var notesResults = "";
+        function retrieveActivities() {
+            //debugger;
+            var req1 = new XMLHttpRequest();
+            var isNotesRequest = false;
+            if (retrievesActivitiescheck == false) {
+                req1.open("GET", globelcontext.getClientUrl() + "/api/data/v8.0/activitypointers?fetchXml=" + encodeURI(fetchXml), true);
+            } else if (retrievesActivitiescheck == true) {
+                isNotesRequest = true;
+                req1.open("GET", globelcontext.getClientUrl() + "/api/data/v8.0/annotations?fetchXml=" + encodeURI(fetchXmlNotes), true);
+            }
+
+            req1.setRequestHeader("OData-MaxVersion", "4.0");
+            req1.setRequestHeader("OData-Version", "4.0");
+            req1.setRequestHeader("Accept", "application/json");
+            req1.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req1.setRequestHeader("Prefer", "odata.include-annotations=*");
+            req1.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req1.onreadystatechange = null;
+                    if (this.status === 200) {
+                        var returned = JSON.parse(this.response);
+                        var results = returned.value;
+
+                        if (isNotesRequest == false) {
+                            if (returned['@Microsoft.Dynamics.CRM.fetchxmlpagingcookie']) {
+                                page = page + 1;
+                                document.getElementById("moreRecords").style.display = "block";
+                            }
+                            else {
+                                document.getElementById("moreRecords").style.display = "none";
+                            }
+                        }
+
+                        if (loadMoreCheck == true) {
+
+
+                            activitiesResults = results;
+                            loadMoreCheck = false;
+                            populateGrid();
+                        }
+                        else {
+                            if (retrievesActivitiescheck == true) {
+                                notesResults = results;
+                                notesFlag = true
+                            }
+
+                            if (retrievesActivitiescheck == false) {
+
+                                activitiesResults = results;
+                                if (notesFlag == false) {
+                                    retrievesActivitiescheck = true;
+                                    retrieveActivities();
+                                }
+                                else {
+                                    populateGrid();
+                                }
+                            }
+                            if (retrievesActivitiescheck == true && notesFlag == true) {
+                                retrievesActivitiescheck = false;
+                                notesFlag = true;
+                                populateGrid();
+                            }
+                        }
+
+                    }
+                    else {
+                        alert(this.statusText + "Web Api failed ss_ActivityStream #614.Could not fetch data");
+                    }
+                }
+            };
+            req1.send();
+        }
+        function populateGrid() {
+            //debugger;
+            document.getElementById("activities").innerHTML = "";
+
+            for (var p = 0; p < activitiesResults.length; p++) {
+                addActivity(p);
+
+            }
+            if (loadMoreCheck == false) {
+                for (var m = 0; m < notesResults.length; m++) {
+                    addNotes(m);
+                }
+            }
+            if (activitiesResults.length > 0 || notesResults.length > 0) {
+                document.getElementById("activities").innerHTML = table;
+            }
+            else {
+                document.getElementById("activities").innerHTML = "No Record Found for the selected year..!";
+            }
+
+            hideLoadingMessage();
+            var board = $("#activities");
+            var boards = board.children('.media').detach().get();
+            boards.sort(function (a, b) {
+                return new Date($(b).data("date")) - new Date($(a).data("date"));
+            });
+            board.append(boards);
+            categoriesFilter("");
+        }
+        function addNotes(j) {
+            var counterNotes = 0;
+            var CreatedOn = "";
+            var CreatedBy = "";
+            var ModifiedOn = "";
+            var Description = "";
+            var Subject = "";
+            var FileName = "";
+            var attachment = "";
+            var anoID = "";
+            if (notesResults[j]['annotationid']) {
+                anoID = notesResults[j]['annotationid'];
+            }
+
+            for (var k = 0; k < PreviousIdsNotes.length; k++) {
+                if (anoID == PreviousIdsNotes[k]) {
+                    counterNotes = 1;
+                }
+            }
+            if (counterNotes == 0) {
+                if (notesResults[j]['annotationid']) {
+                    PreviousIdsNotes.push(notesResults[j]['annotationid']);
+                }
+                var hasAttachment = notesResults[j]['isdocument'];
+                if (notesResults[j]['createdon'])
+                    CreatedOn = notesResults[j]['createdon@OData.Community.Display.V1.FormattedValue'];
+                if (notesResults[j]['_createdby_value'])
+                    CreatedBy = notesResults[j]['_createdby_value@OData.Community.Display.V1.FormattedValue'];
+                if (notesResults[j]['modifiedon'])
+                    ModifiedOn = notesResults[j]['modifiedon@OData.Community.Display.V1.FormattedValue'];
+                if (notesResults[j]['notetext']) {
+                    Description = notesResults[j]['notetext'];
+                    if (Description == null)
+                        Description = "";
+                }
+                else {
+                    Description = "";
+                }
+                if (notesResults[j]['subject']) {
+                    Subject = notesResults[j]['subject'];
+                    if (Subject == null)
+                        Subject = "";
+                    else
+                        Subject += ", ";
+                }
+                var d2 = notesResults[j]['modifiedon'];
+                var notesD = new Date(d2);
+                table += "<div class='media' data-date='" + d2 + "'><div class='media-left'><a href='#'>";
+                if (!hasAttachment)
+                    table += "<img class='media-object' width='25' height='25' src='ss_note' alt='Note'></a></div>";
+                else
+                    table += "<img class='media-object' width='25' height='25' src='ss_notered' alt='Note'></a></div>";
+
+                //Retrieving Regarding Name from object id (because results.entities[i].attributes.objectid.name has no value)
+                var regardingname = "";
+                if (notesResults[j]['_objectid_value']) {
+                    regardingname = FetchRegardingName(notesResults[j]['_objectid_value'], notesResults[j]['_objectid_value@Microsoft.Dynamics.CRM.lookuplogicalname']);
+                }
+                if (!regardingname || regardingname == "")
+                    regardingname = "(No name)";
+                //-----------------------------
+                if (UILanguageId == 1031) {
+                    var regarding = "Bezug: " + regardingname + " (" + notesResults[j]['_objectid_value@Microsoft.Dynamics.CRM.lookuplogicalname'] + ")";
+                }
+                else {
+                    var regarding = "Regarding: " + regardingname + " (" + notesResults[j]['_objectid_value@Microsoft.Dynamics.CRM.lookuplogicalname'] + ")";
+                }
+                if (hasAttachment) {
+                    var paperpin = "<img src='ss_attachment' alt='Attachment'>";
+                    if (notesResults[j]['filename'])
+                        attachment = " ," + paperpin + "" + "<a href=# onclick='getAttachment( \" " + anoID + " \" )'>" + notesResults[j]['filename'] + "</a>";
+
+                }
+                table += "<div class='media-body'><p>" + Subject + regarding + attachment + "</p>";
+
+                var deletebutton = "<img src='ss_delete.png' id='delete-input-btn' onclick='deleteNote(\"" + anoID + "\")'>";
+                var editButton = "<img src='ss_edit.png' id='delete-input-btn' onclick='editNote(\"" + anoID + "\")'>";
+
+                var len = Description.length;
+                if (UILanguageId == 1031) {
+                    if (len < 180) {
+                        if (len == 0)
+                            table += "<div>Erstellt am: " + CreatedOn + " Erstellt von: " + CreatedBy + " Geändert am: " + ModifiedOn + " " + deletebutton + "  " + editButton + "</div></div></div>";
+                        else
+                            table += "<div class='well'>" + Description + "</div><div>Erstellt am: " + CreatedOn + " Erstellt von: " + CreatedBy + " Geändert am: " + ModifiedOn + " " + deletebutton + "  " + editButton + "</div></div></div>";
+                    } else
+                        table += "<div class='well'>" + Description.substring(0, 180) + "<div class='collapse' id='viewdetails" + j + "'>" + Description.substring(180, len) + "</div> <a class='btn showdetails' data-toggle='collapse' data-target='#viewdetails" + j + "'></a></div><div>Erstellt am: " + CreatedOn + " Erstellt von: " + CreatedBy + " Geändert am: " + ModifiedOn + " " + deletebutton + "  " + editButton + "</div></div></div>";
+                } else if (len < 180) {
+                    if (len == 0)
+                        table += "<div>Created On: " + CreatedOn + " Created By: " + CreatedBy + " Modified On: " + ModifiedOn + " " + deletebutton + "  " + editButton + "</div></div></div>";
+                    else
+                        table += "<div class='well'>" + Description + "</div><div>Created On: " + CreatedOn + " Created By: " + CreatedBy + " Modified On: " + ModifiedOn + " " + deletebutton + "  " + editButton + "</div></div></div>";
+                } else
+                    table += "<div class='well'>" + Description.substring(0, 180) + "<div class='collapse' id='viewdetails" + j + "'>" + Description.substring(180, len) + "</div> <a class='btn showdetails' data-toggle='collapse' data-target='#viewdetails" + j + "'></a></div><div>Created On: " + CreatedOn + " Created By: " + CreatedBy + " Modified On: " + ModifiedOn + " " + deletebutton + "  " + editButton + "</div></div></div>";
+
+            }
+        }
+        function addActivity(i) {
+
+            var createdthroughTaskorPhone = false;
+            var ss_createdthroughtaskorphone_formatted = "";
+            var ActivityTypeCode = "";
+            if (activitiesResults[i]['typecode']) {
+                var ActivityTypeCode = activitiesResults[i]['typecode'];
+            }
+
+            if (ActivityTypeCode == "appointment") {
+                var req = new XMLHttpRequest();
+                req.open("GET", globelcontext.getClientUrl() + "/api/data/v8.2/appointments(" + activitiesResults[i]['activityid'] + ")?$select=ss_createdthroughtaskorphone", false);
+                req.setRequestHeader("OData-MaxVersion", "4.0");
+                req.setRequestHeader("OData-Version", "4.0");
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+                req.onreadystatechange = function () {
+                    if (this.readyState === 4) {
+                        req.onreadystatechange = null;
+                        if (this.status === 200) {
+                            var result = JSON.parse(this.response);
+                            createdthroughTaskorPhone = result["ss_createdthroughtaskorphone"];
+                            ss_createdthroughtaskorphone_formatted = result["ss_createdthroughtaskorphone@OData.Community.Display.V1.FormattedValue"];
+                        } else {
+                            parent.Xrm.Utility.alertDialog(this.statusText + "Web Api failed ss_ActivityStream #615.Could not get data from entity appoinments");
+                        }
+                    }
+                };
+                req.send();
+            }
+
+            if (createdthroughTaskorPhone == false) {
+
+                var StateCode = activitiesResults[i]["statecode"];
+                var flag = 0;
+                var counter = 0;
+                var catVal = "";
+                var pCalls = false;
+                if (activitiesResults[i]['activityparty1_x002e_participationtypemask']) {
+                    var pmv = activitiesResults[i]['activityparty1_x002e_participationtypemask'];
+                }
+
+                if ((ActivityTypeCode == 'task' || ActivityTypeCode == 'appointment' || ActivityTypeCode == 'ss_notification') && (pmv == 8) ||
+                    ((ActivityTypeCode == 'email' || ActivityTypeCode == 'letter' || ActivityTypeCode == 'phonecall') && (pmv == 2 || pmv == 8 || pmv == 1))) {
+                    var PartyList = "";
+                    var logicalname = "";
+                    var ID = activitiesResults[i]['activityid'];
+                    for (var j = 0; j < PreviousIds.length; j++) {
+                        if (ID == PreviousIds[j]) {
+                            counter = 1;
+                        }
+                    }
+                    if (counter == 0) {
+                        if (activitiesResults[i]['activityid']) {
+                            PreviousIds.push(activitiesResults[i]['activityid']);
+                        }
+                        if (ActivityTypeCode == 'phonecall') {
+                            pCalls = true;
+                            actparty_Fetch = "<fetch version='1.0' ><entity name='activityparty' ><attribute name='activitypartyid' /><attribute name='partyid' /><filter><condition attribute='participationtypemask' operator='eq' value='2' /> <condition attribute='activityid' operator='eq' value='" + activitiesResults[i]['activityid'] + "' /></filter> <link-entity name='phonecall' from='activityid' to='activityid' link-type='inner' ><attribute name='ss_productcategories' /></link-entity></entity></fetch>";
+
+                            var req = new XMLHttpRequest();
+                            req.open("GET", globelcontext.getClientUrl() + "/api/data/v8.0/activityparties?fetchXml=" + encodeURI(actparty_Fetch), false);
+                            req.setRequestHeader("OData-MaxVersion", "4.0");
+                            req.setRequestHeader("OData-Version", "4.0");
+                            req.setRequestHeader("Accept", "application/json");
+                            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                            req.setRequestHeader("Prefer", "odata.include-annotations=*");
+                            req.onreadystatechange = function () {
+                                if (this.readyState === 4) {
+                                    req.onreadystatechange = null;
+                                    if (this.status === 200) {
+                                        var returned = JSON.parse(this.response);
+                                        var objs = returned.value;
+                                        if (objs.length == 1) {
+                                            if (objs[0]['_partyid_value@OData.Community.Display.V1.FormattedValue']) {
+                                                PartyList += objs[0]['_partyid_value@OData.Community.Display.V1.FormattedValue'] + ",";
+                                                logicalname = objs[0]['_partyid_value@Microsoft.Dynamics.CRM.lookuplogicalname'];
+                                                if (objs[0].phonecall1_x002e_ss_productcategories != undefined) {
+                                                    catVal = objs[0].phonecall1_x002e_ss_productcategories;
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else {
+                                        alert(this.statusText + "Web Api failed ss_ActivityStream #616. Could not retrieve data from entity actvity parties, ");
+                                    }
+                                }
+                            };
+                            req.send();
+
+                        }
+
+                        else if (ActivityTypeCode == 'task') {
+                            pCalls = true;
+
+                            var req = new XMLHttpRequest();
+                            req.open("GET", globelcontext.getClientUrl() + "/api/data/v8.2/tasks(" + activitiesResults[i]['activityid'] + ")?$select=ss_productcategories", false);
+                            req.setRequestHeader("OData-MaxVersion", "4.0");
+                            req.setRequestHeader("OData-Version", "4.0");
+                            req.setRequestHeader("Accept", "application/json");
+                            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                            req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+                            req.onreadystatechange = function () {
+                                if (this.readyState === 4) {
+                                    req.onreadystatechange = null;
+                                    if (this.status === 200) {
+                                        var result = JSON.parse(this.response);
+                                        var ss_productcategories = result["ss_productcategories"];
+                                        if (ss_productcategories != undefined)
+                                            catVal = ss_productcategories;
+                                    } else {
+                                        //Xrm.Utility.alertDialog(this.statusText);
+                                        var errorOptions = { message: "Error Message. Web Api failed, Could not retrieve data from entity tasks; ss_ActivityStream #617.", details: this.statusText };
+                                        Xrm.Navigation.openErrorDialog(errorOptions).then(
+                                            function (success) {
+                                                //console.log(success);
+                                            },
+                                            function (error) {
+                                                //console.log(error);
+                                            });
+                                    }
+                                }
+                            };
+                            req.send();
+                        }
+
+
+
+
+
+
+                        if (ActivityTypeCode == 'email' || ActivityTypeCode == 'letter') {
+                            actparty_Fetch_e_l = actparty_Fetch = "<fetch version='1.0' ><entity name='activityparty' ><attribute name='activitypartyid' /><attribute name='partyid' /><filter><condition attribute='participationtypemask' operator='eq' value='2' /> <condition attribute='activityid' operator='eq' value='" + activitiesResults[i]['activityid'] + "' /></filter></entity></fetch>";
+                            var req = new XMLHttpRequest();
+                            req.open("GET", globelcontext.getClientUrl() + "/api/data/v8.0/activityparties?fetchXml=" + encodeURI(actparty_Fetch), false);
+                            req.setRequestHeader("OData-MaxVersion", "4.0");
+                            req.setRequestHeader("OData-Version", "4.0");
+                            req.setRequestHeader("Accept", "application/json");
+                            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                            req.setRequestHeader("Prefer", "odata.include-annotations=*");
+                            req.onreadystatechange = function () {
+                                if (this.readyState === 4) {
+                                    req.onreadystatechange = null;
+                                    if (this.status === 200) {
+                                        var returned = JSON.parse(this.response);
+                                        var objs = returned.value;
+                                        if (objs.length >= 1) {
+                                            var temporaryRecievers = "";
+                                            var temporaryLogicalName = "";
+                                            for (var k = 0; k < objs.length; k++) {
+                                                if (k != 0)
+                                                    temporaryRecievers += " ; ";
+                                                if (typeof objs[k]['_partyid_value@OData.Community.Display.V1.FormattedValue'] !== "undefined") {
+                                                    temporaryRecievers += objs[k]['_partyid_value@OData.Community.Display.V1.FormattedValue'] + " (" + objs[k]['_partyid_value@Microsoft.Dynamics.CRM.lookuplogicalname'] + ")";
+                                                }
+                                            }
+                                            temporaryRecievers = temporaryRecievers.replace(/[<>]/g, '');	// queues have brackets that are considered html tags. removing them
+                                            PartyList += temporaryRecievers + ",";
+                                        }
+                                    }
+                                    else {
+                                        alert(this.statusText + "Web Api failed ss_ActivityStream #618. Could not retrieve data from entity activeparty");
+                                    }
+                                }
+                            };
+                            req.send();
+                        }
+
+                        var n = PartyList.lastIndexOf(",");
+                        var partyid = PartyList.substring(0, n);
+                        var d2 = activitiesResults[i]['modifiedon'];
+                        var activityD = new Date(d2);
+                        var media_class = 'media ' + catVal;
+                        if (pCalls == true) {
+                            media_class = media_class + " phoneortask";
+                        }
+                        media_class = 'class="' + media_class + '"';
+                        table += "<div " + media_class + " data-date='" + d2 + "'><div class='media-left'><a href='#'>";
+
+
+                        if (ActivityTypeCode == 'phonecall') {
+                            flag += 1;
+
+                            if (StateCode == 1)
+                                table += "<img class='media-object' width='25' height='25' src='ss_phone.png' alt='Phone Call'></a></div>";
+                            else
+                                table += "<img class='media-object' width='25' height='25' src='ss_phonered.png' alt='Phone Call'></a></div>";
+
+                            if (partyid == "null") {
+                                partyid = "";
+                            }
+                            if (typeof partyid === "undefined") {
+                                partyid = "";
+                            }
+
+
+                            if (UILanguageId == 1031) {
+                                var regarding = "Anrufen: " + partyid + " (" + logicalname + ")";
+                            }
+                            else {
+                                var regarding = "Call To: " + partyid + " (" + logicalname + ")";
+                            }
+                        }
+
+                        else if (ActivityTypeCode == 'task') {
+                            flag += 2;
+                            if (StateCode == 1)
+                                table += "<img class='media-object' width='25' height='25' src='ss_check.png' alt='Task'></a></div>";
+                            else
+                                table += "<img class='media-object' width='25' height='25' src='ss_checkred' alt='Task'></a></div>";
+                            var RegardingObjectId = activitiesResults[i]['_regardingobjectid_value@OData.Community.Display.V1.FormattedValue'];
+                            if (UILanguageId == 1031) {
+                                var regarding = "Bezug: " + RegardingObjectId + " (" + activitiesResults[i]['_regardingobjectid_value@Microsoft.Dynamics.CRM.lookuplogicalname'] + ")";
+                            }
+                            else {
+                                var regarding = "Regarding: " + RegardingObjectId + " (" + activitiesResults[i]['_regardingobjectid_value@Microsoft.Dynamics.CRM.lookuplogicalname'] + ")";
+                            }
+                        }
+                        else if (ActivityTypeCode == 'email') {
+                            flag += 3;
+                            if (StateCode == 1)
+                                table += "<img class='media-object' width='25' height='25' src='ss_email' alt='Email'></a></div>";
+                            else
+                                table += "<img class='media-object' width='25' height='25' src='ss_emailred' alt='Email'></a></div>";
+
+                            if (partyid == "null") {
+                                partyid = "";
+                            }
+                            if (typeof partyid === "undefined") {
+                                partyid = "";
+                            }
+                            if (UILanguageId == 1031) {
+                                var regarding = "Email an: " + partyid;// + " (" + logicalname + ")";
+                            }
+                            else {
+                                var regarding = "Email To: " + partyid;// + " (" + logicalname + ")";
+                            }
+                        } else if (ActivityTypeCode == 'letter') {
+                            flag += 4;
+                            if (StateCode == 1)
+                                table += "<img class='media-object' width='25' height='25' src='ss_letter' alt='Letter'></a></div>";
+                            else
+                                table += "<img class='media-object' width='25' height='25' src='ss_letterred' alt='Letter'></a></div>";
+
+                            if (partyid == "null") {
+                                partyid = "";
+                            }
+                            if (typeof partyid === "undefined") {
+                                partyid = "";
+                            }
+                            if (UILanguageId == 1031) {
+                                var regarding = "Brief an: " + partyid;// + " (" + logicalname + ")";
+                            }
+                            else {
+                                var regarding = "Letter To: " + partyid;// + " (" + logicalname + ")";
+                            }
+                        }
+                        else if (ActivityTypeCode == 'appointment') {
+                            flag += 5;
+
+                            if (StateCode == 1)
+                                table += "<img class='media-object' width='25' height='25' src='ss_appointment' alt='Appointment'></a></div>";
+                            else
+                                table += "<img class='media-object' width='25' height='25' src='ss_appointmentred' alt='Appointment'></a></div>";
+                            var RegardingObjectId = activitiesResults[i]['_regardingobjectid_value@OData.Community.Display.V1.FormattedValue'];
+                            if (UILanguageId == 1031) {
+                                var regarding = "Bezug: " + RegardingObjectId + " (" + activitiesResults[i]['_regardingobjectid_value@Microsoft.Dynamics.CRM.lookuplogicalname'] + ")";
+                            }
+                            else {
+                                var regarding = "Regarding: " + RegardingObjectId + " (" + activitiesResults[i]['_regardingobjectid_value@Microsoft.Dynamics.CRM.lookuplogicalname'] + ")";
+                            }
+
+                        }
+                        else if (ActivityTypeCode == 'ss_notification') {
+                            flag += 6;
+                            if (StateCode == 1)
+                                table += "<img class='media-object' width='25' height='25' src='ss_notification' alt='Notification'></a></div>";
+                            else
+                                table += "<img class='media-object' width='25' height='25' src='ss_notificationred' alt='Notification'></a></div>";
+                            var RegardingObjectId = activitiesResults[i]['_regardingobjectid_value@OData.Community.Display.V1.FormattedValue'];
+                            if (UILanguageId == 1031) {
+                                var regarding = "Bezug: " + RegardingObjectId + " (" + activitiesResults[i]['_regardingobjectid_value@Microsoft.Dynamics.CRM.lookuplogicalname'] + ")";
+                            }
+                            else {
+                                var regarding = "Regarding: " + RegardingObjectId + " (" + activitiesResults[i]['_regardingobjectid_value@Microsoft.Dynamics.CRM.lookuplogicalname'] + ")";
+                            }
+                        }
+
+                        var Subject = "";
+                        if (activitiesResults[i]['subject']) {
+                            Subject = activitiesResults[i]['subject'];
+                            if (Subject == null || typeof Subject === 'undefined') {
+                                Subject = "";
+                            }
+                        } else {
+                            Subject = "";
+                        }
+                        table += "<div class='media-body'><p>" + Subject + ", " + regarding + "</p>";
+                        var CreatedOn = activitiesResults[i]['createdon@OData.Community.Display.V1.FormattedValue'];
+
+
+                        var ModifiedOn = activitiesResults[i]['modifiedon@OData.Community.Display.V1.FormattedValue'];
+                        if (activitiesResults[i]['description']) {
+                            var Description = activitiesResults[i]['description'];
+
+                            if (Description == null)
+                                Description = "";
+                            else if (ActivityTypeCode == 'email')
+                                //	    Description = Description.replace(/<br/g, "*<br");
+                                Description = strip(Description);	//html to plain text	//for only emails
+                            //  Description = Description.innerText;
+                            //		Description = Description.replace(/\*/g, "\n");
+
+                        }
+                        else {
+                            var Description = "";
+                        }
+                        var CreatedBy = activitiesResults[i]['_createdby_value@OData.Community.Display.V1.FormattedValue'];
+                        var len = Description.length;
+                        if (flag == 1) {
+                            var deletebutton = "<img src='ss_delete.png' id='delete-input-btn' onclick='deletePhoneCall(\"" + activitiesResults[i]['activityid'] + "\")'>";
+                            //		if (StateCode != 1) {
+                            var editButton = "<img src='ss_edit.png' id='delete-input-btn' onclick='editPhoneCall(\"" + activitiesResults[i]['activityid'] + "\")'>";
+
+                        }
+                        else if (flag == 2) {
+                            var deletebutton = "<img src='ss_delete.png' id='delete-input-btn' onclick='deleteTask(\"" + activitiesResults[i]['activityid'] + "\")'>";
+                            //		if (StateCode != 1) {
+                            var editButton = "<img src='ss_edit.png' id='delete-input-btn' onclick='editTask(\"" + activitiesResults[i]['activityid'] + "\")'>";
+
+                        }
+                        else if (flag == 3) {
+                            var deletebutton = "<img src='ss_delete.png' id='delete-input-btn' onclick='deleteEmail(\"" + activitiesResults[i]['activityid'] + "\")'>";
+                            //		if (StateCode != 1) {
+                            var editButton = "<img src='ss_edit.png' id='delete-input-btn' onclick='editEmail(\"" + activitiesResults[i]['activityid'] + "\")'>";
+
+                        }
+                        else if (flag == 4) {
+                            var deletebutton = "<img src='ss_delete.png' id='delete-input-btn' onclick='deleteLetter(\"" + activitiesResults[i]['activityid'] + "\")'>";
+                            //		if (StateCode != 1) {
+                            var editButton = "<img src='ss_edit.png' id='delete-input-btn' onclick='editLetter(\"" + activitiesResults[i]['activityid'] + "\")'>";
+
+                        }
+                        else if (flag == 5) {
+                            var deletebutton = "<img src='ss_delete.png' id='delete-input-btn' onclick='deleteAppointment(\"" + activitiesResults[i]['activityid'] + "\")'>";
+                            //		if (StateCode != 1) {
+                            var editButton = "<img src='ss_edit.png' id='delete-input-btn' onclick='editAppointment(\"" + activitiesResults[i]['activityid'] + "\")'>";
+
+                        }
+                        else if (flag == 6) {
+                            var deletebutton = "<img src='ss_delete.png' id='delete-input-btn' onclick='deleteNotification(\"" + activitiesResults[i]['activityid'] + "\")'>";
+                            //		if (StateCode != 1) {
+                            var editButton = "<img src='ss_edit.png' id='delete-input-btn' onclick='editNotification(\"" + activitiesResults[i]['activityid'] + "\")'>";
+
+                        }
+
+                        if (UILanguageId == 1031) {
+
+                            if (len < 180) {
+                                if (len == 0) {
+                                    table += "<div>Erstellt am: " + CreatedOn + " Erstellt von: " + CreatedBy + " Geändert am: " + ModifiedOn + " " + deletebutton + "  " + editButton + "</div></div></div>";
+                                }
+                                else {
+                                    table += "<div class='well'><pre class='PreTagDesign'>" + Description + "</pre></div><div>Erstellt am: " + CreatedOn + " Erstellt von: " + CreatedBy + " Geändert am: " + ModifiedOn + " " + deletebutton + "  " + editButton + "</div></div></div>";
+                                }
+                            }
+                            else {
+                                table += "<div class='well'><pre class='PreTagDesign'>" + Description.substring(0, 180) + "</pre><div class='collapse' id='viewdetails" + i + "'><pre class='PreTagDesign'>" + Description.substring(180, len) + "</pre></div> <a class='btn showdetails' data-toggle='collapse' data-target='#viewdetails" + i + "'></a></div><div>Erstellt am: " + CreatedOn + " Erstellt von: " + CreatedBy + " Geändert am: " + ModifiedOn + " " + deletebutton + "  " + editButton + "</div></div></div>";
+                            }
+                        }
+                        else {
+                            if (len < 180) {
+                                if (len == 0) {
+                                    table += "<div>Created On: " + CreatedOn + " Created By: " + CreatedBy + " Modified On: " + ModifiedOn + " " + deletebutton + "  " + editButton + "</div></div></div>";
+                                }
+                                else {
+                                    table += "<div class='well'><pre class='PreTagDesign'>" + Description + "</pre></div><div>Created On: " + CreatedOn + " Created By: " + CreatedBy + " Modified On: " + ModifiedOn + " " + deletebutton + "  " + editButton + "</div></div></div>";
+                                }
+                            }
+                            else {
+                                table += "<div class='well'><pre class='PreTagDesign'>" + Description.substring(0, 180) + "</pre><div class='collapse' id='viewdetails" + i + "'><pre class='PreTagDesign'>" + Description.substring(180, len) + "</pre></div> <a class='btn showdetails' data-toggle='collapse' data-target='#viewdetails" + i + "'></a></div><div>Created On: " + CreatedOn + " Created By: " + CreatedBy + " Modified On: " + ModifiedOn + " " + deletebutton + "  " + editButton + "</div></div></div>";
+
+                            }
+                        }
+
+
+                    }
+                }
+            }
+
+        }
+        //Retrieving Regarding Name from object id for Notes
+        function FetchRegardingName(ID, ofEntity) {
+            var regName = "";
+            switch (ofEntity) {
+                case "account":
+                    var req = new XMLHttpRequest();
+                    req.open("GET", encodeURI(globelcontext.getClientUrl() + "/api/data/v8.0/accounts(" + ID + ")?$select=name"), false);
+                    req.setRequestHeader("OData-MaxVersion", "4.0");
+                    req.setRequestHeader("OData-Version", "4.0");
+                    req.setRequestHeader("Accept", "application/json");
+                    req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    req.setRequestHeader("Prefer", "odata.include-annotations=\"OData.Community.Display.V1.FormattedValue\"");
+                    req.onreadystatechange = function () {
+                        if (this.readyState === 4) {
+                            req.onreadystatechange = null;
+                            if (this.status === 200) {
+                                var result = JSON.parse(this.response);
+                                if (typeof result["name"] !== "undefined") {
+                                    regName = result["name"];
+                                }
+                            }
+                            else {
+                                alert(this.statusText + "Web Api failed ss_ActivityStream #619.Could not retrieve data from entity Accounts.");
+                            }
+                        }
+                    };
+                    req.send();
+                    break;
+                case "contact":
+                    var req = new XMLHttpRequest();
+                    req.open("GET", encodeURI(globelcontext.getClientUrl() + "/api/data/v8.0/contacts(" + ID + ")?$select=fullname"), false);
+                    req.setRequestHeader("OData-MaxVersion", "4.0");
+                    req.setRequestHeader("OData-Version", "4.0");
+                    req.setRequestHeader("Accept", "application/json");
+                    req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    req.setRequestHeader("Prefer", "odata.include-annotations=\"OData.Community.Display.V1.FormattedValue\"");
+                    req.onreadystatechange = function () {
+                        if (this.readyState === 4) {
+                            req.onreadystatechange = null;
+                            if (this.status === 200) {
+                                var result = JSON.parse(this.response);
+                                if (typeof result["fullname"] !== "undefined") {
+                                    regName = result["fullname"];
+                                }
+                            }
+                            else {
+                                alert(this.statusText + "Web Api failed ss_ActivityStream #620.Could not retrieve data from entity contacts");
+                            }
+                        }
+                    };
+                    req.send();
+                    break;
+                case "lead":
+                    var req = new XMLHttpRequest();
+                    req.open("GET", encodeURI(globelcontext.getClientUrl() + "/api/data/v8.0/leads(" + ID + ")?$select=fullname"), false);
+                    req.setRequestHeader("OData-MaxVersion", "4.0");
+                    req.setRequestHeader("OData-Version", "4.0");
+                    req.setRequestHeader("Accept", "application/json");
+                    req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    req.setRequestHeader("Prefer", "odata.include-annotations=\"OData.Community.Display.V1.FormattedValue\"");
+                    req.onreadystatechange = function () {
+                        if (this.readyState === 4) {
+                            req.onreadystatechange = null;
+                            if (this.status === 200) {
+                                var result = JSON.parse(this.response);
+                                if (typeof result["fullname"] !== "undefined") {
+                                    regName = result["fullname"];
+                                }
+                            }
+                            else {
+                                alert(this.statusText +"Web Api failed ss_ActivityStream #621.Could not retrieve data from entity leads");
+                            }
+                        }
+                    };
+                    req.send();
+                    break;
+                case "opportunity":
+                    var req = new XMLHttpRequest();
+                    req.open("GET", encodeURI(globelcontext.getClientUrl() + "/api/data/v8.0/opportunities(" + ID + ")?$select=_parentcontactid_value"), false);
+                    req.setRequestHeader("OData-MaxVersion", "4.0");
+                    req.setRequestHeader("OData-Version", "4.0");
+                    req.setRequestHeader("Accept", "application/json");
+                    req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    req.setRequestHeader("Prefer", "odata.include-annotations=\"OData.Community.Display.V1.FormattedValue\"");
+                    req.onreadystatechange = function () {
+                        if (this.readyState === 4) {
+                            req.onreadystatechange = null;
+                            if (this.status === 200) {
+                                var result = JSON.parse(this.response);
+                                if (typeof result["_parentcontactid_value@OData.Community.Display.V1.FormattedValue"] !== "undefined")
+                                    regName = result["_parentcontactid_value@OData.Community.Display.V1.FormattedValue"];
+                            }
+                            else {
+                                alert(this.statusText +"Web Api failed ss_ActivityStream #622.Could not retrieve data from entity opportunities");
+                            }
+                        }
+                    };
+                    req.send();
+                    break;
+                default:
+                    break;
+            }
+            return regName;
+        }
+
+        //openNewPhoneCall() this method is called when user clicks to open a new PhoneCall, Email, Letter to create a phone call.
+        function openNewActivity(taskName) {
+            var id = parent.Xrm.Page.data.entity.getId();
+            if (entityName == "account") {
+                var ObjectTypeCode = "1";
+                var name = parent.Xrm.Page.getAttribute("name").getValue();
+                var pratytypeCode = "1";
+                var partname = name;
+                var partid = id;
+            }
+            else if (entityName == "opportunity") {
+                var ObjectTypeCode = "3";
+                var name = parent.Xrm.Page.getAttribute("name").getValue();
+                var Contact = parent.Xrm.Page.getAttribute("parentcontactid").getValue();
+                if (Contact != null) {
+                    var partname = Contact[0].name;
+                    var pratytypeCode = "2";
+                    var partid = Contact[0].id;
+                }
+                else {
+                    var Account = parent.Xrm.Page.getAttribute("parentaccountid").getValue();
+                    if (Account != null) {
+                        var partname = Account[0].name;
+                        var pratytypeCode = "1";
+                        var partid = Account[0].id;
+                    }
+                }
+            }
+            else if (entityName == "lead") {
+                var ObjectTypeCode = "4";
+                var name = parent.Xrm.Page.getAttribute("fullname").getValue();
+                var ExsitingContact = parent.Xrm.Page.getAttribute("parentcontactid").getValue();
+                if (ExsitingContact != null) {
+                    var partname = ExsitingContact[0].name;
+                    var pratytypeCode = "2";
+                    var partid = ExsitingContact[0].id;
+                }
+
+                else {
+                    var pratytypeCode = "4";
+                    var partname = name;
+                    var partid = id;
+                }
+            }
+            else if (entityName == "ss_visitreport") {
+                //debugger;
+                var name = parent.Xrm.Page.getAttribute("ss_reportname").getValue();
+                var pratytypeCode = "1";
+                var accountObject = parent.Xrm.Page.getAttribute("ss_accountid").getValue();
+                var partname = accountObject[0].name;
+                var partid = accountObject[0].id;
+                var ObjectTypeCode = globelcontext.getQueryStringParameters().etc;
+
+            }
+            else if (entityName == "contact") {
+                var name = parent.Xrm.Page.getAttribute("fullname").getValue();
+                var pratytypeCode = "2";
+                var partname = name;
+                var partid = id;
+                var ObjectTypeCode = "2";
+            }
+
+           //old method for opening entity form in new window // var windowOptions = {  
+            //     openInNewWindow: true
+            // };
+
+                 var param = {};
+                 param['pId'] = id;
+                 param['pType'] = ObjectTypeCode;
+                 param['pName'] = name;
+
+                 param['partyid'] = partid;
+                 param['partyname'] = partname;
+                 param['partytype'] = pratytypeCode;
+
+                //Xrm.Utility.openEntityForm("appointment", null, param, windowOptions);  old Method for opening Entity Form
+                            //timeout();
+
+////////////////////  Changes v9.00 for open new enityForm    
+
+             var entityFormOptions = {};
+             entityFormOptions["entityName"] = taskName;
+             entityFormOptions["openInNewWindow"] = true;
+            // Open the form.
+            parent.Xrm.Navigation.openForm(entityFormOptions, param).then(
+                function (success) {
+                    //console.log(success);
+                    //parent.Xrm.Page.context
+                    var systemUserRole = globelcontext.userSettings.securityRoles;
+                    //var ObjectTypeCode = parent.Xrm.Page.context.getQueryStringParameters().etc;
+                    //var ObjectTypeCoden = globelcontext.getQueryStringParameters().etc;
+                    timeout();
+                },
+                function (error) {
+                    console.log(error + " Could not open entity form; ss_ActivityStream #623. ");
+                });
+
+
+        }
+        //openNewTask() this method is called when user clicks to open a new Task to create a New Task.
+        function openNewTask() {
+            var id = parent.Xrm.Page.data.entity.getId();
+            if (entityName == "account") {
+                var ObjectTypeCode = "1";
+                var name = parent.Xrm.Page.getAttribute("name").getValue();
+            }
+            else if (entityName == "opportunity") {
+                var ObjectTypeCode = "3";
+                var name = parent.Xrm.Page.getAttribute("name").getValue();
+            }
+            else if (entityName == "contact") {
+                var ObjectTypeCode = "2";
+                var name = parent.Xrm.Page.getAttribute("fullname").getValue();
+            }
+            else if (entityName == "lead") {
+                var ObjectTypeCode = "4";
+                var name = parent.Xrm.Page.getAttribute("fullname").getValue();
+            }
+            else if (entityName == "ss_visitreport") {
+                var ObjectTypeCode = globelcontext.getQueryStringParameters().etc;
+                var name = parent.Xrm.Page.getAttribute("ss_reportname").getValue();
+            }
+
+            var param = {};
+
+            param['pId'] = id;
+            param['pType'] = ObjectTypeCode;
+            param['pName'] = name;
+
+////////////////////        Changes v9.00 for open new enityForm    
+
+             var entityFormOptions = {};
+             entityFormOptions["entityName"] = "task";
+             entityFormOptions["openInNewWindow"] = true;
+            // Open the form.
+            parent.Xrm.Navigation.openForm(entityFormOptions, param).then(
+                function (success) {
+                    timeout();
+                },
+                function (error) {
+                    console.log(error + " Could not open form of entity task; ss_ActivityStream #624. ");
+                });
+
+
+
+        }
+        //openNewAppointment() this method is called when user clicks to open a new Appointment to create a New Appointment.
+        function openNewAppointment() {
+            var id = parent.Xrm.Page.data.entity.getId();
+            if (entityName == "account") {
+                var ObjectTypeCode = "1";
+                var name = parent.Xrm.Page.getAttribute("name").getValue();
+            }
+            else if (entityName == "opportunity") {
+                var ObjectTypeCode = "3";
+                var name = parent.Xrm.Page.getAttribute("name").getValue();
+            }
+            else if (entityName == "contact") {
+                var ObjectTypeCode = "2";
+                var name = parent.Xrm.Page.getAttribute("fullname").getValue();
+            }
+            else if (entityName == "lead") {
+                var ObjectTypeCode = "4";
+                var name = parent.Xrm.Page.getAttribute("fullname").getValue();
+            }
+            else if (entityName == "ss_visitreport") {
+                //var ObjectTypeCode = globelcontext.getQueryStringParameters().etc;
+                var name = parent.Xrm.Page.getAttribute("ss_reportname").getValue();
+            }
+            
+            var param = {};
+
+            param['pId'] = id;
+            param['pType'] = ObjectTypeCode;
+            param['pName'] = name;
+            
+
+////////////////////        Changes v9.00 for open new enityForm    
+
+             var entityFormOptions = {};
+             entityFormOptions["entityName"] = "appointment";
+             entityFormOptions["openInNewWindow"] = true;
+            // Open the form.
+            parent.Xrm.Navigation.openForm(entityFormOptions, param).then(
+                function (success) {
+                    //console.log(success);
+                    timeout();
+                },
+                function (error) {
+                    console.log(error + " Could not open form of entity appoinment; ss_ActivityStream #625. .");
+                });
+
+
+
+
+        }
+        //openNewNotification() this method is called when user clicks to open a new Notification to create a New Notification.
+        function openNewNotification() {
+            var id = parent.Xrm.Page.data.entity.getId();
+            if (entityName == "account") {
+                var ObjectTypeCode = "1";
+                var name = parent.Xrm.Page.getAttribute("name").getValue();
+            }
+            else if (entityName == "opportunity") {
+                var ObjectTypeCode = "3";
+                var name = parent.Xrm.Page.getAttribute("name").getValue();
+            }
+            else if (entityName == "contact") {
+                var ObjectTypeCode = "2";
+                var name = parent.Xrm.Page.getAttribute("fullname").getValue();
+            }
+            else if (entityName == "lead") {
+                var ObjectTypeCode = "4";
+                var name = parent.Xrm.Page.getAttribute("fullname").getValue();
+            }
+            else if (entityName == "ss_visitreport") {
+                var ObjectTypeCode = globelcontext.getQueryStringParameters().etc;
+                var name = parent.Xrm.Page.getAttribute("ss_reportname").getValue();
+            }
+            
+            var param = {};
+
+            param['pId'] = id;
+            param['pType'] = ObjectTypeCode;
+            param['pName'] = name;
+            
+
+////////////////////        Changes v9.00 for open new enityForm    
+
+             var entityFormOptions = {};
+             entityFormOptions["entityName"] = "ss_notification";
+             entityFormOptions["openInNewWindow"] = true;
+            // Open the form.
+            parent.Xrm.Navigation.openForm(entityFormOptions, param).then(
+                function (success) {
+                    //console.log(success);
+                    timeout();
+                },
+                function (error) {
+                    console.log(error + " Could not open form of entity ss_notification; ss_ActivityStream #626. ");
+                });
+
+        }
+
+        function openNewNote() {
+            var formType = parent.Xrm.Page.ui.getFormType();
+            if (formType == 1)	//create
+            {
+                if (UILanguageId == 1031) {
+                    alert("Bitte speichern Sie zuerst den Datensatz.");
+                }
+                else {
+                    alert("Please save the record first.");
+                }
+                return;
+            }
+
+            var url = "/webresources/ss_AnnotationEdit.html";
+            if (win != "") {
+                if (win.closed) {
+                    win = window.open(url, null, "width=970px,height=640px,fullscreen=no, resizable=no,scrollbars=no");
+                    notesFlag = false;
+                    timeout();
+                }
+                else
+                    win.focus();
+            }
+            else {
+                win = window.open(url, null, "width=970px,height=640px,fullscreen=no, resizable=no,scrollbars=no");
+                notesFlag = false;
+                timeout()
+            }
+
+        }
+
+        //timeout() this method is runs whenever focus loses from the main form to another form, and when form gets back to the same form it refresh the records so that we can get updated records.
+        function timeout() {
+            setTimeout(function () {
+                if (document.hasFocus()) {
+                    page = 1;
+                    PreviousIds = [];
+                    PreviousIdsNotes = [];
+                    pageCookie = "";
+                    table = "";
+                    if (entityName == "account") {
+                        retrieveAccountRecords();
+                    }
+                    else if (entityName == "opportunity") {
+                        OpportunityRecords();
+                    }
+
+                    else if (entityName == "contact") {
+                        ContactRecords();
+                    }
+
+                    else if (entityName == "lead") {
+                        leadRecords();
+                    }
+                    else if (entityName == "ss_visitreport") {
+                        visitRecords();
+                    }
+                }
+                else {
+                    timeout();
+                }
+            }, 500);
+        }
+
+        function showLoadingMessage() {
+            msgDiv.style.display = "block";
+        }
+        function hideLoadingMessage() {
+            msgDiv.style.display = "none";
+        }
+
+        // deletePhoneCall() deletes the selected phoneCall and then refreshes the record.
+        function deletePhoneCall(id) {
+
+            if (UILanguageId == 1031) {
+                var confirmation = confirm("Sind Sie sicher, dass Sie 1 Telefonanruf löschen möchten? Sie können diese Aktion nicht rückgängig machen.");
+            }
+            else {
+                var confirmation = confirm("Are you sure you want to delete 1 Phone Call? You can't undo this action.");
+            }
+            if (confirmation == true) {
+                var req = new XMLHttpRequest();
+                req.open("DELETE", encodeURI(globelcontext.getClientUrl() + "/api/data/v8.0/phonecalls(" + id + ")"), true);
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                req.setRequestHeader("OData-MaxVersion", "4.0");
+                req.setRequestHeader("OData-Version", "4.0");
+                req.onreadystatechange = function () {
+                    if (this.readyState === 4) {
+                        req.onreadystatechange = null;
+                        if (this.status === 204 || this.status === 1223) {
+                            page = 1;
+                            PreviousIds = [];
+                            PreviousIdsNotes = [];
+                            pageCookie = "";
+                            table = "";
+                            retrieveActivitiesfunc();
+                        }
+                        else {
+                            alert(this.statusText + "Web Api failed ss_ActivityStream #627. Could not Delete rcord from entity Phone Calls.");
+                        }
+                    }
+                };
+                req.send();
+            }
+            else {
+                return;
+            }
+        }
+        // deleteEmail() deletes the selected Email and then refreshes the record.
+        function deleteEmail(id) {
+
+            if (UILanguageId == 1031) {
+                var confirmation = confirm("Bist du sicher, dass du 1 E-Mail löschen willst? Sie können diese Aktion nicht rückgängig machen.");
+            }
+            else {
+                var confirmation = confirm("Are you sure you want to delete 1 Email? You can't undo this action.");
+            }
+            if (confirmation == true) {
+                var req = new XMLHttpRequest();
+                req.open("DELETE", encodeURI(globelcontext.getClientUrl() + "/api/data/v8.0/emails(" + id + ")"), true);
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                req.setRequestHeader("OData-MaxVersion", "4.0");
+                req.setRequestHeader("OData-Version", "4.0");
+                req.onreadystatechange = function () {
+                    if (this.readyState === 4) {
+                        req.onreadystatechange = null;
+                        if (this.status === 204 || this.status === 1223) {
+                            page = 1;
+                            PreviousIds = [];
+                            PreviousIdsNotes = [];
+                            pageCookie = "";
+                            table = "";
+                            retrieveActivitiesfunc();
+                        }
+                        else {
+                            alert(this.statusText + "Web Api failed ss_ActivityStream #628. Could not delete record from entity emails.");
+                        }
+                    }
+                };
+                req.send();
+            }
+            else {
+                return;
+            }
+        }
+        // deleteLetter() deletes the selected Letter and then refreshes the record.
+        function deleteLetter(id) {
+
+            if (UILanguageId == 1031) {
+                var confirmation = confirm("Bist du sicher, dass du 1 E-Mail löschen willst? Sie können diese Aktion nicht rückgängig machen");
+            }
+            else {
+                var confirmation = confirm("Are you sure you want to delete 1 Email? You can't undo this action.");
+            }
+            if (confirmation == true) {
+                var req = new XMLHttpRequest();
+                req.open("DELETE", encodeURI(globelcontext.getClientUrl() + "/api/data/v8.0/letters(" + id + ")"), true);
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                req.setRequestHeader("OData-MaxVersion", "4.0");
+                req.setRequestHeader("OData-Version", "4.0");
+                req.onreadystatechange = function () {
+                    if (this.readyState === 4) {
+                        req.onreadystatechange = null;
+                        if (this.status === 204 || this.status === 1223) {
+                            page = 1;
+                            PreviousIds = [];
+                            PreviousIdsNotes = [];
+                            pageCookie = "";
+                            table = "";
+                            retrieveActivitiesfunc();
+                        }
+                        else {
+                            alert(this.statusText + "Web Api failed ss_ActivityStream #629. Could not delete record from entity letters.");
+                        }
+                    }
+                };
+                req.send();
+            }
+            else {
+                return;
+            }
+        }
+        // deletePhoneCall() deletes the selected Task and then refreshes the record.
+        function deleteTask(id) {
+            if (UILanguageId == 1031) {
+                var confirmation = confirm("Sind Sie sicher, dass Sie 1 Aufgabe löschen möchten? Sie können diese Aktion nicht rückgängig machen.");
+            }
+            else {
+                var confirmation = confirm("Are you sure you want to delete 1 Task? You can't undo this action.");
+            }
+            if (confirmation == true) {
+                var req = new XMLHttpRequest();
+                req.open("DELETE", encodeURI(globelcontext.getClientUrl() + "/api/data/v8.0/tasks(" + id + ")"), true);
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                req.setRequestHeader("OData-MaxVersion", "4.0");
+                req.setRequestHeader("OData-Version", "4.0");
+                req.onreadystatechange = function () {
+                    if (this.readyState === 4) {
+                        req.onreadystatechange = null;
+                        if (this.status === 204 || this.status === 1223) {
+                            page = 1;
+                            PreviousIds = [];
+                            PreviousIdsNotes = [];
+                            pageCookie = "";
+                            table = "";
+                            retrieveActivitiesfunc();
+                        }
+                        else {
+                            alert(this.statusText + "Web Api failed ss_ActivityStream #630. Could not delete record from entity tasks.");
+                        }
+                    }
+                };
+                req.send();
+            }
+            else {
+                return;
+            }
+        }
+
+        function deleteAppointment(id) {
+            if (UILanguageId == 1031) {
+                var confirmation = confirm("Bist du sicher, dass du 1 Termin löschen willst? Sie können diese Aktion nicht rückgängig machen.");
+            }
+            else {
+                var confirmation = confirm("Are you sure you want to delete 1 Appointment? You can't undo this action.");
+            }
+            if (confirmation == true) {
+                var req = new XMLHttpRequest();
+                req.open("DELETE", encodeURI(globelcontext.getClientUrl() + "/api/data/v8.0/appointments(" + id + ")"), true);
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                req.setRequestHeader("OData-MaxVersion", "4.0");
+                req.setRequestHeader("OData-Version", "4.0");
+                req.onreadystatechange = function () {
+                    if (this.readyState === 4) {
+                        req.onreadystatechange = null;
+                        if (this.status === 204 || this.status === 1223) {
+                            page = 1;
+                            PreviousIds = [];
+                            PreviousIdsNotes = [];
+                            pageCookie = "";
+                            table = "";
+                            retrieveActivitiesfunc();
+                        }
+                        else {
+                            alert(this.statusText + "Web Api Failed ss_ActivityStream #631. Could not delete record from entity appoinemnts");
+                        }
+                    }
+                };
+                req.send();
+            }
+            else {
+                return;
+            }
+        }
+
+        function deleteNotification(id) {
+            if (UILanguageId == 1031) {
+                var confirmation = confirm("Sind Sie sicher, dass Sie eine Benachrichtigung löschen möchten? Sie können diese Aktion nicht rückgängig machen.");
+            }
+            else {
+                var confirmation = confirm("Are you sure you want to delete 1 Notification? You can't undo this action.");
+            }
+            if (confirmation == true) {
+                var req = new XMLHttpRequest();
+                req.open("DELETE", encodeURI(globelcontext.getClientUrl() + "/api/data/v8.0/ss_notifications(" + id + ")"), true);
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                req.setRequestHeader("OData-MaxVersion", "4.0");
+                req.setRequestHeader("OData-Version", "4.0");
+                req.onreadystatechange = function () {
+                    if (this.readyState === 4) {
+                        req.onreadystatechange = null;
+                        if (this.status === 204 || this.status === 1223) {
+                            page = 1;
+                            PreviousIds = [];
+                            PreviousIdsNotes = [];
+                            pageCookie = "";
+                            table = "";
+                            retrieveActivitiesfunc();
+                        }
+                        else {
+                            alert(this.statusText + "Web Api failed ss_ActivityStream #632.Could not delete record from entity ss_notifications ");
+                        }
+                    }
+                };
+                req.send();
+            }
+            else {
+                return;
+            }
+        }
+
+        function deleteNote(Annotationid) {
+            if (UILanguageId == 1031) {
+                var confirmation = confirm("Sind Sie sicher, dass Sie löschen möchten 1 Hinweis? Sie können diese Aktion nicht rückgängig machen.");
+            }
+            else {
+                var confirmation = confirm("Are you sure you want to delete 1 Note? You can't undo this action.");
+            }
+            if (confirmation == true) {
+                var req = new XMLHttpRequest();
+                req.open("DELETE", encodeURI(globelcontext.getClientUrl() + "/api/data/v8.0/annotations(" + Annotationid + ")"), true);
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                req.setRequestHeader("OData-MaxVersion", "4.0");
+                req.setRequestHeader("OData-Version", "4.0");
+                req.onreadystatechange = function () {
+                    if (this.readyState === 4) {
+                        req.onreadystatechange = null;
+                        if (this.status === 204 || this.status === 1223) {
+                            page = 1;
+                            PreviousIds = [];
+                            PreviousIdsNotes = [];
+                            pageCookie = "";
+                            table = "";
+                            retrieveActivitiesfunc();
+                        }
+                        else {
+                            alert(this.statusText) + "Web Api failed ss_ActivityStream #633.Could not delete record from entity annotations ";
+                        }
+                    }
+                };
+                req.send();
+            }
+            else {
+                return;
+            }
+        }
+        //editTask() method opens an out of the box task form and from there user can edit the  activity.
+        function editTask(TaskId) {
+            
+            // Old Method for Open an entity form for existing record   Xrm.Utility.openEntityForm("task", TaskId, null, windowOptions);
+            //timeout();
+
+////////////////////////////      V 9.0 for Open an entity form for existing record
+
+            var entityFormOptions = {};
+            entityFormOptions["entityName"] = "task";
+            entityFormOptions["entityId"] = TaskId;
+            entityFormOptions["openInNewWindow"] = true;
+
+            // Open the form.
+            parent.Xrm.Navigation.openForm(entityFormOptions).then(
+                function (success) {
+                    timeout();
+                },
+                function (error) {
+                    console.log(error + " Could not open form of entity task; ss_ActivityStream #634.");
+                });
+
+
+        }
+        //editAppointment() method opens an out of the box task form and from there user can edit the  activity.
+        function editAppointment(AppointmentId) {
+
+////////////////////////////      V 9.0 for Open an entity form for existing record
+
+            var entityFormOptions = {};
+            entityFormOptions["entityName"] = "appointment";
+            entityFormOptions["entityId"] = AppointmentId;
+            entityFormOptions["openInNewWindow"] = true;
+
+            // Open the form.
+            parent.Xrm.Navigation.openForm(entityFormOptions).then(
+                function (success) {
+                    timeout();
+                },
+                function (error) {
+                    console.log(error + " Could not open form of entity appoinment; ss_ActivityStream #635.");
+                });
+
+        }
+        //editNotification() method opens an out of the box task form and from there user can edit the  activity.
+        function editNotification(NotificationId) {
+
+////////////////////////////      V 9.0 for Open an entity form for existing record
+
+            var entityFormOptions = {};
+            entityFormOptions["entityName"] = "ss_notification";
+            entityFormOptions["entityId"] = NotificationId;
+            entityFormOptions["openInNewWindow"] = true;
+
+            // Open the form.
+            parent.Xrm.Navigation.openForm(entityFormOptions).then(
+                function (success) {
+                    timeout();
+                },
+                function (error) {
+                    console.log(error + " Could not open form of entity ss_notification; ss_ActivityStream #636.");
+                });
+        }
+        //editPhoneCall() method opens an out of the box PhoneCall form and from there user can edit the activity.
+        function editPhoneCall(PhoneCallId) {
+            
+////////////////////////////      V 9.0 for Open an entity form for existing record
+
+            var entityFormOptions = {};
+            entityFormOptions["entityName"] = "phonecall";
+            entityFormOptions["entityId"] = PhoneCallId;
+            entityFormOptions["openInNewWindow"] = true;
+
+            // Open the form.
+            parent.Xrm.Navigation.openForm(entityFormOptions).then(
+                function (success) {
+                    timeout();
+                },
+                function (error) {
+                    console.log(error + " Could not open form of entity phonecall; ss_ActivityStream #637.");
+                });
+        }
+        //editEmail() method opens an out of the box Email form and from there user can edit the  activity.
+        function editEmail(EmailId) {
+
+////////////////////////////      V 9.0 for Open an entity form for existing record
+
+            var entityFormOptions = {};
+            entityFormOptions["entityName"] = "email";
+            entityFormOptions["entityId"] = EmailId;
+            entityFormOptions["openInNewWindow"] = true;
+
+            // Open the form.
+            parent.Xrm.Navigation.openForm(entityFormOptions).then(
+                function (success) {
+                    timeout();
+                },
+                function (error) {
+                    console.log(error + " Could not open form of entity email; ss_ActivityStream #638.");
+                });
+        }
+        //editLetter() method opens an out of the box Letter form and from there user can edit the  activity.
+        function editLetter(LetterId) {
+
+////////////////////////////      V 9.0 for Open an entity form for existing record
+
+            var entityFormOptions = {};
+            entityFormOptions["entityName"] = "letter";
+            entityFormOptions["entityId"] = LetterId;
+            entityFormOptions["openInNewWindow"] = true;
+
+            // Open the form.
+            parent.Xrm.Navigation.openForm(entityFormOptions).then(
+                function (success) {
+                    timeout();
+                },
+                function (error) {
+                    console.log(error + " Could not open form of entity letter; ss_ActivityStream #639.");
+                });
+        }
+        function editNote(NoteId) {
+            openAnnotation(NoteId);
+        }
+        function openAnnotation(aid) {
+
+            var customParameters = encodeURIComponent("\"" + aid + "\"");
+            var url = "/webresources/ss_AnnotationEdit.html?data=" + customParameters;
+            if (win != "") {
+                if (win.closed)
+                    win = window.open(url, null, "width=970px,height=640px,fullscreen=0, resizable=0,scrollbars=0");
+                else
+                    win.focus();
+            } else
+                win = window.open(url, null, "width=970px,height=640px,fullscreen=0, resizable=0,scrollbars=0");
+        }
+
+        function strip(html)	//helping function.in this function we use innerText function which remove html tages but keep the format of text. and then we use the <pre> tage in  our html to use the format of text
+        {
+            var tmp = document.createElement("DIV");
+            tmp.innerHTML = html;
+            return tmp.innerText || "";
+        } //tmp.textContent ||
+        function switchtab() {
+            //if (selectedTab == "Activities") {
+            //    selectedTab = "Notes";
+            //} else {
+            //    selectedTab = "Activities";
+            //}
+            pageCookie = "";
+            page = 1;
+            PreviousIds = [];
+            PreviousIdsNotes = [];
+            table = "";
+            document.getElementById("moreRecords").style.display = "none";
+
+            if (entityName == "account") {
+                retrieveAccountRecords();
+            }
+            else if (entityName == "opportunity") {
+                OpportunityRecords();
+            }
+
+            else if (entityName == "contact") {
+                ContactRecords();
+            }
+
+            else if (entityName == "lead") {
+                leadRecords();
+            }
+            else if (entityName == "ss_visitreport") {
+                visitRecords();
+            }
+        }
+        /*  function RetrieveAnnotations(order) {
+              var formType = parent.Xrm.Page.ui.getFormType();
+              if (formType == 1)
+                  return;
+              showLoadingMessage();
+              var id = parent.Xrm.Page.data.entity.getId();
+              if (order == null || order == "") {
+                  order = "&$orderby=CreatedOn desc";
+              }
+              SDK.REST.retrieveMultipleRecords("Annotation", "?$select=AnnotationId,CreatedBy,CreatedOn,FileName,ModifiedOn,Subject&$filter=ObjectId/Id eq guid'" + id + "'" + order, resultCallBack, errorMessage, oncomplete);
+          }
+          */
+        function RetrieveAnnotations(order) //callback from custom notes (on close)
+        {
+            page = 1;
+            PreviousIds = [];
+            PreviousIdsNotes = [];
+            pageCookie = "";
+            table = "";
+            retrieveActivitiesfunc();
+        }
+        function getAttachment(guid) {
+
+            var req = new XMLHttpRequest();
+            req.open("GET", globelcontext.getClientUrl() + "/api/data/v8.0/annotations(" + guid + ")?$select=documentbody,filename", true);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("Prefer", "odata.include-annotations=*");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 200) {
+                        var result = JSON.parse(this.response);
+                        var documentbody = null;
+                        var filename = null;
+                        if (result["documentbody"]) {
+                            documentbody = result["documentbody"];
+                        }
+
+                        //var documentbody = result["documentbody"];
+                        if (result["filename"]) {
+                            filename = result["filename"];
+                        }
+                        dataURItoBlob(documentbody, filename);
+                    }
+                    else {
+                        alert(this.statusText + "Web Api failed ss_ActivityStream #640. Could not get data from entity annotations");
+                    }
+                }
+            };
+            req.send();
+
+
+        }
+        function retrieveActivitiesfunc() {
+            loadMoreCheck = true;
+            if (entityName == "account") {
+                retrieveAccountRecords();
+            }
+            else if (entityName == "opportunity") {
+                OpportunityRecords();
+            }
+
+            else if (entityName == "contact") {
+                ContactRecords();
+            }
+
+            else if (entityName == "lead") {
+                leadRecords();
+            }
+            else if (entityName == "ss_visitreport") {
+                visitRecords();
+            }
+
+        }
+        function dataURItoBlob(dataURI, filename) {
+            // convert base64 to raw binary data held in a string
+            var byteString = atob(dataURI);
+            // write the bytes of the string to an ArrayBuffer
+            var ab = new ArrayBuffer(byteString.length);
+            var ia = new Uint8Array(ab);
+            for (var i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+
+            // write the ArrayBuffer to a blob, and you're done
+            var bb = new Blob([ab]);
+            saveAs(bb, filename); //pass blob and file name
+        }
+        function categoriesFilter(d) {
+            if (d != "") {
+                var value = $(d).val();
+            }
+            else
+                var value = $('#catFilter').val();
+            $('#activities .media').each(function (i) {
+                $(this).hide();
+
+            });
+            $('#activities .phoneortask').each(function (i) {
+                $(this).show();
+
+            });
+
+            if (value != "") {
+                $('#activities .phoneortask').each(function (i) {
+                    var classesondiv = $(this).attr("class");
+                    var numb = 0;
+                    if (classesondiv.match(/\d+/) != null) {
+                        numb = classesondiv.match(/\d+/)[0];
+                    }
+                    if (numb != 0) {
+
+                        $('.phoneortask').hide();
+                    }
+
+                });
+                $('#activities .phoneortask').each(function (i) {
+                    $('.' + value).show();
+                });
+
+
+
+            }
+            else {
+                $('#activities .media').each(function (i) {
+                    $(this).show();
+
+                });
+            }
+        }
+    </script>
+</head>
+<body onload="retrieveUserRoles()" style="word-wrap: break-word;">
+
+    <div id="titletop">
+        <h6><b>Activity Timeline</b></h6>
+    </div>
+
+    <div class="pull-right" id="gridHeader">
+        <ul class="nav nav-pills">
+            <li id="phoneCall">
+                <a style="padding:5px 6px;" href="#" onclick="openNewActivity('phonecall')">
+                    Phone Call
+                </a>
+            </li>
+            <li id="task">
+                <a style="padding:5px 6px;" href="#" onclick="openNewTask()">
+                    Task
+                </a>
+            </li>
+            <!--<li class="activitiesTab">
+                <a style="padding:5px 6px;" href="#" onclick="openNewActivity('email')">
+                    Email
+                </a>
+            </li>
+            <li class="activitiesTab">
+                <a style="padding:5px 6px;" href="#" onclick="openNewActivity('letter')">
+                    Letter
+                </a>
+            </li>-->
+            <li class="activitiesTab">
+                <a style="padding:5px 6px;" href="#" onclick="openNewAppointment()">
+                    Calendar
+                </a>
+            </li>
+            <li class="activitiesTab">
+                <a style="padding:5px 6px;" href="#" onclick="openNewNotification()">
+                    Info
+                </a>
+            </li>
+            <li id="note">
+                <a style="padding:5px 6px;" href="#" onclick="openNewNote()">
+                    Attachment
+                </a>
+            </li>
+        </ul>
+
+    </div>
+
+
+    <div class="clearfix"></div>
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div>
+                <ul id="myList" class="nav navbar-nav nav-years"></ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="filterDrp">
+        <label>Filter Activities</label>
+        <select onchange="RoleFilter()" id="filterDrpDwn"></select>
+    </div>
+    <div class="filterDrp">
+        <label>Filter Product Categories</label>
+        <select onchange="categoriesFilter(this)" id="catFilter">
+            <option value="">Select an option</option>
+            <option value="1">Media Plan</option>
+            <option value="2">APP</option>
+            <option value="3">Audio Webcast</option>
+            <option value="4">Charts & Invest. Calc.</option>
+            <option value="5">Contact Manager</option>
+            <option value="6">Corp Web & Micro</option>
+            <option value="7">Fact Sheet</option>
+            <option value="8">Insider Manager</option>
+            <option value="9">IR Website</option>
+            <option value="10">LEI</option>
+            <option value="11">Newsfeed</option>
+            <option value="12">Online Report</option>
+            <option value="13">Others</option>
+            <option value="14">Portal Network</option>
+            <option value="15">Quick Analyzer</option>
+            <option value="16">Regulatory & News</option>
+            <option value="17">Telco</option>
+            <option value="18">Video Webcast</option>
+            <option value="19">XML Conversion</option>
+            <option value="20">Safe Channel</option>
+            <option value="21">Translation</option>
+        </select>
+    </div>
+
+    <div id="msgDiv" class="loaderStyle"><img alt="" src="/_imgs/advfind/progress.gif"><br></div>
+    <div id="main">
+
+        <div id="activities">
+        </div>
+        <p id="moreRecords"><a href="#" onclick="retrieveActivitiesfunc()">Load More Records... </a></p>
+    </div>
+
+
+
+</body>
+</html>
