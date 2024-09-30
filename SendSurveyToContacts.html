@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
+<html><head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Survey Responses</title>
@@ -247,7 +245,7 @@
 		}
 		function getSurveys()
 		{
-			Xrm.WebApi.online.retrieveMultipleRecords("msfp_survey", "?$select=msfp_friendlyname,msfp_name,msfp_surveyid,_owninguser_value&$filter=_ownerid_value eq 14AC8BF2-7D12-E911-A961-000D3AB794F8").then(
+			parent.Xrm.WebApi.online.retrieveMultipleRecords("msfp_survey", "?$select=msfp_friendlyname,msfp_name,msfp_surveyid,_owninguser_value&$filter=_ownerid_value eq 14AC8BF2-7D12-E911-A961-000D3AB794F8").then(
 				function success(results) {
 					for (var i = 0; i < results.entities.length; i++) {
 							var msfp_friendlyname = results.entities[i]["msfp_friendlyname"];
@@ -270,7 +268,7 @@
 		function getRoles(apiFilter)
 		{
 			getContactData();
-			Xrm.WebApi.online.retrieveMultipleRecords("role", "?$select=name&$filter="+apiFilter).then(
+			parent.Xrm.WebApi.online.retrieveMultipleRecords("role", "?$select=name&$filter="+apiFilter).then(
 			    function success(results) {
 			        for (var i = 0; i < results.entities.length; i++) {
 			            var name = results.entities[i]["name"];
@@ -302,7 +300,7 @@
 			//return new Promise(function(resolve, reject) {
 				console.log("contactid "+contactid);
 	            document.getElementById('selectsendby').style.border = "1px solid #ccc";
-	            Xrm.WebApi.online.retrieveRecord("contact", contactid, "?$select=ss_lastsurveysend,emailaddress1,_ownerid_value,ss_sprache,ss_surveysendby").then(
+	            parent.Xrm.WebApi.online.retrieveRecord("contact", contactid, "?$select=ss_lastsurveysend,emailaddress1,_ownerid_value,ss_sprache,ss_surveysendby").then(
 				    function success(result) {
 				    	document.getElementById("loaderdiv").style.display = "none";
 				        var ss_lastsurveysend = result["ss_lastsurveysend@OData.Community.Display.V1.FormattedValue"];
@@ -346,7 +344,7 @@
 			entity["ss_sendby@odata.bind"] = "/systemusers("+loggedinUserId+")";
 			entity["ss_contact@odata.bind"] = "/contacts("+contactid+")";
 
-			Xrm.WebApi.online.createRecord("ss_surveylog", entity).then(
+			parent.Xrm.WebApi.online.createRecord("ss_surveylog", entity).then(
 			    function success(result) {
 			        //var newEntityId = result.id;
 			        //alert("Log Created");
@@ -427,7 +425,7 @@
 	<div class="underdevelopment" style="display: none">
 		<h3>Under Development</h3>
 	</div>
-	<div class="notpermission" id="notpermission" style="">
+	<div class="notpermission" id="notpermission">
 		<h3>You haven't permission to send the Survey</h3>
 	</div>
 	<div class="loaderdiv" id="loaderdiv">
@@ -446,8 +444,9 @@
 		<div class="surdiv selectsurveydiv">
 			<span>Select Survey: </span>
 			<select class="form-control" id="selectsurvey">
-				<option value="e97ca725-6501-eb11-a813-000d3ab855d6">Standard EQS Survey 2020</option>
+				<option value="e97ca725-6501-eb11-a813-000d3ab855d6">Standard EQS Survey</option>
 				<option value="216cfd0c-00ba-ea11-a812-000d3ab855d6">EQS Webcast Survey</option>
+				<option value="3">EQS Integrity Line</option>
 			</select>
 		</div>
 		<div class="sendsurveybtndiv" id="sendsurveydiv">
@@ -469,5 +468,5 @@
 		</div> 
 		<!-- lastsent -->
 	</div>
-</body>
-</html>
+
+</body></html>
