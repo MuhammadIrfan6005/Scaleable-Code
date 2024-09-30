@@ -1,0 +1,52 @@
+<html><head>
+    <meta charset="utf-8">
+    <title>Error</title>
+    <script type="text/javascript" src="ClientGlobalContext.js.aspx"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        .footer {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            padding-bottom: 10px;
+            padding-right: 10px;
+        }
+        .footerButton {
+            width: 150px;
+        }
+    </style>
+    <script type="text/javascript">
+        var name;
+        var recUrl = "";
+        function onPageLoad() {
+            var url_string = window.location.href;
+            let decodedUrl = decodeURIComponent(url_string);
+            var url = new URL(decodedUrl); 
+            getUrlQueryParams(url['href']);
+            var entityrec = url['search'].substring(6).replace(name, "");
+            entityrec = entityrec.replace(/.$/, "");
+            name = name.replaceAll("%20", " ");
+            document.getElementById("errorMessage").innerHTML="Record for " + name + " already exists.</br> Please click the link to view existing record: <a target='_blank' href="+ entityrec +">Record Link</a>";
+        }
+        function getUrlQueryParams(url) {
+            var queryParams = {}, param;
+            var params = url.substring(1).split("&");
+            name = params[params.length - 1];
+            // for(var i = 0; i < params.length - 1; i++) {
+                // param = params[i].split('=');
+                // queryParams[param[0]]=param[1];
+                // queryParams[i];
+            //     recUrl += params[i];
+            // }
+        }
+    </script>
+<meta></head>
+<body onload="onPageLoad();" onfocusout="parent.setEmailRange();" style="overflow-wrap: break-word;">
+    <div id="errorMessage" style="font-family: Arial;padding:20px" class="alert alert-danger">
+    </div>
+    <!-- <div  style="width:95%;text-align:right"> 
+	    <button class="btn btn-primary" onclick="javascript:window.close('','_parent','');">OK</button>
+	</div> -->
+</body></html>
