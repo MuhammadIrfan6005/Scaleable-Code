@@ -1,0 +1,248 @@
+<html><head>
+<!-- <meta charset="utf-8"> -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Disqualify Lead</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<style>
+    .styling {
+       margin-top: 5%;
+    }
+    .dropdown-submenu {
+      position: relative;
+    }
+    
+    .dropdown-submenu .dropdown-menu {
+      top: 0;
+      left: 100%;
+      margin-top: -1px;
+    }
+    .dropdown-menu-center {
+      left: 50% !important;
+      right: auto !important;
+      text-align: center !important;
+      transform: translate(-50%, 0) !important;
+    }
+    .modalstyle
+    {
+        margin-top: 10%;
+    }
+    #btndisclaimer {
+        /* position: fixed; */
+        right: 0;
+        bottom: 0;
+    }
+    #Cancel {
+        /* position: fixed; */
+        right: 0;
+        bottom: 0;
+    }
+    .footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   text-align: center;
+}
+    </style>
+ <script> 
+    $(document).ready(function(){
+        var win = window;
+        $("#Disqualify").click(function(){
+             var reasonVal = $('#reasonmsg').val();
+             reasonVal = reasonVal ? reasonVal.trim() : reasonVal;
+             if(!reasonVal)
+            {
+                alert("Please enter reason first ");
+            }
+            else
+            {
+                disqualifyLead(reasonVal, win);
+                
+            }
+        });
+        $("#DisqualifyCancel").click(function(){          
+            win.close();
+        });
+        //  var globalDocument = opener.parent.top.document;
+        //  $(globalDocument.body).click(function(){     
+        //     win.close();
+        // });
+        $('.dropdown-submenu a.test').on("click", function(e){
+        $(this).next('ul').toggle();
+         e.stopPropagation();
+         e.preventDefault();
+        });
+        $("#NPF > li a").click(function(){
+        $("#reasonmsg").text($(this).text());
+        if($(this).attr("id") == "TFNPF")
+        {
+            $("#myModal").show();
+        }
+        else
+        {
+            $("#myModal").hide();
+        }
+        });
+            $("#HACP > li a").click(function(){
+            $("#reasonmsg").text($(this).text());
+        if($(this).attr("id") == "TFHACP")
+        {
+            $("#myModal").show();
+        }
+        else
+        {
+            $("#myModal").hide();
+        }
+        });   
+        $(".otherOptions > a").click(function(){
+          $("#reasonmsg").text($(this).text());
+        });
+        $("#Cancel1").click(function(){
+          $("#reasonmsg").text("");
+            $('#myModal').hide();
+        });
+        $("#Okay").click(function(){
+            var content = $('#reason').val();
+            var value = $.trim(content);
+            if (value.length < 1)
+            {            
+                alert("Please Enter Reason");
+            }
+            else
+            {               
+                $("#reasonmsg").text($('#reason').val());
+                $('#myModal').hide();
+            }
+        });
+        //  $(globalDocument.body).children().click(function(){     
+        //      win.close();
+        // });
+        
+    });
+    
+
+//=====================================
+function disqualifyLead(reasonVal, win)
+{
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    var params_statescode = urlParams.get('data');
+    var recordId =  opener.parent.Xrm.Page.data.entity.getId();               
+    var entity = {};
+    entity.statecode = 2;
+    entity.statuscode = parseInt(params_statescode); 
+    entity.ss_customreason = reasonVal;
+    opener.parent.Xrm.WebApi.online.updateRecord("lead", recordId, entity).then(
+         function success(result) {
+             opener.parent.Xrm.Page.data.refresh(true);
+             $('#myModal').modal('hide');
+                win.close();
+        //    var entityFormOptions = {};
+        //     entityFormOptions["entityName"] = "lead";
+        //     entityFormOptions["entityId"] = recordId;
+
+        //     // Open the form.
+        //     opener.parent.Xrm.Navigation.openForm(entityFormOptions).then(
+        //         function (success) {
+        //           console.log("success");
+        //         },
+        //         function (error) {
+        //             console.log(error);
+        //         });
+            
+         },
+         function(error) {
+             var alertStrings = { confirmButtonLabel: "Yes", text: error.message, title: "Error" };
+             var alertOptions = { height: 120, width: 260 };
+             opener.parent.Xrm.Navigation.openAlertDialog(alertStrings, alertOptions).then(
+                 function success(success) {
+            
+         },
+         function (error2) {
+            
+         });
+         }
+     );
+}
+</script> 
+<meta><meta><meta></head>
+<body onfocusout="parent.setEmailRange();" style="overflow-wrap: break-word;"> 
+
+<div class="container styling">     
+    <div class="row">                         
+  <div class="dropdown text-center">
+    <button class="btn btn-primary  btn-sm dropdown-toggle" type="button" data-toggle="dropdown" id="MAINBTN">Select Disqualify Reason
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu dropdown-menu-center">
+      <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" id="NPFMAIN">No Product fit <span class="caret"></span></a>
+        <ul class="dropdown-menu" id="NPF">
+          <li><a tabindex="-1" id="NPF1">Functionality</a></li>
+          <li><a tabindex="-1" id="NPF2">Hosting</a></li>
+          <li><a tabindex="-1" id="NPF3">Missing Certificates</a></li>
+          <li><a tabindex="-1" id="NPF4">Too Many Functions</a></li>
+          <li><a tabindex="-1" id="TFNPF">Text Field</a></li>
+        </ul>
+        </li><li class="dropdown-submenu">
+            <a class="test" id="HACPMAIN">Have a competitors product <span class="caret"></span></a>
+            <ul class="dropdown-menu" id="HACP">
+              <li><a id="HACPMAIN3">People in touch</a></li>
+              <li><a id="HACPMAIN4">Gan Integrity</a></li>
+              <li><a id="HACPMAIN5">Convercent</a></li>
+              <li><a id="HACPMAIN6">Navex</a></li>
+              <li><a id="HACPMAIN7">WhistleB</a></li>
+              <li><a id="HACPMAIN8">Hintbox</a></li>
+              <li><a id="HACPMAIN9">Vispato</a></li>
+              <li><a id="HACPMAIN10">Other</a></li>
+            </ul>
+          </li>
+          <li class="otherOptions"><a tabindex="-1" id="NBMAIN">No Budget</a></li>
+          <li class="otherOptions"><a tabindex="-1" id="NRFPMAIN">Not ready for purchase in 6 months</a></li>
+          <li class="otherOptions"><a tabindex="-1" id="NAMAIN">No Authority</a></li>
+          <li class="otherOptions"><a tabindex="-1" id="NLSMAIN">No Location Service</a></li>
+          <li class="otherOptions"><a tabindex="-1" id="NSMAIN">no show</a></li>
+          <li class="otherOptions"><a tabindex="-1" id="NESMAIN">not enough qualified by SDR</a></li>
+    </ul>
+  </div>
+</div>
+
+
+
+    <div id="myModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content  modalstyle">
+                <div class="modal-header">
+                    <h5 class="modal-title">Please enter the reason why Disqualify?</h5>
+                </div>
+                <div class="modal-body">
+                    <textarea class="form-control" id="reason" placeholder="Enter Reason"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary OK" id="Okay"> OK</button>
+                    <button type="button" class="btn btn-secondary" id="Cancel1">Cancel</button>
+                </div>
+            </div>
+        </div>
+   
+</div>
+<div class="text-center" id="reasonDiv">
+  <textarea id="reasonmsg" class="form-control" name="msg" placeholder="Reason" readonly=""></textarea>
+</div>
+<div class="footer">
+<div class="form-group" style="float:right;margin-right: 3%;">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+      <button type="button" class="btn btn-outline-secondary btn-lg" id="DisqualifyCancel">Cancel</button>
+    </div>
+  </div>
+  <div class="form-group" style="margin-right: 1%; float:right; ">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+      <button type="button" class="btn btn-danger btn-lg" id="Disqualify">Disqualify</button>
+    </div>
+  </div>
+</div>
+</div>
+
+</body></html>

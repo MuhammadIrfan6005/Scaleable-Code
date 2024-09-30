@@ -1,0 +1,1797 @@
+<html><head><style type="text/css">P { margin: 0; }</style></head><body onload="retrieveUserSettings()" onfocusout="parent.setEmailRange();" style="overflow-wrap: break-word;">
+
+
+    <meta charset="utf-8">
+    <script src="ClientGlobalContext.js.aspx"></script>
+    <script src="bbo_SDK.REST.js"></script>
+    <script src="ss_jquery"></script>
+    <title></title>
+    <style>
+        body {
+            padding-top: 20px;
+            overflow-y: hidden;
+            overflow-x: auto;
+        }
+
+        .on {
+            background-color: #a7cdf0;
+        }
+
+        .Name {
+            min-width: 100px;
+        }
+
+        .ImportID {
+            min-width: 100px;
+        }
+
+
+        .call {
+            min-width: 100px;
+        }
+
+        .mail {
+            min-width: 100px;
+        }
+
+        .title {
+            min-width: 100px;
+        }
+
+        .job {
+            min-width: 100px;
+        }
+
+        .responsbility {
+            min-width: 100px;
+        }
+
+        .cockpit {
+            min-width: 100px;
+        }
+
+        .cockpitusertype { 
+            min-width: 100px;
+        }
+        
+        .delimg {
+            min-width: 70px;
+        }
+
+        .toptable_align {
+            width: 40px;
+            float: right;
+        }
+
+        #titl {
+            width: 12px;
+            height: 16px;
+            overflow: hidden;
+            vertical-align: bottom;
+            /*background: transparent url(ss_background.png) no-repeat scroll -165px -37px;*/
+        }
+
+        #scrollable_content {
+            height: auto;
+            overflow-y: auto;
+            overflow-x: hidden;
+            width: inherit;
+        }
+
+        div#content {
+        }
+
+        #mails {
+            width: 12px;
+            height: 16px;
+            overflow: hidden;
+            vertical-align: bottom;
+        }
+
+        #respn {
+            width: 12px;
+            height: 16px;
+            overflow: hidden;
+            vertical-align: bottom;
+        }
+
+        #jobtitle {
+            width: 12px;
+            height: 16px;
+            overflow: hidden;
+            vertical-align: bottom;
+        }
+
+        #PhonCall {
+            width: 12px;
+            height: 16px;
+            overflow: hidden;
+            vertical-align: bottom;
+        }
+
+        #fullnam {
+            /*display: inline;*/
+            width: 12px;
+            height: 16px;
+            overflow: hidden;
+            vertical-align: bottom;
+        }
+
+        #importConId{
+
+             /*display: inline;*/
+             width: 12px;
+            height: 16px;
+            overflow: hidden;
+            vertical-align: bottom;
+        }
+
+        #tele {
+            text-align: center;
+        }
+
+        #emails {
+            text-align: center;
+        }
+
+        .table-container {
+            width: 100%;
+            margin-left: 0;
+            margin-right: auto;
+            font-family: "Segoe UI",Arial,Sans-Serif;
+            font-size: 12px;
+        }
+
+        .h2 {
+            font-family: "Segoe UI",Arial,Sans-Serif;
+            font-size: 12px;
+            color: #000000;
+            width: 200px;
+            display: inline;
+        }
+
+        .table-custom {
+            border-spacing: 0;
+            width: 850px;
+        }
+
+            .table-custom > thead > tr > th {
+                border-top: 1px solid rgba(128, 128, 128, 0.21);
+                border-bottom: 1px solid rgba(128, 128, 128, 0.21);
+                font-weight: 400;
+                border-right: 1px solid rgba(128, 128, 128, 0.21);
+                text-align: left;
+                font-family: "Segoe UI",Arial,Sans-Serif;
+                color: grey;
+                font-size: 12px;
+            }
+
+            .table-custom > thead > tr > th {
+                padding: 4px 13px;
+                cursor: pointer;
+            }
+
+            .table-custom > thead > tr > td {
+                padding: 4px 13px;
+            }
+
+       
+
+        .table-custom > tbody > tr > td {
+            height: 25px;
+            padding-top: 3px;
+            padding-left: 12px;
+            padding-right: 15px;
+            /*  min-width: 140px; */
+            font-family: "Segoe UI",Arial,Sans-Serif;
+            color: black;
+            font-size: 11px;
+        }
+
+        .table-custom > tbody > tr {
+            height: 25px;
+            padding-top: 3px;
+            padding-left: 10px;
+            min-width: 140px;
+        }
+
+        .table-custom > thead > tr > td:hover {
+            background-color: #D7EBF9 !important;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .table-custom > tbody > tr:hover {
+            background-color: #D7EBF9;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        tr.selected {
+            background-color: #FFCF8B;
+        }
+
+        .selectd {
+            background: #a7cdf0;
+        }
+
+
+        #TBL_CampaignActivities th:not(:last-child) {
+            border-right: 1px solid rgba(128, 128, 128, 0.21);
+        }
+
+        #TBL_CampaignActivities th #headright {
+            border-right: none;
+        }
+
+        .blue {
+            color: #1160B7 !important;
+        }
+
+        .black {
+            color: #000000 !important;
+            font-weight: 500 !important;
+        }
+
+        .light-black {
+            color: #000000 !important;
+        }
+
+        #rightColumn {
+            border-right: none;
+        }
+
+        #plusimage {
+            margin-right: 10px;
+            float: right;
+            background-image: url("ss_plusimage");
+            cursor: pointer;
+        }
+
+        #plusimg {
+            margin-right: 10px;
+            float: right;
+            background-image: url("ss_plusimage");
+            cursor: pointer;
+        }
+
+
+        #delete-input-btn {
+            visibility: hidden;
+        }
+
+        tr:hover div#fdib #delete-input-btn {
+            visibility: visible;
+            float: left;
+            margin-right: 25px;
+        }
+
+
+        .toptable {
+            width: 100%;
+            /*margin-right: 2%;*/
+            position: fixed;
+            top: -5px;
+        }
+
+            
+
+        #nonotes {
+            margin-top: 10px;
+            font-family: "Segoe UI",Arial,Sans-Serif;
+            color: grey;
+            font-size: 12px;
+        }
+
+        .loaderStyle {
+            vertical-align: central;
+            text-align: center;
+            cursor: wait;
+            background: #F0F0F0;
+            font-size: 12px;
+            position: absolute;
+            display: none;
+            left: 400px;
+            top: 100px;
+            width: 50px;
+            height: 50px;
+        }
+
+            .loaderStyle img {
+                margin-top: 10px;
+                border: none;
+            }
+
+        .status-inactive {
+            color: #d9d9d9 !important;
+        }
+    </style>
+    <script>
+
+        var globelcontext= parent.Xrm.Utility.getGlobalContext();
+        var nameclick = 0;
+        var ImportIDclick=0;
+        var flag = 0;
+        var title = 0;
+        var job = 0;
+        var tab = "";
+        var phone = 0;
+        var resp = 0;
+        var mail = 0;
+        var order = "";
+        var UILanguageId = "";
+        var accountId = "";
+        var tableforEpand = "";
+        var win;
+        function retrieveUserSettings() {
+            document.getElementById("activities").style.display = "none";
+
+            var userId = globelcontext.userSettings.userId;    //parent.Xrm.Page.context.getUserId
+            userId = userId.replace(/[{}]/g, "");
+
+
+            var req = new XMLHttpRequest();
+            req.open("GET", Xrm.Utility.getGlobalContext().getClientUrl() + "/api/data/v8.1/usersettingscollection(" + userId + ")?$select=uilanguageid", false);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 200) {
+                        var result = JSON.parse(this.response);
+                        retrieveUserSettingsCallBack(result);
+
+                    } else {
+                        
+                            //Xrm.Utility.alertDialog(this.statusText);
+                            
+                        if(this.statusText!= "" || null){
+                        
+                        var errorOptions = { message: "Error Message", details: this.statusText };
+                        parent.Xrm.Navigation.openErrorDialog(errorOptions).then(
+                            function (success) {
+                                //console.log(success);
+                            },
+                            function (error) {
+                                //console.log(error);
+                            });
+                         }
+                    }
+                }
+            };
+            req.send();
+
+        }
+        function retrieveUserSettingsCallBack(result) {
+            debugger;
+            UILanguageId = result["uilanguageid"];
+
+            if (UILanguageId === 1031) {
+                document.getElementById("plusimage").title = "Fügen Sie Kontaktdatensatz";
+                document.getElementById("plusimg").title = "Fügen Sie Kontaktdatensatz";
+                //    document.getElementById("newmail").title = "neue E-Mail";
+                document.getElementById("newtask").title = "Neue Aufgabe";
+                document.getElementById("newcall").title = "Neue Telefon-Anruf";
+                document.getElementById("newappointment").title = "Neue Termin"; //Appointment in German
+                //  document.getElementById("newlatter").title = "neuer Brief";
+                document.getElementById("tophead").innerHTML = " <thead><tr><th onclick='Name()' class='Name'>Vollständiger Name <img id='fullnam' src='ss_transparent.gif'><th onclick='jobTitle()' class='job'>Position <img id='jobtitle' src='ss_transparent.gif'></th><th class='responsbility' onclick='Responsibility()'>Verantwortung <img id='respn' src='ss_DownImage'></th><th class='call' onclick='Phone()'>Telefon (geschäftlich)<img id='PhonCall' src='ss_transparent.gif'></th><th class='mail' onclick='Email()'>Email<img id='mails' src='ss_transparent.gif'></th><th id='headright' class='delimg'></th></tr></thead>";
+            }
+            populateTable();
+        }
+        function populateTable() {
+            if (UILanguageId === 1033) {
+                // order = "&$orderby=ss_primarycontact desc";
+                order = "&$orderby=ss_primarycontact desc,ss_responsibility desc";
+            }
+            else {
+                // order = "&$orderby=ss_primarycontact asc";
+                order = "&$orderby=ss_primarycontact asc,ss_responsibility desc";
+            }
+            resp += 1;
+            var f_type;
+            if (location.search === "") {
+                f_type = parent.Xrm.Page.ui.getFormType();
+            }
+            if (f_type !== 1) {
+                showLoadingMessage();
+                retrieveRecord(order);
+            }
+            else {
+                var table = document.getElementById("dataTable");
+                if (UILanguageId === 1031) {
+                    table.innerHTML = "<p>Um diese Inhalte ermöglichen erstellen Sie eine Aufzeichnung</p>";
+                }
+                else {
+                    table.innerHTML = "<p> To enable this content, Please create a Record</p>";
+                }
+            }
+        }
+
+        function parseDataValue(datavalue) {
+
+            if (datavalue !== "") {
+                var vals = new Array();
+                vals = decodeURIComponent(datavalue).split("&");
+                for (var i in vals) {
+                    vals[i] = vals[i].replace(/\+/g, " ").split("=");
+                }
+            }
+            var id = "";
+            id = vals[0];
+            id = id.toString();
+            id = id.replace('"', '');
+            id = id.replace('"', '');
+            accountId = id;
+
+        }
+        function retrieveRecord(order) {
+
+            var form_type;
+            if (location.search === "") {
+                form_type = parent.Xrm.Page.ui.getFormType();
+            }
+            var Id = "";
+            if (form_type !== 1) {
+                tab = "";
+                if (location.search !== "") {
+                    vals = location.search.substr(1).split("&");
+                    for (var i in vals) {
+                        vals[i] = vals[i].replace(/\+/g, " ").split("=");
+                    }
+                    //look for the parameter named 'data'
+                    var found = false;
+                    for (var i in vals) {
+                        if (vals[i][0].toLowerCase() === "data") {
+                            parseDataValue(vals[i][1]);
+                            found = true;
+                            break;
+                        }
+                    }
+                    Id = accountId;
+                    document.getElementById('plusimg').style.display = "none";
+                    document.getElementById('ss_expandView').style.display = "none";
+                    document.getElementById('scrollable_content').style.height = "100%";
+                    document.getElementById('scrollable_content').style.width = "100%";
+                    if (UILanguageId === 1031) {
+
+                        tableforEpand = "<table id='newTable' style='width:100%;' class='table-custom'><thead><tr><th onclick='Name()'>Vollständiger Name <img style='display:none;' id='fullnam' src='ss_DownImage'></th><th onclick='jobTitle()'>Position <img id='jobtitle' src='ss_transparent.gif'></th><th onclick='Responsibility()'>Verantwortung <img id='respn' src='ss_transparent.gif'></th><th onclick='Phone()'>Telefon (geschäftlich)<img id='PhonCall' src='ss_transparent.gif'></th><th onclick='Email()'>Email<img id='mails' src='ss_transparent.gif'></th><th id='headright' class='delimg'></th></tr></thead><tbody>";
+                    }
+                    else {
+                        tableforEpand = "<table id='newTable' style='width:100%;' class='table-custom'><thead><tr><th onclick='Name()'>Name <img id='fullnam' style='display:none;' src='ss_DownImage'></th><th onclick='jobTitle()'>Job <img id='jobtitle' src='ss_transparent.gif'></th><th onclick='Responsibility()'>Responsibility <img id='respn' src='ss_transparent.gif'></th><th onclick='Phone()'>Business Phone<img id='PhonCall' src='ss_transparent.gif'></th><th onclick='Email()'>Email <img id='mails' src='ss_transparent.gif'></th><th id='headright' class='delimg'></th></tr></thead><tbody>";
+                    }
+                }
+                else {
+                    Id = parent.Xrm.Page.data.entity.getId();
+                }
+                Id = Id.replace("{", "").replace("}", "");
+                var req = new XMLHttpRequest();
+                req.open("GET", globelcontext.getClientUrl() + "/api/data/v8.0/contacts?$select=contactid,emailaddress1,fullname,new_importid_contact,jobtitle,ss_responsibility,ss_title,telephone1,statecode,mobilephone,ss_cockpituser,ss_cockpitusertype&$filter=_parentcustomerid_value eq " + Id + order, true);
+                req.setRequestHeader("OData-MaxVersion", "4.0");
+                req.setRequestHeader("OData-Version", "4.0");
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                req.setRequestHeader("Prefer", "odata.include-annotations=*");
+
+                req.onreadystatechange = function () {
+                    if (this.readyState === 4) {
+                        req.onreadystatechange = null;
+                        if (this.status === 200) {
+                            var results = JSON.parse(this.response);
+                            retrieveRecordsCallBack(results);
+                        }
+                        else {
+                            //alert(this.statusText);
+                            //Xrm.Utility.alertDialog(this.statusText);
+                            
+                            if(this.statusText!= "" || null){
+                            var errorOptions = { message: "Error Message", details: this.statusText };
+                            parent.Xrm.Navigation.openErrorDialog(errorOptions).then(
+                                function (success) {
+                                    //console.log(success);
+                                },
+                                function (error) {
+                                    //console.log(error);
+                                });
+                             }
+                        }
+                    }
+                };
+                req.send();
+            }
+            else {
+                if (UILanguageId === 1031) {
+                    table.innerHTML = "<p>Um diese Inhalte ermöglichen erstellen Sie eine Aufzeichnung</p>";
+                }
+                else {
+                    table.innerHTML = "<p> To enable this content, Please create a Record</p>";
+                }
+            }
+        }
+
+        function retrieveRecordsCallBack(results) {
+            var inactiveRows = "";
+            var SIR = "";
+            var SPR = "";
+            var SXML = "";
+            var SCC = "";
+            var IR = "";
+            var PR = "";
+            var XML = "";
+            var CC = "";
+            var otherResponsibility = "";
+            var emptyResponsibility = "";
+
+            var TABSIR = "";
+            var TABSPR = "";
+            var TABSXML = "";
+            var TABSCC = "";
+            var TABIR = "";
+            var TABPR = "";
+            var TABXML = "";
+            var TABCC = "";
+            var TABotherResponsibility = "";
+            var TABemptyResponsibility = "";
+
+            var inactiveRowsSIR = "";
+            var inactiveRowsSPR = "";
+            var inactiveRowsSXML = "";
+            var inactiveRowsSCC = "";
+            var inactiveRowsIR = "";
+            var inactiveRowsPR = "";
+            var inactiveRowsXML = "";
+            var inactiveRowsCC = "";
+            var inactiveRowsotherResponsibility = "";
+            var inactiveRowsemptyResponsibility = "";
+
+
+
+            for (var i = 0; i < results.value.length; i++) {
+                var mobilephone = "";
+                if (results.value[i]["mobilephone"]) {
+                    mobilephone = results.value[i]["mobilephone"];
+                }
+                if (results.value[i]["emailaddress1"]) {
+
+
+                    var EMailAddress1 = results.value[i]["emailaddress1"];
+                    EMailAddress1 = EMailAddress1.replace(/,/g, "<br>").replace(/;/g, "<br>");
+
+                }
+                else {
+                    var EMailAddress1 = "";
+                }
+                if (results.value[i]["fullname"]) {
+                    var FullName = results.value[i]["fullname"];
+                }
+                else {
+                    var FullName = "";
+                }
+
+// Adf               
+                // if (results.value[i]["new_importid_contact"]) {
+                //     var ImportIDCon = results.value[i]["new_importid_contact"];
+                // }
+                // else {
+                //     var ImportIDCon = "";
+                // }
+
+// End Adf
+                if (results.value[i]["jobtitle"]) {
+                    var JobTitle = results.value[i]["jobtitle"];
+                }
+                else {
+                    var JobTitle = "";
+                }
+                if (results.value[i]["ss_responsibility"]) {
+                    var ss_Responsibility = results.value[i]["ss_responsibility"];
+                }
+                else {
+                    var ss_Responsibility = "";
+                }
+                if (results.value[i]["ss_title"]) {
+                    var ss_Title = results.value[i]["ss_title"];
+                }
+                else {
+                    var ss_Title = "";
+                }
+                if (results.value[i]["telephone1"]) {
+                    var Telephone1 = results.value[i]["telephone1"];
+                }
+                else {
+                    if(results.value[i]["mobilephone"])
+                    {
+                        var Telephone1 = results.value[i]["mobilephone"];
+                    }
+                    else
+                    {
+                    var Telephone1 = "";
+                    }
+                }
+                var cockpituser = "";
+                var cokpitusertype = "";
+                if(results.value[i]["ss_cockpituser@OData.Community.Display.V1.FormattedValue"]) {
+                     cockpituser = results.value[i]["ss_cockpituser@OData.Community.Display.V1.FormattedValue"];
+                }
+                if(results.value[i]["ss_cockpitusertype@OData.Community.Display.V1.FormattedValue"]) {
+                    cokpitusertype = results.value[i]["ss_cockpitusertype@OData.Community.Display.V1.FormattedValue"];
+                }
+
+                var StateCode = results.value[i]["statecode"];
+                var ContactId = results.value[i]["contactid"];
+
+                if (location.search !== "") {
+                    if (StateCode === 0) {
+
+                        if (ss_Responsibility.indexOf("SIR") !== -1) {
+                            SIR += "<tr id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td id='"+ mobilephone +"'>" + FullName + "</td><td>" + JobTitle + "</td><td>" + ss_Responsibility + "</td><td>" + Telephone1 + "</td><td class='emailCell'>" + EMailAddress1 + "</td><td>" + cockpituser + "</td><td>" + cokpitusertype + "</td><td><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+                        }
+                        else if (ss_Responsibility.indexOf("SPR") !== -1) {
+                            SPR += "<tr id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td id='"+ mobilephone +"'>" + FullName + "</td><td>" + JobTitle + "</td><td>" + ss_Responsibility + "</td><td>" + Telephone1 + "</td><td class='emailCell'>" + EMailAddress1 + "</td><td>" + cockpituser + "</td><td>" + cokpitusertype + "</td><td><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+                        }
+                        else if (ss_Responsibility.indexOf("SXML") !== -1) {
+                            SXML += "<tr id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td id='"+ mobilephone +"'>" + FullName + "</td><td>" + JobTitle + "</td><td>" + ss_Responsibility + "</td><td>" + Telephone1 + "</td><td class='emailCell'>" + EMailAddress1 + "</td><td>" + cockpituser + "</td><td>" + cokpitusertype + "</td><td><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+                        }
+                        else if (ss_Responsibility.indexOf("SCC") !== -1) {
+                            SCC += "<tr id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td id='"+ mobilephone +"'>" + FullName + "</td><td>" + JobTitle + "</td><td>" + ss_Responsibility + "</td><td>" + Telephone1 + "</td><td class='emailCell'>" + EMailAddress1 + "</td><td>" + cockpituser + "</td><td>" + cokpitusertype + "</td><td><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+                        }
+                        else if (ss_Responsibility.indexOf("IR") !== -1) {
+                            IR += "<tr id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td id='"+ mobilephone +"'>" + FullName + "</td><td>" + JobTitle + "</td><td>" + ss_Responsibility + "</td><td>" + Telephone1 + "</td><td class='emailCell'>" + EMailAddress1 + "</td><td>" + cockpituser + "</td><td>" + cokpitusertype + "</td><td><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+                        }
+                        else if (ss_Responsibility.indexOf("PR") !== -1) {
+                            PR += "<tr id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td id='"+ mobilephone +"'>" + FullName + "</td><td>" + JobTitle + "</td><td>" + ss_Responsibility + "</td><td>" + Telephone1 + "</td><td class='emailCell'>" + EMailAddress1 + "</td><td>" + cockpituser + "</td><td>" + cokpitusertype + "</td><td><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+                        }
+                        else if (ss_Responsibility.indexOf("XML") !== -1) {
+                            XML += "<tr id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td id='"+ mobilephone +"'>" + FullName + "</td><td>" + JobTitle + "</td><td>" + ss_Responsibility + "</td><td>" + Telephone1 + "</td><td class='emailCell'>" + EMailAddress1 + "</td><td>" + cockpituser + "</td><td>" + cokpitusertype + "</td><td><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+                        }
+                        else if (ss_Responsibility.indexOf("CC") !== -1) {
+                            CC += "<tr id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td id='"+ mobilephone +"'>" + FullName + "</td><td>" + JobTitle + "</td><td>" + ss_Responsibility + "</td><td>" + Telephone1 + "</td><td class='emailCell'>" + EMailAddress1 + "</td><td>" + cockpituser + "</td><td>" + cokpitusertype + "</td><td><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+                        }
+                        else if (ss_Responsibility !== "" && ss_Responsibility !== null) {
+                            otherResponsibility += "<tr id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td id='"+ mobilephone +"'>" + FullName + "</td><td>" + JobTitle + "</td><td>" + ss_Responsibility + "</td><td>" + Telephone1 + "</td><td class='emailCell'>" + EMailAddress1 + "</td><td>" + cockpituser + "</td><td>" + cokpitusertype + "</td><td><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+                        }
+                        else {
+                            emptyResponsibility += "<tr id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td id='"+ mobilephone +"'>" + FullName + "</td><td>" + JobTitle + "</td><td>" + ss_Responsibility + "</td><td>" + Telephone1 + "</td><td class='emailCell'>" + EMailAddress1 + "</td><td>" + cockpituser + "</td><td>" + cokpitusertype + "</td><td><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+                        }
+
+
+                    }
+                    else if (StateCode === 1) {
+                        if (ss_Responsibility.indexOf("SIR") !== -1) {
+                            inactiveRowsSIR += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td><td class = 'status-inactive'>" + cockpituser + "</td><td class = 'status-inactive'>" + cokpitusertype + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+                        }
+                        else if (ss_Responsibility.indexOf("SPR") !== -1) {
+                            inactiveRowsSPR += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td><td class = 'status-inactive'>" + cockpituser + "</td><td class = 'status-inactive'>" + cokpitusertype + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+                        }
+                        else if (ss_Responsibility.indexOf("SXML") !== -1) {
+                            inactiveRowsSXML += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td><td class = 'status-inactive'>" + cockpituser + "</td><td class = 'status-inactive'>" + cokpitusertype + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+                        }
+                        else if (ss_Responsibility.indexOf("SCC") !== -1) {
+                            inactiveRowsSCC += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td><td class = 'status-inactive'>" + cockpituser + "</td><td class = 'status-inactive'>" + cokpitusertype + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+                        }
+                        else if (ss_Responsibility.indexOf("SXML") !== -1) {
+                            inactiveRowsSXML += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td><td class = 'status-inactive'>" + cockpituser + "</td><td class = 'status-inactive'>" + cokpitusertype + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+                        }
+                        else if (ss_Responsibility.indexOf("IR") !== -1) {
+                            inactiveRowsIR += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td><td class = 'status-inactive'>" + cockpituser + "</td><td class = 'status-inactive'>" + cokpitusertype + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+                        }
+                        else if (ss_Responsibility.indexOf("PR") !== -1) {
+                            inactiveRowsPR += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td><td class = 'status-inactive'>" + cockpituser + "</td><td class = 'status-inactive'>" + cokpitusertype + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+                        }
+                        else if (ss_Responsibility.indexOf("CC") !== -1) {
+                            inactiveRowsCC += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td><td class = 'status-inactive'>" + cockpituser + "</td><td class = 'status-inactive'>" + cokpitusertype + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+                        }
+                        else if (ss_Responsibility !== "" && ss_Responsibility !== null) {
+                            inactiveRowsotherResponsibility += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td> <td class = 'status-inactive'>" + cockpituser + "</td><td class = 'status-inactive'>" + cokpitusertype + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+                        }
+                        else {
+                            inactiveRowsemptyResponsibility += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td><td class = 'status-inactive'>" + cockpituser + "</td><td class = 'status-inactive'>" + cokpitusertype + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+                        }
+
+
+                        //  inactiveRows += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+                    }
+                }
+                else {
+                    if (StateCode === 0) {
+
+                        if (ss_Responsibility.indexOf("SIR") !== -1) {
+                            TABSIR += "<tr id = '" + ContactId + "' onclick = 'selectRow(this)' ondblclick = 'opencontact(this)'><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word;' id='"+ mobilephone +"'>" + FullName + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + JobTitle + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + ss_Responsibility + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + Telephone1 + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + EMailAddress1 + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + cockpituser + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + cokpitusertype + "</td><td style='max-width: 70px; min-width: 70px;'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+
+                        }
+                        else if (ss_Responsibility.indexOf("SPR") !== -1) {
+                            TABSIR += "<tr id = '" + ContactId + "' onclick = 'selectRow(this)' ondblclick = 'opencontact(this)'><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word;' id='"+ mobilephone +"'>" + FullName + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + JobTitle + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + ss_Responsibility + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + Telephone1 + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + EMailAddress1 + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + cockpituser + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + cokpitusertype + "</td><td style='max-width: 70px; min-width: 70px;'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+                        }
+                        else if (ss_Responsibility.indexOf("SXML") !== -1) {
+                            TABSIR += "<tr id = '" + ContactId + "' onclick = 'selectRow(this)' ondblclick = 'opencontact(this)'><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word;' id='"+ mobilephone +"'>" + FullName + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + JobTitle + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + ss_Responsibility + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + Telephone1 + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + EMailAddress1 + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + cockpituser + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + cokpitusertype + "</td><td style='max-width: 70px; min-width: 70px;'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+                        }
+                        else if (ss_Responsibility.indexOf("SCC") !== -1) {
+                            TABSIR += "<tr id = '" + ContactId + "' onclick = 'selectRow(this)' ondblclick = 'opencontact(this)'><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word;' id='"+ mobilephone +"'>" + FullName + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + JobTitle + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + ss_Responsibility + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + Telephone1 + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + EMailAddress1 + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + cockpituser + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + cokpitusertype + "</td><td style='max-width: 70px; min-width: 70px;'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+                        }
+                        else if (ss_Responsibility.indexOf("IR") !== -1) {
+                            TABSIR += "<tr id = '" + ContactId + "' onclick = 'selectRow(this)' ondblclick = 'opencontact(this)'><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word;' id='"+ mobilephone +"'>" + FullName + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + JobTitle + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + ss_Responsibility + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + Telephone1 + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + EMailAddress1 + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + cockpituser + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + cokpitusertype + "</td><td style='max-width: 70px; min-width: 70px;'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+                        }
+                        else if (ss_Responsibility.indexOf("PR") !== -1) {
+                            TABSIR += "<tr id = '" + ContactId + "' onclick = 'selectRow(this)' ondblclick = 'opencontact(this)'><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word;' id='"+ mobilephone +"'>" + FullName + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + JobTitle + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + ss_Responsibility + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + Telephone1 + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + EMailAddress1 + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + cockpituser + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + cokpitusertype + "</td><td style='max-width: 70px; min-width: 70px;'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+                        }
+                        else if (ss_Responsibility.indexOf("XML") !== -1) {
+                            TABSIR += "<tr id = '" + ContactId + "' onclick = 'selectRow(this)' ondblclick = 'opencontact(this)'><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word;' id='"+ mobilephone +"'>" + FullName + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + JobTitle + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + ss_Responsibility + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + Telephone1 + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + EMailAddress1 + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + cockpituser + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + cokpitusertype + "</td><td style='max-width: 70px; min-width: 70px;'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+                        }
+                        else if (ss_Responsibility.indexOf("CC") !== -1) {
+                            TABSIR += "<tr id = '" + ContactId + "' onclick = 'selectRow(this)' ondblclick = 'opencontact(this)'><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word;' id='"+ mobilephone +"'>" + FullName + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + JobTitle + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + ss_Responsibility + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + Telephone1 + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + EMailAddress1 + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + cockpituser + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + cokpitusertype + "</td><td style='max-width: 70px; min-width: 70px;'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+                        }
+                        else if (ss_Responsibility !== "" && ss_Responsibility !== null) {
+                            TABotherResponsibility += "<tr id = '" + ContactId + "' onclick = 'selectRow(this)' ondblclick = 'opencontact(this)'><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word;' id='"+ mobilephone +"'>" + FullName + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + JobTitle + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + ss_Responsibility + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + Telephone1 + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + EMailAddress1 + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + cockpituser + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + cokpitusertype + "</td><td style='max-width: 70px; min-width: 70px;'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+                        }
+                        else {
+                            TABemptyResponsibility += "<tr id = '" + ContactId + "' onclick = 'selectRow(this)' ondblclick = 'opencontact(this)'><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word;' id='"+ mobilephone +"'>" + FullName + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + JobTitle + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + ss_Responsibility + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;'>" + Telephone1 + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + EMailAddress1 + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + cockpituser + "</td><td style='max-width: 100px; min-width: 100px; overflow-wrap: break-word; text-align: left;' >" + cokpitusertype + "</td><td style='max-width: 70px; min-width: 70px;'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+                        }
+
+
+                    }
+                    else if (StateCode === 1) {
+                        if (ss_Responsibility.indexOf("SIR") !== -1) {
+                            inactiveRowsSIR += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td><td class = 'status-inactive'>" + cockpituser + "</td><td class = 'status-inactive'>" + cokpitusertype + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+                        }
+                        else if (ss_Responsibility.indexOf("SPR") !== -1) {
+                            inactiveRowsSPR += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td><td class = 'status-inactive'>" + cockpituser + "</td><td class = 'status-inactive'>" + cokpitusertype + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+                        }
+                        else if (ss_Responsibility.indexOf("SXML") !== -1) {
+                            inactiveRowsSXML += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td><td class = 'status-inactive'>" + cockpituser + "</td><td class = 'status-inactive'>" + cokpitusertype + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+                        }
+                        else if (ss_Responsibility.indexOf("SCC") !== -1) {
+                            inactiveRowsSCC += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td><td class = 'status-inactive'>" + cockpituser + "</td><td class = 'status-inactive'>" + cokpitusertype + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+                        }
+                        else if (ss_Responsibility.indexOf("SXML") !== -1) {
+                            inactiveRowsSXML += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td><td class = 'status-inactive'>" + cockpituser + "</td><td class = 'status-inactive'>" + cokpitusertype + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+                        }
+                        else if (ss_Responsibility.indexOf("IR") !== -1) {
+                            inactiveRowsIR += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td><td class = 'status-inactive'>" + cockpituser + "</td><td class = 'status-inactive'>" + cokpitusertype + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+                        }
+                        else if (ss_Responsibility.indexOf("PR") !== -1) {
+                            inactiveRowsPR += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td><td class = 'status-inactive'>" + cockpituser + "</td><td class = 'status-inactive'>" + cokpitusertype + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+                        }
+                        else if (ss_Responsibility.indexOf("CC") !== -1) {
+                            inactiveRowsCC += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td><td class = 'status-inactive'>" + cockpituser + "</td><td class = 'status-inactive'>" + cokpitusertype + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+                        }
+                        else if (ss_Responsibility !== "" && ss_Responsibility !== null) {
+                            inactiveRowsotherResponsibility += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td><td class = 'status-inactive'>" + cockpituser + "</td><td class = 'status-inactive'>" + cokpitusertype + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+                        }
+                        else {
+                            inactiveRowsemptyResponsibility += "<tr class = 'status-inactive' id = '" + ContactId + "' onclick ='selectRow(this)' ondblclick ='opencontact(this)'><td class = 'status-inactive' id='"+ mobilephone +"'>" + FullName + "</td><td class = 'status-inactive'>" + JobTitle + "</td><td class = 'status-inactive'>" + ss_Responsibility + "</td><td class = 'status-inactive'>" + Telephone1 + "</td><td class = 'status-inactive'>" + EMailAddress1 + "</td><td class = 'status-inactive'>" + cockpituser + "</td><td class = 'status-inactive'>" + cokpitusertype + "</td><td class = 'status-inactive'><div id='fdib' class='fdib'><img src='ss_deleteImage.png' id='delete-input-btn' onclick='deleteRecord(\"" + ContactId + "\")'></div></td></tr>";
+
+                        }
+
+                    }
+                }
+            }
+
+            if (SIR !== "") {
+                tableforEpand += SIR;
+            }
+            if (SPR !== "") {
+                tableforEpand += SPR;
+            }
+            if (SXML !== "") {
+                tableforEpand += SXML;
+            }
+            if (SCC !== "") {
+                tableforEpand += SCC;
+            }
+            if (IR !== "") {
+                tableforEpand += IR;
+            }
+            if (PR !== "") {
+                tableforEpand += PR;
+            }
+            if (XML !== "") {
+                tableforEpand += XML;
+            }
+            if (CC !== "") {
+                tableforEpand += CC;
+            }
+            if (otherResponsibility !== "") {
+                tableforEpand += otherResponsibility;
+            }
+            if (emptyResponsibility !== "") {
+                tableforEpand += emptyResponsibility;
+            }
+
+
+            if (TABSIR !== "") {
+                tab += TABSIR;
+            }
+            if (TABSPR !== "") {
+                tab += TABSPR;
+            }
+            if (TABSXML !== "") {
+                tab += TABSXML;
+            }
+            if (TABSCC !== "") {
+                tab += TABSCC;
+            }
+            if (TABIR !== "") {
+                tab += TABIR;
+            }
+            if (TABPR !== "") {
+                tab += TABPR;
+            }
+            if (TABXML !== "") {
+                tab += TABXML;
+            }
+            if (TABCC !== "") {
+                tab += TABCC;
+            }
+            if (TABotherResponsibility !== "") {
+                tab += TABotherResponsibility;
+            }
+            if (TABemptyResponsibility !== "") {
+                tab += TABemptyResponsibility;
+            }
+
+
+            if (inactiveRowsSIR !== "") {
+                inactiveRows += inactiveRowsSIR;
+            }
+            if (inactiveRowsSPR !== "") {
+                inactiveRows += inactiveRowsSPR;
+            }
+            if (inactiveRowsSXML !== "") {
+                inactiveRows += inactiveRowsSXML;
+            }
+            if (inactiveRowsSCC !== "") {
+                inactiveRows += inactiveRowsSCC;
+            }
+            if (inactiveRowsIR !== "") {
+                inactiveRows += inactiveRowsIR;
+            }
+            if (inactiveRowsPR !== "") {
+                inactiveRows += inactiveRowsPR;
+            }
+            if (inactiveRowsXML !== "") {
+                inactiveRows += inactiveRowsSIR;
+            }
+            if (inactiveRowsCC !== "") {
+                inactiveRows += inactiveRowsCC;
+            }
+            if (inactiveRowsotherResponsibility !== "") {
+                inactiveRows += inactiveRowsotherResponsibility;
+            }
+            if (inactiveRowsemptyResponsibility !== "") {
+                inactiveRows += inactiveRowsemptyResponsibility;
+            }
+
+
+
+            if (location.search !== "") {
+                tableforEpand += inactiveRows;
+            }
+            else {
+                tab += inactiveRows;
+            }
+            onComplete();
+        }
+
+        function deleteRecord(id) {
+            flag = 1;
+            var confirmation;
+            if (UILanguageId === 1031) {
+                confirmation = confirm("Dieser Datensatz wird gelöscht. Diese Aktion kann nicht rückgängig gemacht werden. Klicken Sie auf 'OK', um den Vorgang fortzusetzen.");
+            }
+            else {
+                confirmation = confirm("The selected record will be deleted permanently.Do you want to continue?");
+            }
+
+            if (confirmation === true) {
+                showLoadingMessage();
+
+                var req = new XMLHttpRequest();
+                req.open("DELETE", globelcontext.getClientUrl() + "/api/data/v8.0/contacts(" + id + ")", true);
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                req.setRequestHeader("OData-MaxVersion", "4.0");
+                req.setRequestHeader("OData-Version", "4.0");
+                req.onreadystatechange = function () {
+                    if (this.readyState === 4) {
+                        req.onreadystatechange = null;
+                        if (this.status === 204 || this.status === 1223) {
+                            deleteRecordCallback();
+                        }
+                        else {
+                            //alert(this.statusText);
+
+                            if(this.statusText!= "" || null){
+                            var errorOptions = { message: "Error Message", details: this.statusText };
+                            parent.Xrm.Navigation.openErrorDialog(errorOptions).then(
+                                function (success) {
+                                    //console.log(success);
+                                },
+                                function (error) {
+                                    //console.log(error);
+                             });
+                             
+                            }
+                        }
+                    }
+                };
+                req.send();
+            }
+            else {
+                return;
+            }
+        }
+
+        function deleteRecordCallback() {
+            document.getElementById("dataTable").innerHTML = "";
+            showLoadingMessage();
+            retrieveRecord(order);
+        }
+            function opencontact(row) {
+
+                //old method
+                // var windowOptions = {
+                //     openInNewWindow: true
+                // };
+                // Xrm.Utility.openEntityForm("contact", row.id, null, windowOptions);
+
+                ////////////////////////////      V 9.0 for Open an entity form for existing record
+
+                var entityFormOptions = {};
+                entityFormOptions["entityName"] = "contact";
+                entityFormOptions["entityId"] = row.id;
+                entityFormOptions["openInNewWindow"] = true;
+
+                // Open the form.
+                parent.Xrm.Navigation.openForm(entityFormOptions).then(
+                    function (success) {
+                        //console.log(success);
+                    },
+                    function (error) {
+                        console.log(error);
+                    });
+            }
+        function selectRow(row) {
+            if (location.search === "") {
+                if (flag !== 1) {
+                    if (row.className === "selectd") {
+                        $('#' + row.id).toggleClass('selectd');
+                        $("#activities").toggle();
+                        $("#plus-only").toggle();
+                    }
+                    else {
+                        var numItems = $('.selectd').length;
+                        $('tr').not('#' + row.id).removeClass('selectd');
+                        if (numItems === 0) {
+                            $("#plus-only").toggle();
+                            $("#activities").toggle();
+                        }
+                        $('#' + row.id).toggleClass('selectd');
+                        name = row.childNodes[0].innerText;
+                    }
+                }
+            }
+            else {
+                flag = 0;
+            }
+        }
+            function ErrorMsg(error) {
+            
+                alert(error.message);
+                
+                //if(this.statusText!= "" || null){
+                //var errorOptions = { message: "Error Message", details: error.message };
+               // parent.Xrm.Navigation.openErrorDialog(errorOptions).then(
+                  //  function (success) {
+                        //console.log(success);
+                  //  },
+                  //  function (error) {
+                        //console.log(error);
+                  //  });
+                 // }
+            }
+        function onComplete() {
+            hideLoadingMessage();
+            if (location.search === "") {
+                var table = document.getElementById("dataTable");
+                if (tab !== "") {
+                    table.innerHTML = tab;
+                }
+                else {
+                    if (UILanguageId === 1031) {
+                        table.innerHTML = "<p>Kein Eintrag gefunden</p>";
+                    }
+                    else {
+                        table.innerHTML = "<p> No Record found</p>";
+                    }
+                }
+            }
+            else {
+                document.getElementById('tophead').style.display = "none";
+                tableforEpand += "</tbody></table>";
+                document.getElementById('tophead').style.display = "none";
+                document.getElementById('scrollable_content').innerHTML = tableforEpand;
+                document.getElementById('fullnam').style.display = "none";
+
+            }
+        }
+        function showLoadingMessage() {
+            msgDiv.style.display = "block";
+        }
+        function hideLoadingMessage() {
+            msgDiv.style.display = "none";
+        }
+        function openNewPhoneCall() {
+            var selected = [];
+            var row;
+            var mobilephone ="";
+            //mobilephone = parent.Xrm.Page.getAttribute("mobilephone").getValue();
+            $("#dataTable tr.selectd").each(function () {
+                selected.push($('td:first', this).html());
+                row = this;
+            });
+            mobilephone = $(row).find('td:eq(0)').attr('id');
+            var name = selected[0];
+            var pratytypeCode = "2";
+            var partname = name;
+            var partid = row.id;
+            var ObjectTypeCode = "2";
+            // var windowOptions = {
+            //     openInNewWindow: true
+            // };
+            var globalContext = Xrm.Utility.getGlobalContext();
+            var AppUrl = globalContext.getCurrentAppUrl();
+            var accountRef = parent.Xrm.Page.data.entity.getEntityReference();
+            globalContext.getCurrentAppProperties().then(
+            function success(app) {
+            var  appid = app.appId;
+        //==================29-SEP-2020
+            if(AppUrl.includes("appid=") || appid === null || appid === "")
+            {      
+                
+            
+                var contactRef = {};
+                   contactRef.entityType = "contact";
+                   contactRef.id = partid;
+                   contactRef.name = partname;
+                 
+                  Xrm.Navigation.openForm({
+                        entityName: "phonecall",
+                        createFromEntity: contactRef,
+                        openInNewWindow: true
+                       
+                    }, {
+                        to: [contactRef],
+                        ss_accountid :  [accountRef],
+                        ss_mobilephone : mobilephone
+                    });
+            }
+            else{
+            
+            var parameters = {};
+            parameters['pId'] = row.id;
+            parameters['pType'] = ObjectTypeCode;
+            parameters['pName'] = name;
+            parameters['partyid'] = partid;
+            parameters['partyname'] = partname;
+            parameters['partytype'] =  pratytypeCode;
+            parameters['mobilephone'] = mobilephone;
+                  
+               
+        //     // Xrm.Utility.openEntityForm("phonecall", null, param, windowOptions);
+        //     // timeout();
+            
+        //     ////////////////  Changes v9.00 for open new enityForm    
+
+            var entityFormOptions = {};
+            entityFormOptions.entityName = "phonecall";
+            entityFormOptions.createFromEntity = accountRef;
+            entityFormOptions.openInNewWindow = true;
+
+           
+           // Open the form.
+            Xrm.Navigation.openForm(entityFormOptions, parameters).then(
+                function (success) {
+                   // timeout();
+                },
+                function (error) {
+                    console.log(error);
+                });
+
+      
+
+            }
+          
+        //==========================nH
+
+                }, 
+            function errorCallback(error)
+            { 
+                console.log(error); 
+            });
+               
+           
+           
+        }
+            function openNewTask() {
+                var selected = [];
+                var row;
+                $("#dataTable tr.selectd").each(function () {
+                    selected.push($('td:first', this).html());
+                    row = this;
+                });
+                var ObjectTypeCode = "2";
+
+                // var windowOptions = {
+                //     openInNewWindow: true
+                // };
+            var globalContext = Xrm.Utility.getGlobalContext();
+            var AppUrl = globalContext.getCurrentAppUrl();
+            var accountRef = parent.Xrm.Page.data.entity.getEntityReference();
+            globalContext.getCurrentAppProperties().then(
+            function success(app) {
+            var  appid = app.appId;
+        //==================29-SEP-2020
+        if(AppUrl.includes("appid=") || appid === null || appid === "")
+            {
+               
+                var contactRef = {};
+                   contactRef.entityType = "contact";
+                   contactRef.id = row.id;
+                   contactRef.name = selected[0];
+                 
+                  Xrm.Navigation.openForm({
+                        entityName: "task",
+                        createFromEntity: contactRef,
+                        openInNewWindow: true
+                       
+                    }, {
+                        to: [contactRef],
+                        ss_accountid :  [accountRef]
+                    });
+            }
+            else{
+                var param = {};
+                param['pId'] = row.id;
+                param['pType'] = ObjectTypeCode;
+                param['pName'] = selected[0];
+
+                //Xrm.Utility.openEntityForm("task", null, param, windowOptions);
+                //timeout();
+
+                ////////////////////  Changes v9.00 for open new enityForm    
+
+                var entityFormOptions = {};
+                entityFormOptions["entityName"] = "task";
+                entityFormOptions["createFromEntity"] = accountRef;
+                entityFormOptions["openInNewWindow"] = true;
+                // Open the form.
+                Xrm.Navigation.openForm(entityFormOptions, param).then(
+                    function (success) {
+                        
+                    },
+                    function (error) {
+                        console.log(error);
+                    });
+                }
+               
+        //==========================nH
+
+         }, 
+    function errorCallback(error)
+     { 
+         console.log(error); 
+    });
+
+            }
+
+function openNewAppointment()
+    {
+                var selected = [];
+                var row;
+                $("#dataTable tr.selectd").each(function () {
+                    selected.push($('td:first', this).html());
+                    row = this;
+                });
+                var ObjectTypeCode = "2";
+
+                // var windowOptions = {
+                //     openInNewWindow: true
+                // };
+            var globalContext = Xrm.Utility.getGlobalContext();
+            var AppUrl = globalContext.getCurrentAppUrl();
+            var accountRef = parent.Xrm.Page.data.entity.getEntityReference();
+            globalContext.getCurrentAppProperties().then(
+             function success(app) {
+              var  appid = app.appId;
+             //==================29-SEP-2020
+              if(AppUrl.includes("appid=") || appid === null || appid === "")          
+            {
+                var contactRef = {};
+                   contactRef.entityType = "contact";
+                   contactRef.id = row.id;
+                   contactRef.name = selected[0];
+                 
+                  Xrm.Navigation.openForm({
+                        entityName: "appointment",
+                        createFromEntity: contactRef,
+                        openInNewWindow: true
+                       
+                    }, {
+                        to: [contactRef],
+                        ss_accountid :  [accountRef]
+                    });
+            }
+            else
+            {
+                var param = {};
+                param['pId'] = row.id;
+                param['pType'] = ObjectTypeCode;
+                param['pName'] = selected[0];
+                
+                // Xrm.Utility.openEntityForm("appointment", null, param, windowOptions);
+                // timeout();
+
+                ////////////////////  Changes v9.00 for open new enityForm    
+
+                var entityFormOptions = {};
+                entityFormOptions["entityName"] = "appointment";
+                entityFormOptions["createFromEntity"] = accountRef;
+                entityFormOptions["openInNewWindow"] = true;
+                // Open the form.
+                Xrm.Navigation.openForm(entityFormOptions, param).then(
+                    function (success) {
+                        //timeout();
+                    },
+                    function (error) {
+                        console.log(error);
+                    });
+            }//end of else
+               
+             //==========================nH
+
+                }, 
+            function errorCallback(error)
+            { 
+                console.log(error); 
+            });
+          
+    }
+
+            function openNewMail() {
+                var selected = [];
+                var row;
+                $("#dataTable tr.selectd").each(function () {
+                    selected.push($('td:first', this).html());
+                    row = this;
+                });
+                var pratytypeCode = "2";
+                var ObjectTypeCode = "2";
+
+                // var windowOptions = {
+                //     openInNewWindow: true
+                // };
+
+                var param = {};
+                param['pId'] = row.id;
+                param['pType'] = ObjectTypeCode;
+                param['pName'] = selected[0];
+                param['partyid'] = row.id;
+                param['partyname'] = selected[0];
+                param['partytype'] = pratytypeCode;
+
+                // Xrm.Utility.openEntityForm("email", null, param, windowOptions);
+                // timeout();
+
+                ////////////////////  Changes v9.00 for open new enityForm    
+
+                var entityFormOptions = {};
+                entityFormOptions["entityName"] = "email";
+                entityFormOptions["openInNewWindow"] = true;
+                // Open the form.
+                Xrm.Navigation.openForm(entityFormOptions, param).then(
+                    function (success) {
+                        timeout();
+                    },
+                    function (error) {
+                        console.log(error);
+                    });
+
+               
+            }
+        function openNewLetter() {
+            var selected = [];
+            var row;
+            $("#dataTable tr.selectd").each(function () {
+                selected.push($('td:first', this).html());
+                row = this;
+            });
+            var pratytypeCode = "2";
+            var ObjectTypeCode = "2";
+
+            // var windowOptions = {
+            //     openInNewWindow: true
+            // };
+
+            var param = {};
+            param['pId'] = row.id;
+            param['pType'] = ObjectTypeCode;
+            param['pName'] = selected[0];
+            param['partyid'] = row.id;
+            param['partyname'] = selected[0];
+            param['partytype'] = pratytypeCode;
+
+            // Xrm.Utility.openEntityForm("letter", null, param, windowOptions);
+            // timeout();
+
+            ////////////////////  Changes v9.00 for open new enityForm    
+
+                var entityFormOptions = {};
+                entityFormOptions["entityName"] = "letter";
+                entityFormOptions["openInNewWindow"] = true;
+                // Open the form.
+                Xrm.Navigation.openForm(entityFormOptions, param).then(
+                    function (success) {
+                        timeout();
+                    },
+                    function (error) {
+                        console.log(error);
+                    });
+
+               
+
+
+        }
+        function Name() {
+            var form_type;
+            if (location.search === "") {
+                form_type = parent.Xrm.Page.ui.getFormType();
+            }
+            if (form_type !== 1) {
+                if (location.search === "") {
+                    document.getElementById("dataTable").innerHTML = "";
+                }
+                else {
+                    document.getElementById('scrollable_content').innerHTML = "";
+                }
+                showLoadingMessage();
+                nameclick += 1;
+                var mod = 0;
+                mod = nameclick % 2;
+                if (mod === 0) {
+                    order = "&$orderby=fullname asc";
+                    document.getElementById("fullnam").src = "ss_UpImage";
+                    document.getElementById("fullnam").style.display = "";
+                   
+                    document.getElementById("jobtitle").style.display = "none";
+                    document.getElementById("PhonCall").style.display = "none";
+                    document.getElementById("mails").style.display = "none";
+                    document.getElementById("respn").style.display = "none";
+                }
+                else {
+                    order = "&$orderby=fullname desc";
+                    document.getElementById("fullnam").src = "ss_DownImage";
+                    document.getElementById("fullnam").style.display = "";
+                   
+                    document.getElementById("jobtitle").style.display = "none";
+                    document.getElementById("PhonCall").style.display = "none";
+                    document.getElementById("mails").style.display = "none";
+                    document.getElementById("respn").style.display = "none";
+                }
+                retrieveRecord(order);
+            }
+        }
+
+// Start Adf Function 
+
+// function ImportIDContact() {
+//             var form_type;
+//             if (location.search === "") {
+//                 form_type = parent.Xrm.Page.ui.getFormType();
+//             }
+//             if (form_type !== 1) {
+//                 if (location.search === "") {
+//                     document.getElementById("dataTable").innerHTML = "";
+//                 }
+//                 else {
+//                     document.getElementById('scrollable_content').innerHTML = "";
+//                 }
+//                 showLoadingMessage();
+//                 ImportIDclick += 1;
+//                 var mod = 0;
+//                 mod = ImportIDclick % 2;
+//                 if (mod === 0) {
+//                     order = "&$orderby=new_importid_contact asc";
+                    
+//                     document.getElementById("importConId").src = "ss_UpImage";
+//                     document.getElementById("importConId").style.display = "";
+//                     document.getElementById("fullnam").style.display = "none";
+//                     document.getElementById("jobtitle").style.display = "none";
+//                     document.getElementById("PhonCall").style.display = "none";
+//                     document.getElementById("mails").style.display = "none";
+//                     document.getElementById("respn").style.display = "none";
+//                 }
+//                 else {
+//                     order = "&$orderby=new_importid_contact desc";
+//                     document.getElementById("importConId").src = "ss_DownImage";
+//                     document.getElementById("importConId").style.display = "";
+//                     document.getElementById("fullnam").style.display = "none";
+//                     document.getElementById("jobtitle").style.display = "none";
+//                     document.getElementById("PhonCall").style.display = "none";
+//                     document.getElementById("mails").style.display = "none";
+//                     document.getElementById("respn").style.display = "none";
+//                 }
+//                 retrieveRecord(order);
+//             }
+//         }
+
+
+
+// End Adf Function
+
+        function Phone() {
+            var form_type;
+            if (location.search === "") {
+                form_type = parent.Xrm.Page.ui.getFormType();
+            }
+            if (form_type !== 1) {
+                if (location.search === "") {
+                    document.getElementById("dataTable").innerHTML = "";
+                }
+                else {
+                    document.getElementById('scrollable_content').innerHTML = "";
+                }
+                showLoadingMessage();
+                phone += 1;
+                var mod = 0;
+                mod = phone % 2;
+                if (mod === 0) {
+                    order = "&$orderby=telephone1 asc";
+                    document.getElementById("PhonCall").src = "ss_UpImage";
+                    document.getElementById("PhonCall").style.display = "";
+                    document.getElementById("fullnam").style.display = "none";
+                   
+                    document.getElementById("jobtitle").style.display = "none";
+                    document.getElementById("mails").style.display = "none";
+                    document.getElementById("respn").style.display = "none";
+                }
+                else {
+                    order = "&$orderby=telephone1 desc";
+                    document.getElementById("PhonCall").src = "ss_DownImage";
+                    document.getElementById("PhonCall").style.display = "";
+                    document.getElementById("jobtitle").style.display = "none";
+                    document.getElementById("fullnam").style.display = "none";
+                   
+                    document.getElementById("mails").style.display = "none";
+                    document.getElementById("respn").style.display = "none";
+                }
+                retrieveRecord(order);
+            }
+        }
+        function jobTitle() {
+            var form_type;
+            if (location.search === "") {
+                form_type = parent.Xrm.Page.ui.getFormType();
+            }
+            if (form_type !== 1) {
+                if (location.search === "") {
+                    document.getElementById("dataTable").innerHTML = "";
+                }
+                else {
+                    document.getElementById('scrollable_content').innerHTML = "";
+                }
+                showLoadingMessage();
+                job += 1;
+                var mod = 0;
+                mod = job % 2;
+                if (mod === 0) {
+                    order = "&$orderby=jobtitle asc";
+                    document.getElementById("jobtitle").src = "ss_UpImage";
+                    document.getElementById("jobtitle").style.display = "";
+                    document.getElementById("fullnam").style.display = "none";
+                   
+                    document.getElementById("PhonCall").style.display = "none";
+                    document.getElementById("mails").style.display = "none";
+                    document.getElementById("respn").style.display = "none";
+                }
+                else {
+                    order = "&$orderby=jobtitle desc";
+                    document.getElementById("jobtitle").src = "ss_DownImage";
+                    document.getElementById("jobtitle").style.display = "";
+                    document.getElementById("fullnam").style.display = "none";
+                   
+                    document.getElementById("PhonCall").style.display = "none";
+                    document.getElementById("mails").style.display = "none";
+                    document.getElementById("respn").style.display = "none";
+                }
+                retrieveRecord(order);
+            }
+        }
+        function Responsibility() {
+            var form_type;
+            if (location.search === "") {
+                form_type = parent.Xrm.Page.ui.getFormType();
+            }
+            if (form_type !== 1) {
+                if (location.search === "") {
+                    document.getElementById("dataTable").innerHTML = "";
+                }
+                else {
+                    document.getElementById('scrollable_content').innerHTML = "";
+                }
+                showLoadingMessage();
+                resp += 1;
+                var mod = 0;
+                mod = resp % 2;
+                if (mod === 0) {
+                    //  order = "&$orderby=ss_primarycontact asc";
+                    order = "&$orderby=ss_responsibility asc";
+
+                    document.getElementById("respn").src = "ss_UpImage";
+                    document.getElementById("respn").style.display = "";
+                    document.getElementById("fullnam").style.display = "none";
+                   
+                    document.getElementById("PhonCall").style.display = "none";
+                    document.getElementById("mails").style.display = "none";
+                    document.getElementById("jobtitle").style.display = "none";
+                }
+                else {
+                    // order = "&$orderby=ss_primarycontact desc";
+                    order = "&$orderby=ss_responsibility desc";
+
+                    document.getElementById("respn").src = "ss_DownImage";
+                    document.getElementById("respn").style.display = "";
+                    document.getElementById("fullnam").style.display = "none";
+                   
+                    document.getElementById("PhonCall").style.display = "none";
+                    document.getElementById("mails").style.display = "none";
+                    document.getElementById("jobtitle").style.display = "none";
+                }
+                retrieveRecord(order);
+            }
+        }
+        function Email() {
+            var form_type;
+            if (location.search === "") {
+                form_type = parent.Xrm.Page.ui.getFormType();
+            }
+
+            if (form_type !== 1) {
+                if (location.search === "") {
+                    document.getElementById("dataTable").innerHTML = "";
+                }
+                else {
+                    document.getElementById('scrollable_content').innerHTML = "";
+                }
+                showLoadingMessage();
+                mail += 1;
+                var mod = 0;
+                mod = mail % 2;
+                if (mod === 0) {
+                    order = "&$orderby=emailaddress1 asc";
+                    document.getElementById("mails").src = "ss_UpImage";
+                    document.getElementById("mails").style.display = "";
+                    document.getElementById("fullnam").style.display = "none";
+                   
+                    document.getElementById("PhonCall").style.display = "none";
+                    document.getElementById("jobtitle").style.display = "none";
+                    document.getElementById("respn").style.display = "none";
+                }
+                else {
+                    order = "&$orderby=emailaddress1 desc";
+                    document.getElementById("mails").src = "ss_DownImage";
+                    document.getElementById("mails").style.display = "";
+                    document.getElementById("fullnam").style.display = "none";
+                   
+                    document.getElementById("PhonCall").style.display = "none";
+                    document.getElementById("jobtitle").style.display = "none";
+                    document.getElementById("respn").style.display = "none";
+                }
+                retrieveRecord(order);
+            }
+        }
+        function timeout() {
+            setTimeout(function () {
+                if (document.hasFocus()) {
+                    var customHtml = parent.Xrm.Page.ui.controls.get("WebResource_Activity_Stream");
+                    if (customHtml !== null) {
+                        customHtml.setSrc(customHtml.getSrc());
+                    }
+                }
+                else {
+                    timeout();
+                }
+            }, 500);
+        }
+
+        function opencontactForm() {
+            var form_type = parent.Xrm.Page.ui.getFormType();
+            if (form_type !== 1) {
+                var thisAccount = {
+                    entityType: "account",
+                    id: parent.Xrm.Page.data.entity.getId()
+                };
+
+
+             var entityFormOptions = {};
+             entityFormOptions["entityName"] = "contact";
+             entityFormOptions["useQuickCreateForm"] = true;
+             entityFormOptions["createFromEntity"]=thisAccount;
+
+                var callback = function (obj) {
+                    retrieveRecord(order);
+                }
+               // parent.Xrm.Utility.openQuickCreate("contact", thisAccount, null).then(callback, ErrorMsg);
+                
+
+                 ////////////////////  Changes v9.00 for open new enityForm    
+
+             
+            // Open the form.
+            parent.Xrm.Navigation.openForm(entityFormOptions).then(
+                function (success) {
+                   callback;
+                },
+                function (error) {
+                    console.log(error);
+                });
+
+
+            }
+            else {
+                //alert("Please Create a Record First");
+
+                
+                
+                var message = { confirmButtonLabel: "Ok", text: "Please Create a Record First" };
+                var alertOptions = { height: 150, width: 280 };
+                parent.Xrm.Navigation.openAlertDialog(message, alertOptions).then(
+                    function success(result) {
+                        //console.log("Alertog closed");
+                    },
+                    function (error) {
+                   //     console.log(error.message);
+                    });
+            }
+        }
+        //openContactWebresource() Method is used to open the Expanded view of the GRID.
+        function openContactWebresource() {
+            var form_type = parent.Xrm.Page.ui.getFormType();
+            if (form_type !== 1) {
+                var accountId = parent.Xrm.Page.data.entity.getId().replace("{", "").replace("}", "");
+                var customParameters = encodeURIComponent("\"" + accountId + "\"");
+                var url = "/webresources/ss_contactActivities?data=" + customParameters; //ss_Account_contact_activities  This code is for Prod envoirnment.
+                // var url = "/webresources/ss_Account_contact_activities?data=" + customParameters;
+                if (!win || win.closed)
+                    win = window.open(url, null, "width=1030px,height=630px,fullscreen=yes, resizable=yes, scrollbars=yes");
+                else
+                    win.focus();
+            }
+        }
+
+    </script>
+
+
+
+
+    <div class="table-container" id="grid" style="font-family: undefined;">
+
+        <table class="toptable" id="plus-only">
+            <tbody>
+                <tr>
+                    <!--<td>
+                        <h3 class="h2" id="gNam">Contacts</h3>
+                    </td>-->
+
+                    <td class="toptable_align"><img id="ss_expandView" style="margin-top:2px;" onclick="openContactWebresource()" alt="See the Records Associated with this view" src="ss_expandview" title="See the Records Associated with this view"></td>
+                    <td class="toptable_align"><img id="plusimg" style="margin-top:2px;" onclick="opencontactForm()" alt="Add New Contact" src="ss_plusimage" title="Add Contact Record"></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="toptable" id="activities">
+            <tbody>
+                <tr>
+                    <!--<td>
+                        <h3 class="h2" id="gName">Contacts</h3>
+                    </td>-->
+                    <td class="toptable_align"><img id="ss_expandView" style="margin-top:2px;" onclick="openContactWebresource()" alt="Add New Contact" src="ss_expandview" title="See the Records Associated with this view"></td>
+
+                    <td class="toptable_align">
+                        <img id="plusimage" onclick="opencontactForm()" style="margin-top:2px;" alt="Add New Contact" src="ss_plusimage" title="Add Contact Record">
+                    </td>
+
+                    <!--    <td class="toptable_align">
+                          <a href="#" onclick="openNewLetter()">
+                              <img src="ss_letter" alt="Letter" id="newlatter" style="width: 20px; height: 20px; margin-top: 2px;" title="New Letter" />
+                          </a>
+                      </td>
+                      <td class="toptable_align">
+                          <a href="#" onclick="openNewMail()">
+                              <img src="ss_email" alt="Email" id="newmail" style="width: 20px; height: 20px; margin-top: 2px;" title="New Email" />
+                          </a>
+                      </td>-->
+                    <td class="toptable_align">
+                        <a href="#" onclick="openNewTask()">
+                            <img src="ss_check.png" id="newtask" alt="Task" style="width: 20px; height: 20px; margin-top: 2px;" title="New Task">
+                        </a>
+                    </td>
+                    <td class="toptable_align">
+                        <a href="#" onclick="openNewPhoneCall()">
+                            <img src="ss_phone.png" alt="Phone Call" id="newcall" style="width: 20px; height: 20px; margin-top: 2px;" title="New Phone Call">
+                        </a>
+                    </td>
+                    <td class="toptable_align">
+                        <a href="#" onclick="openNewAppointment()">
+                            <img src="/_imgs/wallcontrol/acwallappointment_32.png" alt="Appointment" id="newappointment" style="width: 20px; height: 20px; margin-top: 2px;" title="New Appointment">
+                        </a>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+        <table class="table-custom" id="tophead" style="z-index: 1;width:100% !important">
+            <thead>
+                <tr>
+                    <th onclick="Name()" class="Name">Full Name <img id="fullnam" src="ss_transparent.gif"></th>
+                    <th onclick="jobTitle()" class="job">Job Title <img id="jobtitle" src="ss_transparent.gif"></th>
+                    <th class="responsbility" onclick="Responsibility()">Responsibility <img id="respn" src="ss_downimage"></th>
+                    <th class="call" onclick=" Phone()">Business Phone<img id="PhonCall" src="ss_transparent.gif"></th>
+                    <th class="mail" onclick="Email()">Email<img id="mails" src="ss_transparent.gif"></th>
+                    <th class="cockpit">Cockpit User<img id="CockpitUser" src="ss_transparent.gif"></th>
+                    <th class="cockpitusertype">Cockpit User Type<img id="CockpitUserType" src="ss_transparent.gif"></th>
+                    <th id="headright" class="delimg"><br></th>
+                </tr>
+            </thead>
+        </table>
+        <div id="content">
+            <div class="loaderStyle" id="msgDiv"><img alt="" src="/_imgs/advfind/progress.gif"><br></div>
+
+            <div id="scrollable_content">
+                <table class="table-custom" style="z-index: 0;width:100%">
+                    <thead style="display:none">
+                        <tr>
+                            <th onclick="Name()" class="Name">Full Name <img id="fullnam" src="ss_transparent.gif"></th>
+                            <th onclick="jobTitle()" class="job">Job Title <img id="jobtitle" src="ss_transparent.gif"></th>
+                            <th class="responsbility" onclick="Responsibility()">Responsibility <img id="respn" src="ss_downimage"></th>
+                            <th class="call" onclick=" Phone()">Business Phone<img id="PhonCall" src="ss_transparent.gif"></th>
+                            <th class="mail" onclick="Email()">Email<img id="mails" src="ss_transparent.gif"></th>
+                            <th class="cockpit">Cockpit User<img id="CockpitUser" src="ss_transparent.gif"></th>
+                            <th class="cockpitusertype">Cockpit User Type<img id="CockpitUserType" src="ss_transparent.gif"></th>
+                            <th id="headright" class="delimg"><br></th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        if (location.search !== "") {
+            document.body.style.overflowY = "auto";
+
+        }
+    </script>
+
+</body></html>

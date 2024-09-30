@@ -1,0 +1,518 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="bbo_SDK.REST.js"></script>
+    <script src="new_FileSaver"></script>
+    <!-- <script src="../WebResources/ss_contractdocumentjs"></script> -->
+    <style>
+        table {
+            font-size: 12px;
+            height: 100%;
+            min-height: 100%;
+            width: 100%;
+            overflow-y: hidden;
+
+        }
+
+        .fileLink {
+            color: blue;
+
+        }
+
+        .btn-outline-info:hover {
+            background-color: white !important;
+            color: rgb(19, 166, 224) !important;
+            border-color: rgb(19, 166, 224) !important;
+        }
+
+        table#mainTbl {
+
+            padding-bottom: 55px !important;
+            display: table !important;
+        }
+
+        table#mainTbl1 {
+
+            padding-bottom: 55px !important;
+            display: table !important;
+        }
+
+        table.removetable {
+            padding-bottom: 25px !important;
+        }
+
+        .createmode {
+            display: none;
+            color: grey;
+            vertical-align: center;
+        }
+
+        .statusRadioBtn {
+            float: left;
+        }
+
+        a {
+            color: black;
+        }
+
+        .modifyStatus {
+            font-size: 10px;
+            height: 0px;
+            float: auto;
+            padding: 8px;
+        }
+
+        span {
+            font-size: 11px;
+        }
+
+        .statusVal {
+
+            margin-top: 3px !important;
+
+
+            float: left;
+        }
+
+        #mainTblDiv {
+            padding-top: 5px;
+            padding-bottom: 70px;
+            overflow-x: hidden;
+        }
+
+        #mainTblDiv1 {
+            padding-top: 5px;
+            padding-bottom: 70px;
+            overflow-x: hidden;
+        }
+
+        .dropdownPosition {
+            border: 2px solid lightblue;
+            padding: 2px;
+            float: right;
+            z-index: 5000;
+            margin: -50px -79px 50px 79px;
+            width: 122px !important;
+            min-width: 122px !important;
+        }
+
+        .selectedData {
+            float: left;
+            margin-left: 5px;
+
+
+        }
+
+        .dropdownProductsPosition {
+            border: 2px solid lightblue;
+            padding: 2px;
+            float: right;
+            margin: -50px -79px 50px 79px;
+            width: 122px !important;
+            min-width: 122px !important;
+            z-index: 5000;
+        }
+
+        table thead th {
+            text-align: center;
+
+
+        }
+
+        #saveContracts {
+            font-size: 10px;
+            float: right;
+            margin-bottom: 5px;
+
+        }
+
+        .Prod-and-ContractName {
+            text-align: left !important;
+        }
+
+        .dropdown-menu {
+            z-index: 5000;
+            background-color: #F5F5F5;
+        }
+
+        #refreshData:hover {
+            background-color: white;
+        }
+
+        #refreshpartnerData:hover {
+            background-color: white;
+        }
+
+        #overlay {
+            background: #f5f5f5;
+            color: #666666;
+            position: fixed;
+            height: 100%;
+            width: 100%;
+            z-index: 5000;
+            top: 0;
+            left: 0;
+            float: left;
+            text-align: center;
+            padding-top: 25%;
+            opacity: .50;
+        }
+
+        .spinner {
+
+            position: absolute;
+            left: 45%;
+            top: 30%;
+            height: 60px;
+            width: 60px;
+            margin: 0px auto;
+            -webkit-animation: rotation .8s infinite linear;
+            -moz-animation: rotation .8s infinite linear;
+            -o-animation: rotation .8s infinite linear;
+            animation: rotation .8s infinite linear;
+            border-left: 6px solid rgba(0, 174, 239, .15);
+            border-right: 6px solid rgba(0, 174, 239, .15);
+            border-bottom: 6px solid rgba(0, 174, 239, .15);
+            border-top: 6px solid rgba(0, 174, 239, .8);
+            border-radius: 100%;
+            z-index: 5000;
+        }
+
+        @-webkit-keyframes rotation {
+            from {
+                -webkit-transform: rotate(0deg);
+            }
+
+            to {
+                -webkit-transform: rotate(359deg);
+            }
+        }
+
+        @-moz-keyframes rotation {
+            from {
+                -moz-transform: rotate(0deg);
+            }
+
+            to {
+                -moz-transform: rotate(359deg);
+            }
+        }
+
+        @-o-keyframes rotation {
+            from {
+                -o-transform: rotate(0deg);
+            }
+
+            to {
+                -o-transform: rotate(359deg);
+            }
+        }
+
+        @keyframes rotation {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(359deg);
+            }
+        }
+    </style>
+    <meta>
+</head>
+
+<body style="overflow-wrap: break-word;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 col-sm-12" id="mainTblDiv1">
+                <table class="table table-bordered table-responsive  text-center border border-0" id="mainTbl1">
+                    <thead class="table-info">
+                        <tr>
+                            <th style="width:30%;" class="Prod-and-ContractName">Approval Contract</th>
+                            <th>Created On</th>
+                            <th>Contract Owner</th>
+                            <th id="refreshpartnerData" onclick="loadData()">
+                                <a href="#">
+                                    <span class="glyphicon glyphicon-repeat" style="padding: 0px 5px 0px 5px;"></span>
+                                </a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="approvalcontractDetailsTblBody">
+                    </tbody>
+
+                </table>
+
+                <div id="overlay" class="loader">
+                    <div class="spinner loader"></div>
+                </div>
+            </div>
+            <p class="createmode">To enable this content create record first!</p>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 col-sm-12" id="mainTblDiv2">
+                <table class="table table-bordered table-responsive  text-center border border-0" id="mainTbl1">
+                    <thead class="table-info">
+                        <tr>
+                            <th style="width:30%;" class="Prod-and-ContractName">Approval Opportunity Contract</th>
+                            <th>Created On</th>
+                            <th>Contract Owner</th>
+                            <th id="refreshpartnerData" onclick="loadData()">
+                                <a href="#">
+                                    <span class="glyphicon glyphicon-repeat" style="padding: 0px 5px 0px 5px;"></span>
+                                </a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="approvaloppcontractDetailsTblBody">
+                    </tbody>
+
+                </table>
+
+                <div id="overlay" class="loader">
+                    <div class="spinner loader"></div>
+                </div>
+            </div>
+            <p class="createmode">To enable this content create record first!</p>
+        </div>
+    </div>
+    <script>
+
+        $(document).ready(function () {
+            GetApprovalContractDetails();
+            GetApprovalOppContractDetails();
+        });
+        function loadData() {
+            $(".loader").fadeIn();
+            $("body").css("background-color", "#f5f5f5");
+            $("body").css("opacity", .50);
+            setTimeout(function () {
+                location.reload(true);
+            }, 1000);
+
+        }
+        function GetApprovalOppContractDetails() {
+            var oppid = parent.Xrm.Page.getAttribute("ss_relatedopportunity").getValue()[0].id;
+            oppid = oppid.replace("{","").replace("}","");
+            console.log("Opp id is => " + oppid);
+            $(".loader").hide();
+            //$("#mainTbl1 tbody>tr").remove();
+            var tablerow = "";
+
+            var fetchXML2 = `<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="true" >
+                       <entity name="opportunity">
+                            <attribute name="opportunityid" /> 
+                            <order attribute="createdon"/>               
+                            <filter type="and">                         
+                            <condition attribute="opportunityid" operator="eq" value="`+ oppid + `" />
+                            </filter>
+                            <link-entity name="annotation" from="objectid" to="opportunityid" link-type="inner" alias="ano" >
+                                    <attribute name="objectid" distinct="true"/>
+                                    <attribute name="annotationid" />
+                                    <attribute name="createdon" />
+                                    <attribute name="filename" />
+                                    <attribute name="ownerid" />
+                                    <attribute name="notetext" />
+                                    <attribute name="subject" />  
+                                    <order attribute="createdon" descending="true"/>                                
+                            <filter type="and">
+                                <condition attribute="notetext" operator="like" value="%{{Contract--%" />
+                            </filter>
+                            </link-entity>
+                    </entity>
+                </fetch>`;
+            fetchXML2 = "?fetchXml=" + encodeURIComponent(fetchXML2);
+            if (oppid) {
+                window.parent.Xrm.WebApi.online.retrieveMultipleRecords("opportunity", fetchXML2).then(
+                    function success(results) {
+                        // alert(results.entities.length);
+                        for (var i = 0; i < results.entities.length; i++) {
+
+                            // var annotationid = results.entities[i]["ano.annotationid"];
+                            var createdon = results.entities[i]["ano.createdon"];
+
+                            // createdon = createdon ? createdon.substring(0, 10) : "";
+
+
+                            //var documentbody = results.entities[i]["documentbody"];
+                            var annotationid = results.entities[i]["ano.annotationid"];
+                            var createdOn = results.entities[i]["ano.createdon"];
+                            if (createdOn != undefined)
+                                createdOn = createdOn.substring(0, 10);
+                            var filename = results.entities[i]["ano.filename"];
+                            var notetext = results.entities[i]["ano.notetext"];
+
+                            var ownerName = results.entities[i]["ano.ownerid@OData.Community.Display.V1.FormattedValue"];
+                            var subject = results.entities[i]["ano.subject"];
+                            tablerow += "<tr>";
+                            tablerow += "<td><a class='fileLink' href=# onclick='getFile(\"" + annotationid + "\")'>" + filename + "</a></td>";
+                            tablerow += "<td>" + createdon + "</td>";
+                            tablerow += "<td>" + ownerName + "</td>";
+                            // tablerow += "<td><button type='button' class='btn btn-danger' onclick='DeletePartnerContact(\"" + annotationid + "\")'>Delete</button></td>";
+                            tablerow += "</tr>";
+                        }
+                        if (tablerow) {
+                            $("#approvaloppcontractDetailsTblBody").append(tablerow);
+                        }
+
+
+                    },
+                    function (error) {
+                        var alertStrings = { confirmButtonLabel: "Yes", text: error.message, title: "Error in Upload Contract" };
+                        var alertOptions = { height: 120, width: 260 };
+                        parent.Xrm.Navigation.openAlertDialog(alertStrings, alertOptions);
+                    }
+                );
+            }
+        }
+        function GetApprovalContractDetails() {
+            $(".loader").hide();
+            //$("#mainTbl1 tbody>tr").remove();
+            var entityname = parent.Xrm.Page.data.entity.getEntityName();
+            var entityid = entityname + "id";
+            var tablerow = "";
+            var approvalid = parent.Xrm.Page.data.entity.getId().replace("{","").replace("}","");
+            if (approvalid) {
+                //============================
+                var fetchXML2 = `<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="true" >
+                       <entity name="`+entityname+`">
+                            <attribute name="ss_opportunityaccount" />
+                            <order attribute="createdon"/>               
+                            <filter type="and">                         
+                            <condition attribute="`+entityid+`" operator="eq" value="`+ approvalid + `" />
+                            </filter>
+                            <link-entity name="annotation" from="objectid" to="`+entityid+`" link-type="inner" alias="ano" >
+                                    <attribute name="objectid" distinct="true"/>
+                                    <attribute name="annotationid" />
+                                    <attribute name="createdon" />
+                                    <attribute name="filename" />
+                                    <attribute name="ownerid" />
+                                    <attribute name="notetext" />
+                                    <attribute name="subject" />  
+                                    <order attribute="createdon" descending="true"/>                                
+                            <filter type="and">
+                                <condition attribute="notetext" operator="like" value="%{{Approval--%" />
+                            </filter>
+                            </link-entity>
+                    </entity>
+                </fetch>`;
+
+                fetchXML2 = "?fetchXml=" + encodeURIComponent(fetchXML2);
+                if (approvalid) {
+                    window.parent.Xrm.WebApi.online.retrieveMultipleRecords(entityname, fetchXML2).then(
+                        function success(results) {
+                            // alert(results.entities.length);
+                            for (var i = 0; i < results.entities.length; i++) {
+
+                                var annotationid = results.entities[i]["annotationid"];
+                                var createdon = results.entities[i]["ano.createdon"];
+
+                                createdon = createdon ? createdon.substring(0, 10) : "";
+
+
+                                //var documentbody = results.entities[i]["documentbody"];
+                                var annotationid = results.entities[i]["ano.annotationid"];
+                                var createdOn = results.entities[i]["ano.createdon"];
+                                if (createdOn != undefined)
+                                    createdOn = createdOn.substring(0, 10);
+                                var filename = results.entities[i]["ano.filename"];
+                                var notetext = results.entities[i]["ano.notetext"];
+
+                                var ownerName = results.entities[i]["ano.ownerid@OData.Community.Display.V1.FormattedValue"];
+                                var subject = results.entities[i]["ano.subject"];
+                                tablerow += "<tr>";
+                                tablerow += "<td><a class='fileLink' href=# onclick='getFile(\"" + annotationid + "\")'>" + filename + "</a></td>";
+                                tablerow += "<td>" + createdon + "</td>";
+                                tablerow += "<td>" + ownerName + "</td>";
+                                tablerow += "<td><button type='button' class='btn btn-danger' onclick='DeleteApprovalContract(\"" + annotationid + "\")'>Delete</button></td>";
+                                tablerow += "</tr>";
+                            }
+                            if (tablerow) {
+                                $("#approvalcontractDetailsTblBody").append(tablerow);
+                            }
+
+
+                        },
+                        function (error) {
+                            var alertStrings = { confirmButtonLabel: "Yes", text: error.message, title: "Error in Upload Contract" };
+                            var alertOptions = { height: 120, width: 260 };
+                            parent.Xrm.Navigation.openAlertDialog(alertStrings, alertOptions);
+                        }
+                    );
+
+                }
+
+            }
+        }
+            //download file
+            function getFile(annotationid) {
+                window.parent.Xrm.WebApi.online.retrieveRecord("annotation", annotationid).then(
+                    function success(result) {
+                        // var annotationid = result["annotationid"];
+                        var DocumentBody;
+                        var FileName;
+                        if (result["documentbody"]) {
+                            DocumentBody = result["documentbody"];
+                        }
+                        if (result["filename"]) {
+                            FileName = result["filename"];
+                        }
+
+                        dataURItoBlob(DocumentBody, FileName);
+                    },
+                    function (error) {
+                        window.parent.Xrm.Utility.alertDialog(error.message);
+                    }
+                );
+
+            }
+            //==============================nH
+            function dataURItoBlob(dataURI, filename) {
+                // convert base64 to raw binary data held in a string
+                //
+                var byteString = atob(dataURI);
+                // write the bytes of the string to an ArrayBuffer
+                var ab = new ArrayBuffer(byteString.length);
+                var ia = new Uint8Array(ab);
+                for (var i = 0; i < byteString.length; i++) {
+                    ia[i] = byteString.charCodeAt(i);
+                }
+
+                // write the ArrayBuffer to a blob, and you're done
+                var bb = new Blob([ab]);
+                saveFile(bb, filename);
+
+            }
+            function saveFile(blob, filename) {
+                saveAs(blob, filename);
+            }
+        
+              //DeletePartnerContact
+              function DeleteApprovalContract(noteId) {
+                parent.Xrm.WebApi.online.deleteRecord("annotation", noteId).then(
+                    function success(result) {
+                        loadData();
+                    },
+                    function (error) {
+                        var alertStrings = { confirmButtonLabel: "Yes", text: error.message, title: "Error in Upload Contract" };
+                        var alertOptions = { height: 120, width: 260 };
+                        parent.Xrm.Navigation.openAlertDialog(alertStrings, alertOptions);
+                    }
+                );
+            }
+    </script>
+
+</body>
+
+</html>

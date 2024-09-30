@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Navision</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .container {
+            height: 200px;
+            position: relative;
+        }
+
+        .center {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row col-sm-12 col-md-12 col-xs-12 col-xl-12 center">
+            <label for="navision">Select BU: &nbsp;&nbsp;&nbsp;</label>
+            <select name="navision" id="navision_option">
+                <option value="ss_eqsgermany">EQS Germany</option>
+                <option value="ss_eqsswitzerland">EQS Switzerland</option>
+                <option value="ss_eqsuk">EQS UK</option>
+                <option value="ss_eqsfrance">EQS France</option>
+                <option value="ss_eqsitaly">EQS Italy</option>
+                <option value="ss_eqsrussia">EQS Russia</option>
+                <option value="ss_eqsus">EQS US</option>
+                <option value="ss_eqsasia">EQS Asia</option>
+                <option value="ss_eqsdenmark">EQS Denmark</option>
+                <option value="ss_eqsaustria">EQS Austria</option>
+                <option value="ss_eqsspain">EQS Spain</option>
+            </select>
+        </div>
+    </div>
+    <div class="row col-sm-12 col-md-12 col-xs-12 col-xl-12 mx-auto">
+        <input type="hidden" id="nav_id" name="navid" value="">
+    </div>
+    <div class="row col-sm-12 col-md-12 col-xs-12 col-xl-12 mx-auto">
+        <button type="button" id="update_btn" class="btn btn-info btn-xs">Update</button> &nbsp;&nbsp;&nbsp;
+        <button type="button" id="close_btn" class="btn btn-secondary btn-xs">Close</button>
+    </div>
+    <script>
+        $(document).ready(function () {
+            var navisionoptions = [];
+            $("#update_btn").on("click", function () {
+                $('#navision_option option').each(function () {
+                    navisionoptions.push($(this).val());
+                });
+                var selectedoption = $("#navision_option option:selected").val();
+                if (navisionoptions.includes(selectedoption)) {
+                    var value = opener.parent.Xrm.Page.getAttribute(selectedoption).getValue();
+                    if (confirm("Are you SURE?\nYou want to Increment the ID !") == true) {
+                        value++;
+                        opener.parent.Xrm.Page.getAttribute(selectedoption).setValue(value);
+                        opener.parent.Xrm.Page.data.refresh(true);
+                        window.close();
+                    } else {
+                        location.reload();
+                        return;
+                    }
+                }
+            });
+            $("#close_btn").on("click", function () {
+                window.close();
+            });
+        });
+    </script>
+</body>
+
+</html>
