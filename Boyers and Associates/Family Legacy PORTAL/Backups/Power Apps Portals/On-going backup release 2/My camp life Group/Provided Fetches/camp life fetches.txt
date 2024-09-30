@@ -1,0 +1,78 @@
+Create new page in Portal called My Camp Life Children.
+
+Check ALL Camp Life Groups 'current logged in user' equals Ambassador.
+
+Pull list of ALL Children from each Camp Life Group and list in the following table: Unsponsored Children, Active Children, Inactive Children
+
+The fetch should look something like this: 
+
+
+Active Children:
+<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="true">
+  <entity name="contact">
+    <attribute name="fullname" />
+    <attribute name="contactid" />
+    <attribute name="bna_currentschool" />
+    <attribute name="bna_externalid" />
+    <filter type="and">
+      <condition attribute="bna_contacttype" operator="eq" value="759090000" />
+    </filter>
+    <link-entity name="bna_childtocamplifegroup" from="bna_childcontact" to="contactid" link-type="inner" alias="ap">
+      <link-entity name="bna_camplifegroups" from="bna_camplifegroupsid" to="bna_camplifegroup" link-type="inner" alias="aq">
+        <filter type="and">
+          <condition attribute="bna_ambassadorcamplifegroups" operator="eq" uiname="CynthiaÂ Knight" uitype="contact" value="{FE719D6C-39CA-EC11-A7B5-000D3A1B7F51}" />
+        </filter>
+      </link-entity>
+    </link-entity>
+    <link-entity name="msnfp_paymentschedule" from="bna_childcontact" to="contactid" link-type="inner" alias="ar">
+      <filter type="and">
+        <condition attribute="statuscode" operator="not-in">
+          <value>844060007</value>
+          <value>844060001</value>
+          <value>844060008</value>
+          <value>844060006</value>
+          <value>844060003</value>
+          <value>2</value>
+          <value>844060004</value>
+          <value>844060009</value>
+        </condition>
+      </filter>
+    </link-entity>
+  </entity>
+</fetch>
+
+Unsponsored Children:
+<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="true">
+  <entity name="contact">
+    <attribute name="fullname" />
+    <attribute name="contactid" />
+    <attribute name="bna_currentschool" />
+    <attribute name="bna_externalid" />
+    <filter type="and">
+      <condition attribute="bna_contacttype" operator="eq" value="759090000" />
+    </filter>
+    <link-entity name="bna_childtocamplifegroup" from="bna_childcontact" to="contactid" link-type="inner" alias="av">
+      <link-entity name="bna_camplifegroups" from="bna_camplifegroupsid" to="bna_camplifegroup" link-type="inner" alias="aw">
+        <filter type="and">
+          <condition attribute="bna_ambassadorcamplifegroups" operator="eq" uiname="CynthiaÂ Knight" uitype="contact" value="{FE719D6C-39CA-EC11-A7B5-000D3A1B7F51}" />
+        </filter>
+      </link-entity>
+    </link-entity>
+    <link-entity name="msnfp_paymentschedule" from="bna_childcontact" to="contactid" link-type="inner" alias="ax">
+      <filter type="and">
+        <condition attribute="statuscode" operator="in">
+          <value>844060007</value>
+          <value>844060001</value>
+          <value>844060008</value>
+          <value>844060006</value>
+          <value>844060003</value>
+          <value>2</value>
+          <value>844060004</value>
+          <value>844060009</value>
+        </condition>
+      </filter>
+    </link-entity>
+  </entity>
+</fetch>
+
+Here is an example of how the page should look with verbiage 

@@ -1,0 +1,221 @@
+$(document).ready(function () {
+      var checksearchbtnclick = '';
+      $('#loadingrow').css('display', 'block');
+
+      var nextpage = 1;
+      $("#sponsormebtn").on("click", function () {
+        var local = localStorage.setItem('parameterchild', ('false'));
+      });
+
+      $("#id_namesearch").keypress(function(e) {
+        var nameis= $(this).val();
+          nameval = `<condition attribute='bna_firstname' operator='begins-with' value="${nameis}"/>`;
+          if(e.which == 13) {
+          $("#searchbuilderbtn").click();
+          }
+      });
+
+      var genderval = '';
+      var nameval = '';
+      var birthval = '';
+      var communityval = '';
+      var programval = '';
+      $("#id_namesearch").change(function () {
+        var nameis = $(this).val();
+        nameval = `<condition attribute='bna_firstname' operator='begins-with' value="${nameis}"/>`;
+      });
+      $("#id_gender").change(function () {
+        var genderis = this.value;
+        if (genderis == 'm') {
+          genderis = 1;
+          genderval = `<condition attribute='bna_gender' operator='eq' value="${genderis}"/>`;
+        }
+        else if (genderis == 'fm') {
+          genderis = 2;
+          genderval = `<condition attribute='bna_gender' operator='eq' value="${genderis}"/>`;
+        }
+        else {
+          genderis = "";
+          genderval = `<condition attribute='bna_gender' operator='eq' value="${genderis}"/>`;
+        }
+      });
+      $("#id_birth").change(function () {
+        var birthis = this.value;
+        var startyear = "1/01" + "/" + birthis;
+        var endyear = "12/31" + "/" + birthis;
+        birthval = `<condition attribute='bna_birthdate' operator='between'>,
+        <value>${startyear}</value>
+        <value>${endyear}</value>
+         </condition>`;
+      });
+      $("#id_community").change(function () {
+        var communityis = this.value;
+        communityval = `<condition attribute='bna_currentcommunity' operator='eq' value="${communityis}"/>`;
+      });
+      // $("#id_program").change(function () {
+      //   var programis = this.value;
+      //   programval = `<condition attribute='bna_currentprogram' operator='eq' value="${programis}"/>`;
+      // });
+
+      $("#searchbuilderbtn").click(function(){
+        checksearchbtnclick = 'clicked';
+            childfilter();
+      });
+      function childfilter(){
+        //getting program value when user click for search
+        var programis = $('#id_program').val();
+        console.log("programis"+ programis);
+        programval = `<condition attribute='bna_currentprogram' operator='eq' value="${programis}"/>`;
+
+       $('#loadingrow').css('display', 'none');
+        if (nameval != "" || genderval != "" || birthval != "" || communityval != "" || programval != "") {
+          //fetchxml for retrieving records after applying filter into CRM
+          var fetchData = {
+            bna_firstname: nameval,
+            bna_gender: genderval,
+            bna_birthdate: birthval,
+            bna_currentcommunity: communityval,
+            bna_currentprogram: programval
+          };
+          var initfetchXml = [
+            "<fetch>",
+            "  <entity name='bna_childcontact'>",
+            "    <attribute name='bna_birthdate' />",
+            "    <attribute name='bna_age' />",
+            "    <attribute name='bna_lastinitial' />",
+            "    <attribute name='bna_currentprogram' />",
+            "    <attribute name='bna_firstname' />",
+            "    <attribute name='bna_sponsorshipphotourl' />",
+            "    <attribute name='bna_currentcommunity' />",
+            "    <attribute name='bna_gender' />",
+            "    <attribute name='bna_childcontactid' />",
+            "    <filter>",
+            "      " + fetchData.bna_firstname + "",
+            "      " + fetchData.bna_gender + "",
+            "      " + fetchData.bna_birthdate + "",
+            "      " + fetchData.bna_currentcommunity + "",
+            "      " + fetchData.bna_currentprogram + "",
+            "    </filter>",
+            "  </entity>",
+            "</fetch>",
+          ].join("");
+
+          initfetchXmlis = "?fetchXml=" + encodeURIComponent(initfetchXml);
+          var initrequest = new XMLHttpRequest();
+          initrequest.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+              var myArr = JSON.parse(this.responseText);
+              initmyFunction(myArr);
+            }
+          };
+          initrequest.open("GET", "https://portaldev-familylegacy.powerappsportals.com/_api/bna_childcontacts" + initfetchXmlis, true);
+          initrequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+          initrequest.send();
+
+          //function to read data
+          function initmyFunction(arr) {
+            var i;
+            // hiding all cards
+            $(".allchildrenscardscolumn").remove();
+            for (i = 0; i < arr.value.length; i++) {
+              // making new cards with relevent data
+              if (arr.value[i].bna_sponsorshipphotourl == undefined) {
+                arr.value[i].bna_sponsorshipphotourl = "https://childphotosdev.blob.core.windows.net/childphotosdev/defaultImage.png";
+              }
+              if (arr.value[i].bna_birthdate != undefined){
+               var sliceddate= arr.value[i].bna_birthdate.slice(0, 10);
+                arr.value[i].bna_birthdate = moment(sliceddate, "YYYY.MM.DD").format("DD-MM-YYYY");
+              }
+              var initdata = '<div class="col-sm-4 col-md-4 col-lg-4 allchildrenscardscolumn">';
+              initdata = initdata + '<div class="card" style="width: 32rem;">';
+              initdata = initdata + '<img class="card-img-top" src="' + arr.value[i].bna_sponsorshipphotourl + '" alt="https://childphotosdev.blob.core.windows.net/childphotosdev/defaultImage.png" style="height:300px; width:330px;"/>';
+              initdata = initdata + '<div class="card-body" style="color: white; background-color: #353535; margin-top: -12px; width: 330px; height: 290px;">';
+              initdata = initdata + '<h5 class="card-title" style="color: white; text-align:center; padding-top: 20px; font-size: 20px; font-weight: 600; margin-bottom: 10px;">' + arr.value[i].bna_firstname + ' ' + arr.value[i].bna_lastinitial.charAt(0) + '</h5>';
+              initdata = initdata + '<div class="row card-text selectedrow"><div class="col-sm-6 col-md-6 col-lg-6">Age: ' + arr.value[i].bna_age + '</div><div class="col-sm-6 col-md-6 col-lg-6"> ' + arr.value[i]["bna_gender@OData.Community.Display.V1.FormattedValue"] + '</div></div>';
+              initdata = initdata + '<div class="row card-text selectedrow"><div class="col-sm-12 col-md-12 col-lg-12">Program: ' + arr.value[i]["_bna_currentprogram_value@OData.Community.Display.V1.FormattedValue"] + '</div></div>';
+              initdata = initdata + '<div class="row card-text selectedrow"><div class="col-sm-12 col-md-12 col-lg-12">Community: ' + arr.value[i]["_bna_currentcommunity_value@OData.Community.Display.V1.FormattedValue"] + '</div></div>';
+              initdata = initdata + '<div class="row card-text selectedrow"><div class="col-sm-12 col-md-12 col-lg-12">Birthdate: ' + arr.value[i].bna_birthdate + '</div></div>';
+              initdata = initdata + '<button class="btn" onclick="redirectfunction(this)" id="sponsormebtn" style="color: white; font: message-box;background-color: #00984d; margin: 10px 0 25px 70px; padding: 10px 30px 10px 30px; opacity: 2;" type="submit" value=' + arr.value[i].bna_firstname  + arr.value[i].bna_lastinitial.charAt(0)+"!"+arr.value[i].bna_childcontactid + '> SPONSOR ME</button>';
+              initdata = initdata + '</div>';
+              initdata = initdata + '</div>';
+              initdata = initdata + '</div>';
+              $($(".sponsorrow")[2]).append(initdata);
+            }
+          }
+        }
+        else{
+          alert("Select a value in dropdowns for filter");
+        }
+      }
+      $(window).scroll(function () {
+        if (checksearchbtnclick != 'clicked') {
+          if (Math.ceil($(window).scrollTop()) == $(document).height() - $(window).height() || Math.ceil($(window).scrollTop()) <= $(document).height() - $(window).height() || Math.ceil($(window).scrollTop()) >= $(document).height() - $(window).height()) {
+            nextpage = nextpage + 1;
+            var fetchXml = [
+              "<fetch count='6' page='" + nextpage + "'>",
+              "  <entity name='bna_childcontact'>",
+              "    <attribute name='bna_birthdate' />",
+              "    <attribute name='bna_age' />",
+              "    <attribute name='bna_lastinitial' />",
+              "    <attribute name='bna_currentprogram' />",
+              "    <attribute name='bna_firstname' />",
+              "    <attribute name='bna_sponsorshipphotourl' />",
+              "    <attribute name='bna_currentcommunity' />",
+              "    <attribute name='bna_gender' />",
+              "    <attribute name='bna_childcontactid' />",
+              "  </entity>",
+              "</fetch>",
+            ].join("");
+            pagingfetchXmlis = "?fetchXml=" + encodeURIComponent(fetchXml);
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function () {
+              if (this.readyState == 4 && this.status == 200) {
+                var myArr = JSON.parse(this.responseText);
+                myFunction(myArr);
+                if (myArr.value.length > 0) {
+                  $('#loadingrow').css('display', 'block');
+                }
+                else {
+                  $('#loadingrow').css('display', 'none');
+
+                }
+              }
+            };
+            request.open("GET", "https://portaldev-familylegacy.powerappsportals.com/_api/bna_childcontacts" + pagingfetchXmlis, true);
+            request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            request.send();
+
+            //function to read data
+            function myFunction(arr) {
+              var i;
+              // hiding all cards
+              for (i = 0; i < arr.value.length; i++) {
+                // making new cards with relevent data
+                if (arr.value[i].bna_sponsorshipphotourl == undefined) {
+                  arr.value[i].bna_sponsorshipphotourl = "https://childphotosdev.blob.core.windows.net/childphotosdev/defaultImage.png";
+                }
+                if (arr.value[i].bna_birthdate != undefined){
+                var sliceddate= arr.value[i].bna_birthdate.slice(0, 10);
+                arr.value[i].bna_birthdate = moment(sliceddate, "YYYY.MM.DD").format("DD-MM-YYYY");
+               }
+                var data = '<div class="col-sm-4 col-md-4 col-lg-4 allchildrenscardscolumn">';
+                data = data + '<div class="card" style="width: 32rem;">';
+                data = data + '<img class="card-img-top" src="' + arr.value[i].bna_sponsorshipphotourl + '" alt="" onerror="this.src=https://childphotosdev.blob.core.windows.net/childphotosdev/defaultImage.png" height="300px" width="330px"/>';
+                data = data + '<div class="card-body" style="color: white; background-color: #353535; margin-top: -12px; width: 330px; height: 290px; ">';
+                data = data + '<h5 class="card-title" style="color: white; text-align:center; padding-top: 20px; font-size: 20px; font-weight: 600; margin-bottom: 10px;">' + arr.value[i].bna_firstname + ' ' + arr.value[i].bna_lastinitial.charAt(0) + '</h5>';
+                data = data + '<div class="row card-text selectedrow"><div class="col-sm-6 col-md-6 col-lg-6">Age: ' + arr.value[i].bna_age + '</div><div class="col-sm-6 col-md-6 col-lg-6"> ' + arr.value[i]["bna_gender@OData.Community.Display.V1.FormattedValue"] + '</div></div>';
+                data = data + '<div class="row card-text selectedrow"><div class="col-sm-12 col-md-12 col-lg-12">Program: ' + arr.value[i]["_bna_currentprogram_value@OData.Community.Display.V1.FormattedValue"] + '</div></div>';
+                data = data + '<div class="row card-text selectedrow"><div class="col-sm-12 col-md-12 col-lg-12">Community: ' + arr.value[i]["_bna_currentcommunity_value@OData.Community.Display.V1.FormattedValue"] + '</div></div>';
+                data = data + '<div class="row card-text selectedrow"><div class="col-sm-12 col-md-12 col-lg-12">Birthdate: ' + arr.value[i].bna_birthdate + '</div></div>';
+                data = data + '<button class="btn" onclick="redirectfunction(this)" id="sponsormebtn" style="color: white; font: message-box; background-color: #00984d; margin: 10px 0 25px 90px; padding: 10px 30px 10px 30px; opacity: 2;" type="submit" value=' + arr.value[i].bna_firstname + arr.value[i].bna_lastinitial.charAt(0) +"!"+arr.value[i].bna_childcontactid + '> SPONSOR ME</button>';
+                data = data + '</div>';
+                data = data + '</div>';
+                data = data + '</div>';
+                $('#loadingrow').css('display', 'none');
+                $($(".sponsorrow")[2]).append(data);
+              }
+            }
+          }
+        }
+      });
+    });

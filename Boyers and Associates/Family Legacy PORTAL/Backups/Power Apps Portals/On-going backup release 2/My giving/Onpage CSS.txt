@@ -1,0 +1,38 @@
+.module-title-holder {
+    font-weight: bold !important;
+}
+
+.footer-bottom .xrm-attribute-value {
+    margin: 20px 0px 20px -200px;
+}
+@media only screen and (max-width: 600px) {
+  .footer-bottom .xrm-attribute-value{
+    margin: 0;
+  }
+  #footersection1 {
+    margin-left: -40px;
+  }
+  #statisticsRow{
+margin-left: 0px !important;
+}
+div#statisticsRow .stat {
+    display: table-cell;
+}
+#givenowDescription h5 {
+    margin-left: 20px;
+}
+}
+@media screen and (min-device-width: 600px) and (max-device-width: 913px) { 
+    #footersection1, #footersection2, #footersection3, .footerh6{
+      width: 50%;
+      margin-left: 300px;
+    }
+     #footersection2, #footersection3, .footerh6{
+      margin-left: 300px;
+    }
+    #footersection1{
+      margin-left: 260px;
+    }
+    
+}
+s

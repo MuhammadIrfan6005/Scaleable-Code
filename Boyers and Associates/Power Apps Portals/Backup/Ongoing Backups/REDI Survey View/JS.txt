@@ -1,0 +1,108 @@
+//Chnage the advanced form visited tabs color
+$("li.text-muted").css("background-color","green");  
+$("li.text-muted").css("color","white");  
+
+//Make the Racial tab section font small. 
+$(".show-bar").css("font-size","20px");
+
+//Racial executive Leadership
+
+$( "table[data-name|='Racial executive Leadership']").find(".info").css("width","500px" );
+$( "table[data-name|='Racial executive Leadership']").find(".info").css("clear","both" );
+$( "table[data-name|='Racial executive Leadership']").find(".info").css("float","left" );
+
+$( "table[data-name|='Racial executive Leadership']").find(".control").css("clear","none" );
+$( "table[data-name|='Racial executive Leadership']").find(".control").css("float","left" );
+$( "table[data-name|='Racial executive Leadership']").find(".control").css("width","200px" );
+
+//Racial Board Categories
+$( "table[data-name|='Racial Board Categories']").find(".info").css("width","500px" );
+$( "table[data-name|='Racial Board Categories']").find(".info").css("clear","both" );
+$( "table[data-name|='Racial Board Categories']").find(".info").css("float","left" );
+
+$( "table[data-name|='Racial Board Categories']").find(".control").css("clear","none" );
+$( "table[data-name|='Racial Board Categories']").find(".control").css("float","left" );
+$( "table[data-name|='Racial Board Categories']").find(".control").css("width","200px" );
+
+//Racial Staff Categories
+$( "table[data-name|='Racial Staff Categories']").find(".info").css("width","500px" );
+$( "table[data-name|='Racial Staff Categories']").find(".info").css("clear","both" );
+$( "table[data-name|='Racial Staff Categories']").find(".info").css("float","left" );
+
+
+$( "table[data-name|='Racial Staff Categories']").find(".control").css("clear","none" );
+$( "table[data-name|='Racial Staff Categories']").find(".control").css("float","left" );
+$( "table[data-name|='Racial Staff Categories']").find(".control").css("width","200px" );
+
+//Gender Leadership Cetegories
+$( "table[data-name|='Gender Leadership Categories']").find(".info").css("width","500px" );
+$( "table[data-name|='Gender Leadership Categories']").find(".info").css("clear","both" );
+$( "table[data-name|='Gender Leadership Categories']").find(".info").css("float","left" );
+
+$( "table[data-name|='Gender Leadership Categories']").find(".control").css("clear","none" );
+$( "table[data-name|='Gender Leadership Categories']").find(".control").css("float","left" );
+$( "table[data-name|='Gender Leadership Categories']").find(".control").css("width","200px" );
+
+//Gender Board Categories
+$( "table[data-name|='Gender Board Categories']").find(".info").css("width","500px" );
+$( "table[data-name|='Gender Board Categories']").find(".info").css("clear","both" );
+$( "table[data-name|='Gender Board Categories']").find(".info").css("float","left" );
+
+$( "table[data-name|='Gender Board Categories']").find(".control").css("clear","none" );
+$( "table[data-name|='Gender Board Categories']").find(".control").css("float","left" );
+$( "table[data-name|='Gender Board Categories']").find(".control").css("width","200px" );
+
+//Gender Staff Categories
+$( "table[data-name|='Gender Staff Categories']").find(".info").css("width","500px" );
+$( "table[data-name|='Gender Staff Categories']").find(".info").css("clear","both" );
+$( "table[data-name|='Gender Staff Categories']").find(".info").css("float","left" );
+
+
+$( "table[data-name|='Gender Staff Categories']").find(".control").css("clear","none" );
+$( "table[data-name|='Gender Staff Categories']").find(".control").css("float","left" );
+$( "table[data-name|='Gender Staff Categories']").find(".control").css("width","200px" );
+
+//Adding Gender leadership description
+$( "table[data-name|='Gender Leadership Categories']").find("tbody").prepend("<tr><td class='dynamicmargin'><p> In the table below please provide the following for the <b>organization’s executive/leadership team (including</b> the CEO/ED):</p><ul><li>Number of members that identify as cisgender</li><li>Number of members that identify as transgender</li><li>Number of members that identify as other (neither cisgender nor transgender).</li><li>Number of members who prefer not to answer or whose gender identity you were not able to collect.</li></ul><p><b>Note:</b> Only one answer should be provided for any single member of the organization’s executive/leadership team.</p></td></tr>"
+);
+//Adding Gender Board description
+$( "table[data-name|='Gender Board Categories']").find("tbody").prepend("<tr><td class='dynamicmargin'><p> In the table below please provide the following for the <b>board (including</b> the CEO/ED):</p><ul><li>Number of members that identify as cisgender</li><li>Number of members that identify as transgender</li><li>Number of members that identify as other (neither cisgender nor transgender).</li><li>Number of members who prefer not to answer or whose gender identity you were not able to collect.</li></ul><p><b>Note:</b> Only one answer should be provided for any single member of the organization’s executive/leadership team.</p></td></tr>"
+);
+//Adding Gender Staff description
+$( "table[data-name|='Gender Staff Categories']").find("tbody").prepend("<tr><td class='dynamicmargin'><p> In the table below please provide the following for the <b>staff (including</b> the CEO/ED):</p><ul><li>Number of members that identify as cisgender</li><li>Number of members that identify as transgender</li><li>Number of members that identify as other (neither cisgender nor transgender).</li><li>Number of members who prefer not to answer or whose gender identity you were not able to collect.</li></ul><p><b>Note:</b> Only one answer should be provided for any single member of the organization’s executive/leadership team.</p></td></tr>"
+);
+
+
+//Adding Racial leadership description
+$( "table[data-name|='Racial executive Leadership']").find("tbody").prepend("<tr><td class='dynamicmargin'><p> In the table below please provide the following for the <b>organization’s executive/leadership team (including</b> the CEO/ED):</p><ul><li>Number of members that identify as members of a racially underrepresented group in the U.S.</li><li>Number of members that <b>DO NOT</b> identify as members of a racially underrepresented group in the U.S.</li><li>Number of members that preferred not to answer.</li><li>Number of members whose answers you were not able to collect.</li></ul><p><b>Note:</b> Only one answer should be provided for any single member of the organization’s executive/leadership team. Please note that there is an opportunity to select a specific racial group in the next question</p></td></tr>"
+);
+//Adding Racial Board description
+$( "table[data-name|='Racial Board Categories']").find("tbody").
+prepend("<tr style='margin-left:25px'><td class='dynamicmargin'><p> In the table below please provide the following for the <b>organization’s board  (including</b> the CEO/ED):</p><ul><li>Number of members that identify as members of a racially underrepresented group in the U.S.</li><li>Number of members that <b>DO NOT</b> identify as members of a racially underrepresented group in the U.S.</li><li>Number of members that preferred not to answer.</li><li>Number of members whose answers you were not able to collect.</li></ul><p><b>Note:</b> Only one answer should be provided for any single member of the organization’s executive/leadership team. Please note that there is an opportunity to select a specific racial group in the next question</p></td></tr>"
+);
+//Adding Racial Staff description
+$( "table[data-name|='Racial Staff Categories']").find("tbody").
+prepend("<tr style='margin-left:25px'><td class='dynamicmargin'><p> In the table below please provide the following for the <b>organization’s staff   (including</b> the CEO/ED):</p><ul><li>Number of members that identify as members of a racially underrepresented group in the U.S.</li><li>Number of members that <b>DO NOT</b> identify as members of a racially underrepresented group in the U.S.</li><li>Number of members that preferred not to answer.</li><li>Number of members whose answers you were not able to collect.</li></ul><p><b>Note:</b> Only one answer should be provided for any single member of the organization’s executive/leadership team. Please note that there is an opportunity to select a specific racial group in the next question</p></td></tr>"
+);
+
+//Table titles Racial executive Leadership
+$( "table[data-name|='Racial executive Leadership']").find("tbody").find("tr").eq(0).after("<tr ><td class='titleDescription'><b>Racial Identity Categories</b></td><td class='titleinput'><b>Number Of Executive/Leadership Members</b></td></tr>");
+
+//Table titles Racial Board Categories
+$( "table[data-name|='Racial Board Categories']").find("tbody").find("tr").eq(0).after("<tr ><td class='titleDescription'><b>Racial Identity Categories</b></td><td class='titleinput'><b>Number Of Board Members</b></td></tr>");
+
+//Table titles Racial Staff Categories
+$( "table[data-name|='Racial Staff Categories']").find("tbody").find("tr").eq(0).after("<tr ><td class='titleDescription'><b>Racial Identity Categories</b></td><td class='titleinput'><b>Number Of Staff Members </b></td></tr>");
+
+//Gender Section
+
+//Table titles Gender Leadership Categories
+$( "table[data-name|='Gender Leadership Categories']").find("tbody").find("tr").eq(0).after("<tr ><td class='titleDescription'><b>Gender Identity Categories</b></td><td class='titleinput'><b>Number Of Executive/Leadership Team Members Who Identify As This Gender Identity Category</b></td></tr>");
+
+//Table titles Gender Board Categories
+$( "table[data-name|='Gender Board Categories']").find("tbody").find("tr").eq(0).after("<tr ><td class='titleDescription'><b>Gender Identity Categories</b></td><td class='titleinput'><b>Number Of Board Members Who Identify As This Gender Identity Category </b></td></tr>");
+
+//Table titles Gender Staff Categories
+$( "table[data-name|='Gender Staff Categories']").find("tbody").find("tr").eq(0).after("<tr ><td class='titleDescription'><b>Gender Identity Categories</b></td><td class='titleinput'><b>Number Of Staff Members Who Identify As This Gender Identity Category </b></td></tr>");
+
+

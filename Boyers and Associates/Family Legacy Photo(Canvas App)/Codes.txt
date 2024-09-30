@@ -1,0 +1,35 @@
+Filters Area code:
+
+Filter(
+    'Camp Life Groups',
+('Group Week'=Value(IN_filterbyWeek.Text) || IsBlank(IN_filterbyWeek)),     
+('Group Year'=IN_filterByYear.Text || IsBlank(IN_filterByYear))
+)
+
+-------------------------------------
+Ambassador headset:
+
+Navigate(SC_CameraControl,ScreenTransition.Cover);
+Set(phototypeis, "Headset-");	
+Set(containerName, "test-constituent");	
+
+Ambassador certificate:
+
+Navigate(SC_CameraControl,ScreenTransition.Cover);
+Set(phototypeis, "Certificate-");	
+Set(containerName, "test-constituent");	
+
+Child Headset
+
+Navigate(SC_CameraControl,ScreenTransition.Cover);
+Set(phototypeis, "Headset-");	
+Set(containerName, "testcontainer");	
+
+Child certificate
+Navigate(SC_CameraControl,ScreenTransition.Cover);
+Set(phototypeis, "Certificate-");	
+Set(containerName, "testcontainer");	
+
+
+
+

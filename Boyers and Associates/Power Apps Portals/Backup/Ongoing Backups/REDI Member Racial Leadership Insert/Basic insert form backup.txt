@@ -1,0 +1,399 @@
+
+$(window).load(function() {
+     //By Default hide both of the fields racial and gender categories field
+    $("#rfdi_gender_identity_cetegories").closest("td").find("div.control, div.info").hide();
+    $("#rfdi_racial_identity_categories").closest("td").find("div.control, div.info").hide();
+
+    //by default hide all members fileds
+    $("#rfdi_racial_leadership_member").closest("td").find("div.control, div.info").hide();
+    $("#rfdi_racial_board_member").closest("td").find("div.control, div.info").hide();
+    $("#rfdi_gender_leadership_member").closest("td").find("div.control, div.info").hide();
+    $("#rfdi_gender_board_member").closest("td").find("div.control, div.info").hide();
+
+    //Function call when click on "first create member"
+    var last_member_name = parent.window.$(".table-fluid").eq(0).find("tbody").find('tr:last').children('td:first').text();
+    var myArray = [];
+    var activelist_racial = window.parent.$('.list-group-item').eq(2);
+    var activelist_gender = window.parent.$('.list-group-item').eq(3);
+
+    if (last_member_name == "") {
+         if (activelist_racial.hasClass('active')) {
+            // add class to the hyperlink at the same index
+            console.log("activelist racial leader is empty");
+            $("#rfdi_racial_leadership_member").val("Member 1");
+        }
+        else if (activelist_gender.hasClass('active')) {
+            console.log("activelist gender leader is empty");
+            $("#rfdi_gender_leadership_member").val("Member 1");
+        }
+    }
+    else {
+        var vaalueis='';
+        var membertype = parent.window.$(".view-grid").eq(0).find( "td[data-attribute|='rfdi_member_type']").eq(0).text();
+        console.log("membertype "+ membertype);
+        if(membertype == "Leadership Racial Identity"){
+        vaalueis = 1;
+        $("#rfdi_member_type option[value=" + vaalueis + "]").prop("selected",true);
+        FieldChanged();
+        }
+        else if(membertype == "Leadership Gender Identity"){
+        vaalueis = 3;
+        $("#rfdi_member_type option[value=" + vaalueis + "]").prop("selected",true);
+        FieldChanged();
+        }
+
+        myArray = last_member_name.split(" ");
+        var lastnum = Number(myArray[1]);
+        lastnum = lastnum + 1;
+
+        var newMember = 'Member ' + lastnum;
+        console.log("newMember");
+    
+        if (activelist_racial.hasClass('active')) {
+            // add class to the hyperlink at the same index
+            console.log("activelist is racial leader");
+            $("#rfdi_racial_leadership_member").val(newMember);
+        }
+        else if (activelist_gender.hasClass('active')) {
+            console.log("activelist is gender leader");
+            $("#rfdi_gender_leadership_member").val(newMember);
+        }
+    }
+    
+    
+    // //for racial board member
+    var last_member_name =parent.window.$(".table-fluid").eq(1).find("tbody").find('tr:last').children('td:first').text();
+    var myArray=[];
+    var activelist_racial = window.parent.$('.list-group-item').eq(2);
+    var activelist_gender = window.parent.$('.list-group-item').eq(3);
+
+    if(last_member_name==""){
+        if (activelist_racial.hasClass('active')) {
+                // add class to the hyperlink at the same index
+                console.log("activelist racial leader is empty");
+                $("#rfdi_racial_board_member").val("Member 1");
+            }
+            else if (activelist_gender.hasClass('active')) {
+                console.log("activelist gender leader is empty");
+                $("#rfdi_gender_board_member").val("Member 1");
+            }
+        }
+    else{
+        var valueis='';
+        var membertypeis = parent.window.$(".view-grid").eq(1).find( "td[data-attribute|='rfdi_member_type']").eq(0).text();
+        console.log("membertypeis "+ membertypeis);
+        if(membertypeis == "Board Racial Identity"){
+        valueis = 2;
+        $("#rfdi_member_type option[value=" + valueis + "]").prop("selected",true);
+        FieldChanged();
+        }
+        else if(membertypeis == "Board Gender Identity"){
+        valueis = 4;
+        $("#rfdi_member_type option[value=" + valueis + "]").prop("selected",true);
+        FieldChanged();
+        }
+
+        myArray = last_member_name.split(" ");
+        var lastnum= Number(myArray[1]);
+        lastnum = lastnum + 1;
+        
+        var newMember = 'Member ' + lastnum;
+        
+        if (activelist_racial.hasClass('active')) {
+        // add class to the hyperlink at the same index
+        console.log("activelist is racial board");
+        $("#rfdi_racial_board_member").val(newMember);
+        }
+        else if(activelist_gender.hasClass('active')){
+        console.log("activelist is gender board");
+        $("#rfdi_gender_board_member").val(newMember);
+        } 
+    }
+    
+  //Set value into lookup column "Current Survey"
+  var GuidClass=window.parent.document.getElementsByClassName("entity-grid")[0];
+  var SurveyGuid =GuidClass.getAttribute("data-ref-id");
+  console.log("Guid "+SurveyGuid);
+
+//   var Surveyname=window.parent.$("td[data-attribute='rfdi_redi_survey_members']").eq(1).text();
+//   if(Surveyname == ""){
+//         Surveyname=window.parent.$("td[data-attribute='rfdi_redi_survey_members']").eq(0).text();
+//   }
+  var Surveyname = localStorage.getItem("CurrentSurvey");
+
+  var entityname ="rfdi_redisurvey";
+      console.log("entityname"+entityname);
+
+$("#rfdi_redi_survey_members").attr("value",SurveyGuid );
+
+$("#rfdi_redi_survey_members_name").attr("value",Surveyname);
+
+$("#rfdi_redi_survey_members_entityname").attr("value",entityname);
+
+    // $("#rfdi_member_type option[value='1']").attr('selected', true);  
+    // $("#rfdi_gender_identity_cetegories").closest("td").find("div.control, div.info").hide();
+    // $("#rfdi_racial_identity_categories").closest("td").find("div.control, div.info").show();
+    $("#rfdi_member_type").change(function () { FieldChanged(); });
+});
+
+function FieldChanged(){
+    var selectedValue = $("#rfdi_member_type").find("option:selected").text();
+    if(selectedValue == "Leadership Racial Identity"){
+    //Show a single field
+    $("#rfdi_racial_leadership_member").closest("td").find("div.control, div.info").show();
+    //Hide rest of the member fields
+    $("#rfdi_racial_board_member").closest("td").find("div.control, div.info").hide();
+    $("#rfdi_gender_leadership_member").closest("td").find("div.control, div.info").hide();
+    $("#rfdi_gender_board_member").closest("td").find("div.control, div.info").hide();
+    //disable the field
+    $("#rfdi_gender_identity_cetegories").closest("td").find("div.control, div.info").hide();
+    $("#rfdi_racial_identity_categories").closest("td").find("div.control, div.info").show();
+
+    }
+    else if(selectedValue == "Board Racial Identity"){
+
+    //Show a single field
+     $("#rfdi_racial_board_member").closest("td").find("div.control, div.info").show();
+
+    //Hide rest of the member fields
+    $("#rfdi_racial_leadership_member").closest("td").find("div.control, div.info").hide();
+    $("#rfdi_gender_leadership_member").closest("td").find("div.control, div.info").hide();
+    $("#rfdi_gender_board_member").closest("td").find("div.control, div.info").hide();
+
+    //disable the field
+    //$("#rfdi_racial_board_member").attr('disabled','disabled');
+     $("#rfdi_gender_identity_cetegories").closest("td").find("div.control, div.info").hide();
+     $("#rfdi_racial_identity_categories").closest("td").find("div.control, div.info").show();
+    }
+    else if(selectedValue == "Leadership Gender Identity"){
+
+     //show a single field
+     $("#rfdi_gender_leadership_member").closest("td").find("div.control, div.info").show();
+
+     //hide rest of the member fields
+      $("#rfdi_racial_leadership_member").closest("td").find("div.control, div.info").hide();
+      $("#rfdi_racial_board_member").closest("td").find("div.control, div.info").hide();
+      $("#rfdi_gender_board_member").closest("td").find("div.control, div.info").hide();
+     //disable the field
+
+    //$("#rfdi_gender_leadership_member").attr('disabled','disabled');
+      $("#rfdi_racial_identity_categories").closest("td").find("div.control, div.info").hide();
+     $("#rfdi_gender_identity_cetegories").closest("td").find("div.control, div.info").show();
+    
+    }   
+    else if(selectedValue == "Board Gender Identity"){
+
+     //show a single member field
+     $("#rfdi_gender_board_member").closest("td").find("div.control, div.info").show();
+
+     //hide rest of the fields
+      $("#rfdi_racial_leadership_member").closest("td").find("div.control, div.info").hide();
+      $("#rfdi_racial_board_member").closest("td").find("div.control, div.info").hide(); 
+     $("#rfdi_gender_leadership_member").closest("td").find("div.control, div.info").hide();
+
+     //disable the field
+    //$("#rfdi_gender_board_member").attr('disabled','disabled');
+      $("#rfdi_racial_identity_categories").closest("td").find("div.control, div.info").hide();
+     $("#rfdi_gender_identity_cetegories").closest("td").find("div.control, div.info").show();
+    
+    }      
+
+}
+
+-----------------------
+$(window).load(function() {
+     //By Default hide both of the fields racial and gender categories field
+    $("#rfdi_gender_identity_cetegories").closest("td").find("div.control, div.info").hide();
+    $("#rfdi_racial_identity_categories").closest("td").find("div.control, div.info").hide();
+
+    //by default hide all members fileds
+    $("#rfdi_racial_leadership_member").closest("td").find("div.control, div.info").hide();
+    $("#rfdi_racial_board_member").closest("td").find("div.control, div.info").hide();
+    $("#rfdi_gender_leadership_member").closest("td").find("div.control, div.info").hide();
+    $("#rfdi_gender_board_member").closest("td").find("div.control, div.info").hide();
+
+    //Function call when click on "first create member"
+    var last_member_name = parent.window.$(".table-fluid").eq(0).find("tbody").find('tr:last').children('td:first').text();
+    var myArray = [];
+    var activelist_racialLeader = window.parent.$('.list-group-item').eq(2);
+    var activelist_genderLeader = window.parent.$('.list-group-item').eq(3);
+
+    if (last_member_name == "") {
+         //Checking which tab of advance form is actiev
+         if (activelist_racialLeader.hasClass('active')) {
+            // add class to the hyperlink at the same index
+            console.log("activelist racial leader is empty");
+            $("#rfdi_racial_leadership_member").val("Member 1");
+        }
+        else if (activelist_genderLeader.hasClass('active')) {
+            console.log("activelist gender leader is empty");
+            $("#rfdi_gender_leadership_member").val("Member 1");
+        }
+    }
+    else {
+        // var vaalueis='';
+        // var membertype = parent.window.$(".view-grid").eq(0).find( "td[data-attribute|='rfdi_member_type']").eq(0).text();
+        // console.log("membertype "+ membertype);
+        // if(membertype == "Leadership Racial Identity"){
+        // vaalueis = 1;
+        // $("#rfdi_member_type option[value=" + vaalueis + "]").prop("selected",true);
+        // FieldChanged();
+        // }
+        // else if(membertype == "Leadership Gender Identity"){
+        // vaalueis = 3;
+        // $("#rfdi_member_type option[value=" + vaalueis + "]").prop("selected",true);
+        // FieldChanged();
+        // }
+
+        myArray = last_member_name.split(" ");
+        var lastnum = Number(myArray[1]);
+        lastnum = lastnum + 1;
+
+        var newMember = 'Member ' + lastnum;
+        console.log("newMember");
+        var member = localStorage.getItem("lastname");
+
+        if (activelist_racialLeader.hasClass('active')) {
+            // add class to the hyperlink at the same index
+            console.log("activelist is racial leader");
+            $("#rfdi_racial_leadership_member").val(newMember);
+        }
+        else if (activelist_genderLeader.hasClass('active')) {
+            console.log("activelist is gender leader");
+            $("#rfdi_gender_leadership_member").val(newMember);
+        }
+    }
+    
+    
+    //Function call when click on second "Create Member"
+    var last_member_name =parent.window.$(".table-fluid").eq(1).find("tbody").find('tr:last').children('td:first').text();
+    var myArray=[];
+    var activelist_racial = window.parent.$('.list-group-item').eq(2);
+    var activelist_gender = window.parent.$('.list-group-item').eq(3);
+    //Checking which tab of advance form is actiev
+    if(last_member_name==""){
+        if (activelist_racial.hasClass('active')) {
+                // add class to the hyperlink at the same index
+                console.log("activelist racial leader is empty");
+                $("#rfdi_racial_board_member").val("Member 1");
+            }
+            else if (activelist_gender.hasClass('active')) {
+                console.log("activelist gender leader is empty");
+                $("#rfdi_gender_board_member").val("Member 1");
+            }
+        }
+    else{
+        // var valueis='';
+        // var membertypeis = parent.window.$(".view-grid").eq(1).find( "td[data-attribute|='rfdi_member_type']").eq(0).text();
+        // console.log("membertypeis "+ membertypeis);
+        // if(membertypeis == "Board Racial Identity"){
+        // valueis = 2;
+        // $("#rfdi_member_type option[value=" + valueis + "]").prop("selected",true);
+        // FieldChanged();
+        // }
+        // else if(membertypeis == "Board Gender Identity"){
+        // valueis = 4;
+        // $(this).find("#rfdi_member_type option[value=" + valueis + "]").prop("selected",true);
+        // FieldChanged();
+        // }
+
+        myArray = last_member_name.split(" ");
+        var lastnum= Number(myArray[1]);
+        lastnum = lastnum + 1;
+        
+        var newMember = 'Member ' + lastnum;
+        
+        if (activelist_racial.hasClass('active')) {
+        // add class to the hyperlink at the same index
+        console.log("activelist is racial board");
+        $("#rfdi_racial_board_member").val(newMember);
+        }
+        else if(activelist_gender.hasClass('active')){
+        console.log("activelist is gender board");
+        $("#rfdi_gender_board_member").val(newMember);
+        } 
+    }
+    
+  //Set value into lookup column "Current Survey"
+  var GuidClass=window.parent.document.getElementsByClassName("entity-grid")[0];
+  var SurveyGuid =GuidClass.getAttribute("data-ref-id");
+  console.log("Guid "+SurveyGuid);
+
+  var Surveyname = localStorage.getItem("CurrentSurvey");
+
+  var entityname ="rfdi_redisurvey";
+      console.log("entityname"+entityname);
+
+$("#rfdi_redi_survey_members").attr("value",SurveyGuid );
+
+$("#rfdi_redi_survey_members_name").attr("value",Surveyname);
+
+$("#rfdi_redi_survey_members_entityname").attr("value",entityname);
+
+$("#rfdi_member_type").change(function () { FieldChanged(); });
+});
+
+function FieldChanged(){
+
+    var selectedValue = $("#rfdi_member_type").find("option:selected").text();
+    if(selectedValue == "Leadership Racial Identity"){
+    //Show a single field
+    $("#rfdi_racial_leadership_member").closest("td").find("div.control, div.info").show();
+    //Hide rest of the member fields
+    $("#rfdi_racial_board_member").closest("td").find("div.control, div.info").hide();
+    $("#rfdi_gender_leadership_member").closest("td").find("div.control, div.info").hide();
+    $("#rfdi_gender_board_member").closest("td").find("div.control, div.info").hide();
+    //disable the field
+    $("#rfdi_gender_identity_cetegories").closest("td").find("div.control, div.info").hide();
+    $("#rfdi_racial_identity_categories").closest("td").find("div.control, div.info").show();
+
+    }
+    else if(selectedValue == "Board Racial Identity"){
+
+    //Show a single field
+     $("#rfdi_racial_board_member").closest("td").find("div.control, div.info").show();
+
+    //Hide rest of the member fields
+    $("#rfdi_racial_leadership_member").closest("td").find("div.control, div.info").hide();
+    $("#rfdi_gender_leadership_member").closest("td").find("div.control, div.info").hide();
+    $("#rfdi_gender_board_member").closest("td").find("div.control, div.info").hide();
+
+    //disable the field
+    //$("#rfdi_racial_board_member").attr('disabled','disabled');
+     $("#rfdi_gender_identity_cetegories").closest("td").find("div.control, div.info").hide();
+     $("#rfdi_racial_identity_categories").closest("td").find("div.control, div.info").show();
+    }
+    else if(selectedValue == "Leadership Gender Identity"){
+
+     //show a single field
+     $("#rfdi_gender_leadership_member").closest("td").find("div.control, div.info").show();
+
+     //hide rest of the member fields
+      $("#rfdi_racial_leadership_member").closest("td").find("div.control, div.info").hide();
+      $("#rfdi_racial_board_member").closest("td").find("div.control, div.info").hide();
+      $("#rfdi_gender_board_member").closest("td").find("div.control, div.info").hide();
+     //disable the field
+
+    //$("#rfdi_gender_leadership_member").attr('disabled','disabled');
+      $("#rfdi_racial_identity_categories").closest("td").find("div.control, div.info").hide();
+     $("#rfdi_gender_identity_cetegories").closest("td").find("div.control, div.info").show();
+    
+    }   
+    else if(selectedValue == "Board Gender Identity"){
+
+     //show a single member field
+     $("#rfdi_gender_board_member").closest("td").find("div.control, div.info").show();
+
+     //hide rest of the fields
+      $("#rfdi_racial_leadership_member").closest("td").find("div.control, div.info").hide();
+      $("#rfdi_racial_board_member").closest("td").find("div.control, div.info").hide(); 
+     $("#rfdi_gender_leadership_member").closest("td").find("div.control, div.info").hide();
+
+     //disable the field
+    //$("#rfdi_gender_board_member").attr('disabled','disabled');
+      $("#rfdi_racial_identity_categories").closest("td").find("div.control, div.info").hide();
+     $("#rfdi_gender_identity_cetegories").closest("td").find("div.control, div.info").show();
+    
+    }      
+
+}

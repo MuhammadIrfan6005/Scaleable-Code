@@ -1,0 +1,66 @@
+Account/Register/PageCopy
+==================================
+
+<script>
+changeRegistraionPageUI();
+function changeRegistraionPageUI()
+{
+   $(window).load(function() {
+   //change the username field to confirm Email feld
+   $("#ContentContainer_MainContent_MainContent_UsernameLabel").text("Confirm Email");
+$('#exampleModalCenter').modal('show');
+ //onsignin button onclick, set local storage 
+    $("#SubmitButton").on("click", function(){
+    localStorage.setItem('serviceApplicationForRegister', 'true');
+    });
+
+     //span for showing email and confirm email mismatch
+     $("#ContentContainer_MainContent_MainContent_ShowUserName").append("<span class='label label-important' id='emailmismatch' style='color: red; margin-left: 185px; font-size: 17px; display:none;'>Email and confirm email must be the same</span>");
+     
+     //script for checking email and confirm email equality
+      $("#UserNameTextBox").on("focusout",function(){
+      email = $("#EmailTextBox").val();
+      confirmemail = $("#UserNameTextBox").val();
+      if(email !== confirmemail ){
+          $("#emailmismatch").css("display","inline");
+          $('#SubmitButton').prop('disabled', true);
+      }
+      else{
+        $("#emailmismatch").css("display","none");
+        $('#SubmitButton').prop('disabled', false);
+      }
+    });
+});
+
+}
+</script>
+
+
+<!-- Modal --><div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title font-weight-bold" id="exampleModalLongTitle">Welcome to the Metropolitan Ministries client portal</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		  <h4>Below are the guiedlines for registration process</h4>
+        <ul>
+		<li>Enter Your Email.</li>
+		<li>Enter your Email as username.</li>
+		<li>Enter Password.</li>
+		<li>Copy your email and password and save it.</li>
+		<li>If you already have account then please sign in with credentials.</li>
+    <li>Please use Google Chrome, Microsoft Edge, or Safari.</li>
+    <li> If you are unable to complete an application, please email intakedocs@metromin.org.</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>

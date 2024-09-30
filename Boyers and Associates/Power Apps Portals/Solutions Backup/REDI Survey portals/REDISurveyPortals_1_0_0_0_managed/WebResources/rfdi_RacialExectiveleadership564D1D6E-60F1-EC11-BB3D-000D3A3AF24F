@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body style="width: 100%;">
+    <div class="container fluid">
+    <p> In the table below please provide the following for the <b>organization’s executive/leadership team (including</b> the CEO/ED):</p>
+    <ul>
+        <li>Number of members that identify as members of a racially underrepresented group in the U.S.</li>
+        <li>Number of members that <b>DO NOT</b> identify as members of a racially underrepresented group in the U.S.</li>
+        <li>Number of members that preferred not to answer.</li>
+        <li>Number of members whose answers you were not able to collect.</li>
+    </ul>
+    <p><b>Note:</b> Only one answer should be provided for any single member of the organization’s executive/leadership team. Please note that there is an opportunity to select a specific racial group in the next question</p>
+    </div>
+</body>
+</html>

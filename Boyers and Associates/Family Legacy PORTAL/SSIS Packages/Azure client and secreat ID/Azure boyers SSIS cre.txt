@@ -1,0 +1,17 @@
+APP: Family Legacy Prod Contacts into Dev Child-contact:
+
+Application (client) ID: 8ab76e4c-04c3-4770-b663-c6e7ac813a2a
+-------------------------------------
+Object ID: ea3d9a73-9a36-4d16-aa3b-30772804c225
+--------------------------------
+Directory (tenant) ID:6191e882-dadb-4af8-bd9e-f09eb5b850ff
+--------------------------------
+
+secreat ID: nDW8Q~i-mDmJF5UIOPBslHlCyfYMdLbjr9CryasJ
+
+============================================================
+
+APP: Family Legacy DEVELOPMENT childcontacts from Prod contacts
+
+Application (client) ID : 2728751a-942d-411b-b80c-5014620fea70
+Client Secreat: agK8Q~oBw6KrfJvzMtXnvL1RnBoJZD1tjndfyb_v

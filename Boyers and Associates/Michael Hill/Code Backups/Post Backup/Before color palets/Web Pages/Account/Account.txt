@@ -1,0 +1,550 @@
+{% if user  %}
+    {% assign quoteResponseTime = 7 %}
+    {% assign counter = 0 %}
+
+    
+
+    {% fetchxml getQuoteResponseTime %}
+    <fetch count="1">
+      <entity name="ed_configuration">
+        <attribute name="ed_value" />
+        <attribute name="ed_valuestring" />
+        <filter>
+          <condition attribute="ed_name" operator="in">
+            <value>Quote Response Time</value>
+          </condition>
+        </filter>
+      </entity>
+    </fetch>
+    {% endfetchxml %}
+    {% if getQuoteResponseTime.results.entities.size > 0 %}
+        {% assign quoteResponseTime = getQuoteResponseTime.results.entities[0].ed_value | plus: 0 | integer %}  
+    {% endif %}
+
+    <script>
+        console.log('-----------------------------------------------------');
+        console.log('quoteResponseTime: {{ quoteResponseTime }}');
+    </script>
+
+    {% assign fullname = user.fullname %}
+    {% assign firstname = user.firstname %}
+    {% assign address = user.address1_name %}
+    {% assign email = user.emailaddress1 %}
+    {% assign mobile = user.mobilephone %}
+
+    {% fetchxml getQuotes %}
+    <fetch count="3">
+      <entity name="ed_recycleexchange">
+        <attribute name="ed_quoteproduceddate" />
+        <attribute name="ed_recycleexchangeid" />
+        <attribute name="ed_name" />
+        <attribute name="ed_packagereceived" />
+        <attribute name="ed_totalquotedvalue" />
+        <attribute name="ed_tracking_status" />
+        <attribute name="statuscode" />
+        <order attribute="modifiedon" descending="true" />
+        <filter>
+          <condition attribute="statuscode" operator="not-in">
+            <value>2</value>
+            <value>3</value>
+            <value>4</value>
+            <value>7</value>
+          </condition>
+        </filter>
+      </entity>
+    </fetch>
+    {% endfetchxml %}
+
+    {% if getQuotes.results.entities.size > 0 %}
+         {% assign tracking_status = getQuotes.results.entities[0].ed_tracking_status %}
+    {% endif %}
+
+    <script>
+        console.log('-----------------------------------------------------');
+        console.log('tracking_status: {{ tracking_status }}');
+    </script>
+
+    {% fetchxml getPackageRequests %}
+    <fetch count="3">
+      <entity name="ed_packagerequest">
+        <attribute name="ed_trackingnumber" />
+        <attribute name="ed_carrierid" />
+        <attribute name="ed_packagerequestid" />
+        <attribute name="ed_customerid" />
+        <attribute name="ed_name" />
+        <attribute name="statuscode" />
+        <order attribute="createdon" descending="true" />
+        <filter>
+          <condition attribute="statuscode" operator="in">
+            <value>1</value>
+            <value>3</value>
+          </condition>
+        </filter>
+      </entity>
+    </fetch>
+    {% endfetchxml %}
+
+    {% if getPackageRequests.results.entities.size > 0 %}
+        
+    {% endif %}
+
+
+    
+
+
+    {% assign inflight = getQuotes.results.entities.size | plus: getPackageRequests.results.entities.size %} 
+    {% assign requestPackageLink = '/account/request-package/' %} 
+    {% assign quoteLink = '/account/quote-instructions/' %} 
+    {% assign cssTextColor = '' %} 
+
+    <script>
+        console.log('-----------------------------------------------------');
+        console.log('inflight: {{ inflight }}');
+    </script>
+
+    {% if inflight > 2 %}
+        {% assign requestPackageLink = '#' %} 
+        {% assign quoteLink = '#' %} 
+        {% assign cssTextColor = 'mh-bg-gray' %} 
+    {% endif %}
+
+{% else %}
+<script>
+    location.replace('/SignIn/?returnURL=/account/');
+</script>
+{% endif %}
+
+{{ snippets["Desire/Breadcrumb"] }}
+
+<style>
+    .text-gray {
+        color: #6c757d !important;
+    }
+</style>
+
+<!-- Modal -->
+<div class="modal fade" id="limitModal" tabindex="-1" aria-labelledby="limitModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered m-0" style="background: rgba(28, 28, 28, 0.96);">
+    <div class="modal-content">
+      <div class="modal-header pt-3 px-4 pb-0 text-black">  
+            <div  class="btn-close" data-bs-dismiss="modal" id="btnCloseModal" style="background:none;opacity: 1;" >
+                  <span class="material-icons">  close </span>
+             </div>
+      </div>
+      <div class="modal-body text-black text-center px-5 pt-0 pb-5" style="padding-left: 50px; padding-right: 50px;">
+        <h4 class="w-100 modal-title mh-model-title pb-12" id="limitModalLabel">
+               Reached maximum quotes
+        </h4>
+        <div> 
+              Please contact our <a class="text-primary" href="https://www.michaelhill.com.au/customer-service/contact-us">Help Centre </a> for more details and to cancel an existing quote
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Modal -->
+<div class="account-wrapper bg-white">
+   <div class="row bg-black pt-5 px-1 pb-3" id="account-wrapper-accountdata">
+     <div class="row" id="account-data-content">
+        <div class="col-12">
+            <h2>Hello {{ firstname | escape }},</h2>
+        </div>
+        <div class="col-6 mt-2 mb-2" id="your-account">
+            Your account
+        </div>
+        <div class="col-6 text-end mb-2" id="logout">
+            <a class="btn btn-withoutborder text-primary" aria-label="{{ snippets["links/logout"] | default:resx["Sign_Out"] | escape }}" aria-roledescription = "link" href="{% if homeurl%}/{{ homeurl }}{% endif %}{{ website.sign_out_url_substitution }}" title="{{ snippets["links/logout"] | default:resx["Sign_Out"] | escape }}">
+                {{ snippets["links/logout"] | default:resx["Sign_Out"] | escape }}
+            </a>
+        </div>
+      </div>
+    </div>  
+<div class="account-container container bg-white pb-5">
+     
+    <div class="px-1" id="carousalAndAccordian-row">
+        <div class="row">
+            <div class="col-12">
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false" data-bs-wrap="false">
+                    <ol class="carousel-indicators">
+                        {% for entity in getQuotes.results.entities %}
+                            {% assign activecard = '' %} 
+                            {% if forloop.first %}
+                                {% assign activecard = 'active' %} 
+                            {% endif %}
+                            <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ counter }}" class="{{ activecard }}"></li>
+                            {% capture counter %}{{ counter | plus: 1 }}{% endcapture %}
+                        {% endfor %}
+{% comment %} Legacy feature
+                        {% for entity in getPackageRequests.results.entities %}
+                            {% if getQuotes.results.entities.size > 0 %}
+                                {% assign activecard = '' %} 
+                            {% else %}
+                                {% if forloop.first %}
+                                    {% assign activecard = 'active' %} 
+                                {% endif %}
+                            {% endif %}
+                            {% if entity.statuscode.value == 3 %} 
+                                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ counter }}" class="{{ activecard }}"></li>
+                                {% capture counter %}{{ counter | plus: 1 }}{% endcapture %}
+                            {% endif %}
+                        {% endfor %}
+{% endcomment %}
+                    </ol>
+                    <div class="carousel-inner">
+                        {% comment %} /* No quotes or packages */ {% endcomment %}
+                        {% if counter == 0 %}
+                            <script>
+                                console.log('no cards');
+                            </script>
+                            <div class="carousel-item active">
+                                <div class="card-section text-black text-center border">
+                                    <div class="m-4">
+                                        <h4 class="pb-1">Get your quote now</h4>
+                                        <p>Now that you've received your secure package, we can start the quote process. Just remember to have your jewellery nearby before you start.</p>
+                                        <a href="/account/quote-instructions/" class="btn btn-primary w-100 mb-5">Let's get started</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% for entity in getQuotes.results.entities %}
+                            {% assign activecard = '' %} 
+
+                            {% assign date1 = now %} 
+                            {% assign date2 = entity.ed_quoteproduceddate | date_add_hours: 10 | date_add_days: quoteResponseTime %} 
+                            {% assign words = date2 | minus: date1 | string | split: '.' %}   
+                            {% assign days = words.first | integer %} 
+
+                            {% if forloop.first %}
+                                {% assign activecard = 'active' %} 
+                            {% endif %}
+
+                            <script>
+                                console.log('quote status: {{ entity.statuscode.value }}');
+                            </script>
+                            
+
+                            {% comment %} /* Quote Produced */ {% endcomment %}
+                            {% if entity.statuscode.value == 15 %} 
+                                
+                                <div class="carousel-item  {{ activecard }}">
+                                    <div class="card-section text-black text-center border">
+                                        <div class="">
+                                            <p class="text-gray my-12">Quote no. {{ entity.ed_name }}</p>
+                                            <h4 class="mb-12">Formal quote</h4>
+                                            <div class="mb-12 mb-3 bg-black text-white"  style="box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);width: fit-content;
+                                            border-radius: 8px; margin: auto; padding: 0 20px;">
+                                                <div class="text-start pb-2">
+                                                    <img src="/mh_logo.png" width="53px" style="margin-left: -10px;">
+                                                </div>
+                                                <div class="h0 text-center pb-2">
+                                                    ${{ entity.ed_totalquotedvalue | integer }}
+                                                </div>
+                                            </div>
+                                            <p class="mb-3 mt-3 px-4">You have <span class="text-primary">{{ days }}</span> days till this quote expires. 
+                                                <a href="/account/myquote/?id={{ entity.ed_recycleexchangeid | xml_escape }}" class="text-primary">View details</a>
+                                            </p>  
+                                        </div>                               
+                                    </div>
+                                </div>  
+                            
+                            {% elseif entity.statuscode.value == 16 %} 
+                                
+                                <div class="carousel-item  {{ activecard }}">
+                                    <div class="card-section text-black text-center border">
+                                        <div class="">
+                                            <p class="text-gray my-12">Quote no. {{ entity.ed_name }}</p>
+                                            <h4 class="mb-12">Gift Card Pending</h4>
+                                            <div class="mb-12 mb-3 bg-black text-white"  style="box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);width: fit-content;
+                                            border-radius: 8px; margin: auto; padding: 0 20px;">
+                                                <div class="text-start pb-2">
+                                                    <img src="/mh_logo.png" width="53px" style="margin-left: -10px;">
+                                                </div>
+                                                <div class="h0 text-center pb-2">
+                                                    ${{ entity.ed_totalquotedvalue | integer }}
+                                                </div>
+                                            </div>
+                                            <p class="mb-3 mt-2 px-4">We'll shortly send your gift card to your email address.</p>  
+                                        </div>                               
+                                    </div>
+                                </div>
+                                
+                            
+                            {% elseif entity.statuscode.value == 9 %}                         
+
+                            {% comment %} /* package received*/ {% endcomment %}
+                                                            
+                                 <div class="carousel-item  {{ activecard }}">
+                                    <div class="card-section text-black text-center border">
+                                        <div class="">
+                                             <p class="text-gray my-12">Quote no. {{ entity.ed_name }}</p>
+                                            <h4 class="mb-12">Received & Evaluating</h4>   
+                                             <div style="margin: 10% 44%;">
+                                                  <i class="ds-hand-shake-icon"></i>
+                                             </div>   
+                                            <p class="mb-3 mt-3 px-4">We have received your item on the <span class="text-primary">{% assign day = entity.ed_packagereceived | date: "%d"  %}
+                                {% case day %}
+                                  {% when '1' or '21' or '31' %}{{ day }}st
+                                  {% when '2' or '22' %}{{ day }}nd
+                                  {% when '3' or '23' %}{{ day }}rd
+                                  {% else %}{{ day }}th
+                                {% endcase %} 
+                                {% assign month = entity.ed_packagereceived | date: "%M"  %}
+                                {% case month %}
+                                  {% when '1' %} Jan
+                                  {% when '2' %} Feb
+                                  {% when '3' %} Mar
+                                  {% when '4' %} Apr
+                                  {% when '5' %} May
+                                  {% when '6' %} Jun
+                                  {% when '7' %} Jul
+                                  {% when '8' %} Aug
+                                  {% when '9' %} Sept
+                                  {% when '10' %} Oct
+                                  {% when '11' %} Nov
+                                  {% when '12' %} Dec
+                                {% endcase %}. </span> You’ll receive a formal quote within 3 days.</p> 
+                                        </div>                               
+                                    </div>
+                                </div>
+                            
+                            {% elseif entity.statuscode.value == 18 %}                         
+
+                            {% comment %} /* Quote expired*/ {% endcomment %}
+                                                            
+                                 <div class="carousel-item  {{ activecard }}">
+                                    <div class="card-section text-black text-center border">
+                                        <div class="">
+                                             <p class="text-gray my-12">Quote no. {{ entity.ed_name }}</p>
+                                            <h4 style="color:red;" class="mb-12">Quote Expired</h4>   
+                                             <div style="margin: 10% 44%;">
+                                                  <i class="ds-hand-shake-icon"></i>
+                                             </div>   
+                                            <p class="mb-3 mt-3 px-4">Your formal quote expired on {% assign day = entity.ed_quoteproduceddate | date: "%d/%m/%y"  %}. You can <a href="">request a re-quote</a> on this items just once.</p> 
+                                        </div>                               
+                                    </div>
+                                </div>
+                            
+                            {% elseif entity.statuscode.value == 17 or entity.statuscode.value == 19 %}                         
+
+                            {% comment %} /* Quote declined*/ {% endcomment %}
+                                                            
+                                 <div class="carousel-item  {{ activecard }}">
+                                    <div class="card-section text-black text-center border">
+                                        <div class="">
+                                             <p class="text-gray my-12">Quote no. {{ entity.ed_name }}</p>
+                                            <h4 class="mb-12">Returning items</h4>   
+                                             <div style="margin: 9% 44%;">
+                                                  <i class="ds-truck-back-icon"></i>
+                                             </div>   
+                                            <p class="mb-3 mt-3 px-4">Unfortunately you have declined the quote or it expired, so we are returning the items back to you.</p> 
+                                        </div>                               
+                                    </div>
+                                </div>
+
+                            {% else %}
+                                {% comment %} /* package finalised */ {% endcomment %}
+                                
+                                <script>
+                                console.log('package finalised quote status: {{ entity.statuscode.value }}');
+                            </script>
+
+                                {% fetchxml getMappings %}
+                            <fetch>
+                              <entity name="ed_austpoststatusmappings">
+                                <attribute name="ed_auspoststatus" />
+                                <attribute name="ed_customstatus" />
+                                <order attribute="createdon" descending="true" />
+                                <filter>
+                                  <condition attribute="ed_auspoststatus" operator="in">
+                                    <value>{{ entity.ed_tracking_status }}</value>  
+                                  </condition>
+                                </filter>
+                              </entity>
+                            </fetch>
+                            {% endfetchxml %}
+
+                            {% if getMappings.results.entities.size > 0 %}
+                                {% assign custom_status = getMappings.results.entities[0].ed_customstatus %} 
+                            {% else %}
+                                {% assign custom_status = "With the Courier" %}                            
+                            {% endif %}
+
+                                <div class="carousel-item  {{ activecard }}">
+                                    <div class="card-section text-black text-center border">
+                                        <div class="">
+                                            <p class="text-gray my-12">Quote no. {{ entity.ed_name }}</p>
+                                            <h4 class="mb-12">{{ custom_status }}</h4>   
+                                             <div style="margin: 10% 44%;">
+                                                  <i class="ds-truck-icon"></i>
+                                             </div>   
+                                            <p class="mb-3 mt-3 px-4">Looks like we are still looking out for your package.</p><br/>  
+                                        </div>                               
+                                    </div>
+                                </div>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                        <script>
+                            console.log('-----------------------------------------------------');
+                            console.log('quotes: {{ getQuotes.results.entities.size }}');
+                            console.log('packages: {{ getPackageRequests.results.entities.size }}');
+                        </script>
+
+                        {% for entity in getPackageRequests.results.entities %}
+
+                            {% if getQuotes.results.entities.size > 0 %}
+                                {% assign activecard = '' %} 
+                            {% else %}
+                                {% if forloop.first %}
+                                    {% assign activecard = 'active' %} 
+                                {% endif %}
+                            {% endif %}
+
+                            {% comment %} /* Requested */ {% endcomment %}
+                            {% if entity.statuscode.value == 1 %} 
+
+                            {% endif %}
+
+                            {% comment %} /* Sent */ {% endcomment %}
+                            {% if entity.statuscode.value == 3 %} 
+
+                            {% endif %}
+
+                        {% endfor %}
+                    </div> 
+                    {% if counter > 1 %}  
+                        <a class="carousel-control-prev btn btn-close-white" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next btn btn-close-white" href="#carouselExampleIndicators" role="button" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a> 
+                    {% endif %}                                 
+                </div>
+            </div>
+        </div>
+        <div class="row pt-4" style="margin-top: 225px;" id="account-navigator">
+            <div class="col-12">
+                <ul class="list-group text-white">
+                    <li class="list-group-item text-black my-2  {{ cssTextColor }} ">
+                        <a class="text-black" href="{{ requestPackageLink }}" id="btnRequestPackage" style="margin-left:0px;text-decoration: none;">
+                            <div class="row">
+                                <div class="col-2 text-end d-flex">
+                                    <i class="material-icons-outlined d-flex align-items-center mx-2 px-1">
+                                        inventory_2
+                                    </i>
+                                </div>
+                                <div class="col-8 px-1">
+                                    <h4 class="mb-1"> Request a package </h4>
+                                    <p class="mb-2">We’ll send you a package to send us your gold, so we can give you an exact quote.
+                                    </p>
+                                </div>
+                                <div class="col-2 text-center d-flex">
+                                    <i class="material-icons chevron_right d-flex align-items-center">
+                                        chevron_right
+                                    </i>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="list-group-item text-black my-2  {{ cssTextColor }} ">
+                        <a class="text-black " href="{{ quoteLink }}" id="btnStartQuote" 
+                            style="margin-left:0px;text-decoration: none;">
+                            <div class="row">
+                                <div class="col-2 col-2 text-end d-flex">
+                                    <i class="material-icons-outlined d-flex align-items-center mx-2 px-1">
+                                        troubleshoot
+                                    </i>
+                                </div>
+                                <div class="col-8 px-1">
+                                    <h4 class="mb-1 "> Start a quote </h4>
+                                    <p class="mb-2"><span class="text-primary text-bold">Got a package?</span> Start your formal quote and send in your gold for assessment.</p>
+                                </div>
+                                <div class="col-2 text-center d-flex">
+                                    <i class="material-icons chevron_right d-flex align-items-center">
+                                        chevron_right
+                                    </i>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="list-group-item text-black  my-2">
+                        <a class="text-black" href="/account/details/" style="margin-left:0px;text-decoration: none;">
+                            <div class="row">
+                                <div class="col-2 col-2 text-end d-flex">
+                                    <i class="material-icons-outlined d-flex align-items-center mx-2 px-1">
+                                        person_outline
+                                    </i>
+                                </div>
+                                <div class="col-8 px-1">
+                                    <h4 class="mb-1">View or edit details </h4>
+                                    <p class="mb-2">View or edit your personal details and login information</p>
+                                </div>
+                                <div class="col-2 text-center d-flex">
+                                    <i class="material-icons chevron_right d-flex align-items-center">
+                                        chevron_right
+                                    </i>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="list-group-item text-black my-2">
+                        <a class="text-black" href="/en-US/Account/Manage/ChangePassword/" style="margin-left:0px;text-decoration: none;">
+                            <div class="row">
+                                <div class="col-2 col-2 text-end d-flex">
+                                    <i class="material-icons-outlined d-flex align-items-center mx-2 px-1">
+                                        phonelink_lock
+                                    </i>
+                                </div>
+                                <div class="col-8 px-1">
+                                    <h4 class="mb-1"> Change password </h4>
+                                    <p class="mb-2">Edit or change password</p>
+                                </div>
+                                <div class="col-2 text-center d-flex">
+                                    <i class="material-icons chevron_right d-flex align-items-center " >
+                                        chevron_right
+                                    </i>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="list-group-item text-black my-2">
+                        <a class="text-black" href="/faqs" style="margin-left:0px;text-decoration: none;">
+                            <div class="row">
+                                <div class="col-2 col-2 text-end d-flex">
+                                    <i class="material-icons-outlined d-flex align-items-center mx-2 px-1">
+                                        support_agent
+                                    </i>
+                                </div>
+                                <div class="col-8 px-1">
+                                    <h4 class="mb-1"> Need help?</h4>
+                                    <p class="mb-2">Got any questions about the process, or need any help from us?</p>
+                                </div>
+                                <div class="col-2 text-center d-flex">
+                                    <i class="material-icons chevron_right d-flex align-items-center">
+                                        chevron_right
+                                    </i>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.carousel').carousel({
+            interval: false,
+            wrap: false
+        });
+    });
+</script>

@@ -1,0 +1,8 @@
+<fetch>
+  <entity name="bna_camplifegroups">
+    <attribute name="bna_camplifegroupsid" />
+    <filter>
+      <condition attribute="bna_ambassadorcamplifegroups" operator="eq" value="7e82d248-07bc-ec11-983f-00224830716e" />
+    </filter>
+  </entity>
+</fetch>

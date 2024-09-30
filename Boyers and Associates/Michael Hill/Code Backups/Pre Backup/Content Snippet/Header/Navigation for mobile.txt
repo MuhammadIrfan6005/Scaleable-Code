@@ -1,0 +1,168 @@
+<div class="navigation-container">
+    <div class="offcanvas offcanvas-start w-100" tabindex="-1" id="offcanvas" data-bs-scroll="false" data-bs-backdrop="false" aria-labelledby="offcanvasLabel" style="top: 0px;">
+  <div class="offcanvas-header d-block">
+        <div class="text-end text-black w-100">
+                <span class="close-navigation material-icons" data-bs-dismiss="offcanvas" >
+                    close
+                </span>
+         </div> 
+  </div>
+  <div class="offcanvas-body px-0">
+    <div class="text-black mb-5 px-3" style="font-family: 'Tobias Regular';font-style: normal;font-weight: 500;font-size: 15.72px;line-height: 44px;letter-spacing: -0.48px;">
+         Desire by michael hill
+            <!-- Desire by <img src="/mh_logo.png" height="53px" width="15px" /> -->
+     </div>   
+    <ul class="weblinks list-group list-group-flush bg-white pt-3"> 
+            <div class="accordion accordion-flush light mb-5" id="accordionExample">
+                {% assign main_nav = weblinks["Desire Main"] %}
+                {% if main_nav %}
+                    {% for link in main_nav.weblinks %}
+                        {%- assign icon = '' -%}
+                        {%- if link.image -%}
+                            {%- assign icon = link.image.url | default: '' -%}
+                        {%- endif -%}
+                        <script>
+                            //console.log('[{{ icon }}][{{ link.name | escape }}][{{ link.url | default:'' | replace: "https://", "/" | escape }}]');
+                        </script>
+                        <div class="accordion-item">
+                            <div class="accordion-header" id="heading{{ forloop.index }}">
+                                <button class="accordion-button collapsed text-uppercase" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapse{{ forloop.index }}" aria-expanded="false" aria-controls="collapse{{ forloop.index }}">
+                                    {{ link.name | escape }}
+                                </button>
+                            </div>
+                            <div id="collapse{{ forloop.index }}" class="accordion-collapse collapse" aria-labelledby="heading{{ forloop.index }}"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body px-3">
+                                    <ul class="p-0">
+                                        {% assign sublinks = link.weblinks %}
+                                        {% if sublinks.size > 0 %}
+                                            {% for sublink in sublinks %}
+                                                {%- assign icon = '' -%}
+                                                {%- if sublink.image -%}
+                                                    {%- assign icon = sublink.image.url | default: '' -%}
+                                                {%- endif -%}
+                                                <script>
+                                                    //console.log('... [{{ icon }}][{{ sublink.name | default:sublink.title | escape }}][{{ sublink.url | default:'' | replace: "https://", "/" | escape }}]');
+                                                </script>
+                                                <li class="list-group-item mx-0 px-0">
+                                                    <a class="text-decoration-none mh-text-gray" aria-label="{{ sublink.name | default:sublink.title | escape }}"
+                                                        aria-roledescription="link" href='{{ sublink.url | default:"" | replace: "https://", "/" | escape }}' title="{{ sublink.name | default:sublink.title | escape }}">
+                                                        {{ sublink.name | default:sublink.title | escape }}
+                                                    </a>
+                                                </li>
+                                            {% endfor %}
+                                        {% endif %}	
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            {% if user %}
+                {% assign main_nav = weblinks["Desire Authenticated"] %}
+                {% if main_nav %}
+                    {% for link in main_nav.weblinks %}
+                        {%- assign icon = '' -%}
+                        {%- if link.image -%}
+                            {%- assign icon = link.image.url | default: '' -%}
+                        {%- endif -%}
+                        <script>
+                            //console.log('[{{ icon }}][{{ link.name | escape }}][{{ link.url | default:'' | replace: "https://", "/" | escape }}]');
+                        </script>
+                        <li class="list-group-item px-3 pt-1">
+                            <div class="d-flex">
+                                <div class="float-start">
+                                    <span class="material-icons-outlined mt-2">
+                                        {{ icon }}
+                                    </span>
+                                    {%- if icon == 'person' -%}    
+                                        <span class="badge mt-5 position-absolute rounded-pill text-small translate-middle text-black text-very-small">
+                                                {{ user.firstname | slice: 0 }}{{ user.lastname | slice: 0 }}
+                                            <span class="visually-hidden">{{ user.fullname }}</span>
+                                        </span>
+                                    {%- endif -%}
+                                </div>
+                                <div class="weblink float-start">
+                                    <a class=" btn btn-withoutborder mx-3 text-uppercase text-black" data-bs-dismiss="offcanvas" data-bs-target="#offcanvas" {%- if link.url -%}aria-roledescription="link" href='{{ link.url | default:'' | replace: "https://", "/" | escape }}'{%- endif -%}>
+                                        {{ link.name | escape }}
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            {% assign sublinks = link.weblinks %}
+                            {% if sublinks.size > 0 %}
+                                <ul class="list-group float-start mx-3 px-1 mt-3">
+                                    {% for sublink in sublinks %}
+                                        {%- assign icon = '' -%}
+                                        {%- if sublink.image -%}
+                                            {%- assign icon = sublink.image.url | default: '' -%}
+                                        {%- endif -%}
+                                        <script>
+                                            //console.log('... [{{ icon }}][{{ sublink.name | default:sublink.title | escape }}][{{ sublink.url | default:'' | replace: "https://", "/" | escape }}]');
+                                        </script>
+                                        <li class="list-group-item py-0 my-0">
+                                            <a class="btn btn-withoutborder mh-text-gray text-black" aria-label="{{ sublink.name | default:sublink.title | escape }}"
+                                                aria-roledescription="link" href='{{ sublink.url | default:'' | replace: "https://", "/" | escape }}'>
+                                                {{ sublink.name | default:sublink.title | escape }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            {% else %}
+                {% assign main_nav = weblinks["Desire Unauthenticated"] %}
+                {% if main_nav %}
+                    {% for link in main_nav.weblinks %}
+                        {%- assign icon = '' -%}
+                        {%- if link.image -%}
+                            {%- assign icon = link.image.url | default: '' -%}
+                        {%- endif -%}
+                        <script>
+                            //console.log('[{{ icon }}][{{ link.name | escape }}][{{ link.url | default:'' | replace: "https://", "/" | escape }}]');
+                        </script>
+                        <li class="list-group-item px-3">
+                            <div class="d-flex">
+                                 <div class="float-start">
+                                    <span class="material-icons-outlined mt-2">
+                                        {{ icon }}
+                                    </span>
+                                </div>
+                                <div class="weblink float-start">
+                                    <a class=" btn btn-withoutborder mx-3 text-uppercase text-black" data-bs-dismiss="offcanvas" data-bs-target="#offcanvas" {%- if link.url -%}aria-roledescription="link" href='{{ link.url | default:'' | replace: "https://", "/" | escape }}'{%- endif -%}>
+                                        {{ link.name | escape }}
+                                    </a>
+                                </div>
+                            </div>                           
+                            {% assign sublinks = link.weblinks %}
+                            {% if sublinks.size > 0 %}
+                                <ul class="list-group float-start mx-3 px-1 mt-3">
+                                    {% for sublink in sublinks %}
+                                        {%- assign icon = '' -%}
+                                        {%- if sublink.image -%}
+                                            {%- assign icon = sublink.image.url | default: '' -%}
+                                        {%- endif -%}
+                                        <script>
+                                            //console.log('... [{{ icon }}][{{ sublink.name | default:sublink.title | escape }}][{{ sublink.url | default:'' | replace: "https://", "/" | escape }}]');
+                                        </script>
+                                        <li class="list-group-item py-0 my-0">
+                                            <a class="btn btn-withoutborder mh-text-gray text-black" aria-label="{{ sublink.name | default:sublink.title | escape }}"
+                                                aria-roledescription="link" href='{{ sublink.url | default:'' | replace: "https://", "/" | escape }}'>
+                                                {{ sublink.name | default:sublink.title | escape }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        </ul>
+  </div>
+</div>
+</div>

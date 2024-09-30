@@ -1,0 +1,275 @@
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+{% assign defaultlang = settings['LanguageLocale/Code'] | default: 'en-us' %}
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+
+{% if user.roles contains 'Permission For Letter Writing/View' %}
+{% assign permissionletter = 'yes' %}
+{%- else -%}
+{% assign permissionletter = 'no' %}
+{% endif %}
+
+{% assign homeurl = website.adx_partialurl %}
+
+<link href='https://fonts.googleapis.com/css?family=Open+Sans|Roboto|Montserrat|Raleway|Nunito' rel='stylesheet' />
+<div class="navbar navbar-inverse navbar-static-top" role="navigation">
+  <div class="skip-to-content"><a href="#mainContent">{{ resx.Skip_To_Content | default: "Skip to main content" }}</a></div>
+  <div class="container">
+    <div class="navbar-header">
+      <div class="visible-xs-block">
+        {% editable snippets 'Mobile Header' type: 'html' %}
+      </div>
+      <div class="visible-sm-block visible-md-block visible-lg-block navbar-brand">
+        {% editable snippets 'Navbar Left' type: 'html' %}
+      </div>
+      <button type="button" class="navbar-toggle collapsed" title="{{ snippets["Header/Toggle Navigation"] | default: resx['Toggle_Navigation'] | h }}" data-toggle="collapse" data-target="#navbar" aria-expanded="false" onclick="setHeight();">
+        <span class="sr-only">{{ snippets["Header/Toggle Navigation"] | default: resx['Toggle_Navigation'] | h }}</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      {% assign primary_nav = weblinks["Default"] %}
+      {% if primary_nav %}
+                  {% assign link = primary_nav.weblinks %}
+
+        <nav aria-label="{{ resx.Main_Navigation | default: "Main Navigation" }}" class="navbar-right menu-bar {% if primary_nav.editable %}xrm-entity xrm-editable-adx_weblinkset{% endif %}" data-weblinks-maxdepth="2">
+          <ul class="nav navbar-nav weblinks">
+            {% for link in primary_nav.weblinks %}
+              {% unless forloop.first %}
+
+              {% endunless %}
+              {% if link.display_page_child_links %}
+                {% if link.url != null %}
+                  {% assign sublinks = sitemap[link.url].children %}
+                {% endif %}
+              {% else %}
+                {% assign sublinks = link.weblinks %}
+              {% endif %}
+
+              <li role="none" class="weblink {% if sublinks.size > 0 %} dropdown{% endif %}">
+                <a aria-label="{{ link.name | escape }}"
+                    {% if sublinks.size > 0 -%}
+                    href="#" class="dropdown-toggle" data-toggle="dropdown"
+                    {%- else -%}
+                    href="{{ link.url | escape }}"
+                    {%- endif -%}
+                    {%- if link.Open_In_New_Window %} target="_blank" {% endif -%}
+                    {%- if link.nofollow %} rel="nofollow"{% endif -%}
+                    {%- if link.tooltip %} title="{{ link.tooltip | escape }}"{% endif %}>
+                    {%- if link.image -%}
+                      {%- if link.image.url startswith '.' -%}
+                        <span class="{{ link.image.url | split:'.' | join }}" aria-hidden="true"></span>
+                      {%- else -%}
+                        <img src="{{ link.image.url | escape }}"
+                             alt="{{ link.image.alternate_text | default:link.tooltip | escape }}"
+                             {% if link.image.width %}width="{{ link.image.width | escape }}" {% endif %}
+                             {% if link.image.height %}height="{{ link.image.height | escape }}" {% endif %} />
+                      {%- endif -%}
+                    {%- endif -%}
+                    {%- unless link.display_image_only -%}
+                      {{ link.name | escape }}
+                    {%- endunless -%}
+                    {%- if sublinks.size > 0 -%}
+                      <span class="caret"></span>
+                    {%- endif -%}
+                </a>
+
+                {% if sublinks.size > 0 %}
+                  <ul class="dropdown-menu">
+                    {% if link.url %}
+                      <li role="none">
+                        <a aria-label="{{ link.name | escape }}"
+                           href="{{ link.url }}"
+                           {% if link.Open_In_New_Window %} target="_blank" {% endif %}
+                           {% if link.nofollow %}rel="nofollow" {% endif %}
+                           {% if link.tooltip %}title="{{ link.tooltip | escape }}" {% endif %}>{{ link.name | escape }}</a>
+                      </li>
+                      <li class="divider"></li>
+                    {% endif %}
+                    {% for sublink in sublinks %}
+                      <li role="none">
+                        <a aria-label="{{ sublink.name | default:sublink.title | escape }}"
+                           href="{{ sublink.url }}"
+                           {% if sublink.Open_In_New_Window %} target="_blank" {% endif %}
+                           {% if sublink.nofollow %}rel="nofollow" {% endif %}
+                           {% if sublink.tooltip %}title="{{ sublink.tooltip | escape }}" {% endif %}>
+                           {{ sublink.name | default:sublink.title | escape }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </li>
+            {% endfor %}
+              
+       {% assign search_enabled = settings['Search/Enabled'] | boolean | default:true %}
+            {% if search_enabled %}
+            <li class="dropdown" role="none">
+              <a id="search" class="navbar-icon" href="#" data-toggle="dropdown"
+                role="button" aria-haspopup="true" aria-expanded="false"
+                aria-label="{{ snippets["Header/Search/ToolTip"] | default:resx["Search_DefaultText"] | escape }}" >
+                <span class="glyphicon glyphicon-search" style="font-size: 35px;"></a>
+              </a>
+              <ul class="dropdown-menu dropdown-search">
+                <li>
+                  {% include 'Search' search_id:'q' %}
+                </li>
+              </ul>
+            </li>
+            {% endif %} 
+            {% if website.languages.size > 1 %}
+              <li class="dropdown" role="none">
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-label="{{ website.selected_language.name | escape }}" aria-haspopup="true" aria-expanded="false" title="{{ website.selected_language.name | escape }}">
+                  <span class="drop_language">{{ website.selected_language.name | escape }}</span>
+                  <span class="caret"></span>
+                </a>
+                {% include 'Languages Dropdown' %}
+              </li>
+            {% endif %}
+            <!-- Shopping cart icon-->
+<li role="none"  id="licart" margin-right="5px">
+<a id="cart" class="navbar-icon" href="/checkout" role="button"  aria-expanded="false"
+                aria-label="Cart" style="height: 60px;vertical-align: top;margin-top: 0px;padding-top: 5px;" > <img src="/cartimage.png" alt-text="Cart"/>
+    </a></li>            
+<!-- end of Shopping cart icon -->
+            {% if user %}
+              <li class="dropdown" role="none">
+                {% assign username=user.fullname | escape %}
+    <a href="#" class="dropdown-toggle" title="{{username | default: resx['Default_Profile_name'] }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="username">{{ username | default: resx['Default_Profile_name'] }}</span>
+     <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" id="signinMenu">
+                  {% assign show_profile_nav = settings["Header/ShowAllProfileNavigationLinks"] | boolean | default:true %}
+                  {% if show_profile_nav %}
+                    {% assign profile_nav = weblinks["Profile Navigation"] %}
+                    {% if profile_nav %}
+                      {% for link in profile_nav.weblinks %}
+                        <li role="none">
+                            <a aria-label="{{ link.name | escape }}" href="{{ link.url | escape }}" title="{{ link.name | escape }}">{{ link.name | escape }}</a>
+                        </li>
+                      {% endfor %}
+                    {% endif %}
+                  {% else %}
+                    <li role="none"><a aria-label="{{ snippets["Profile Link Text"] | default:resx["Profile_Text"] | escape }}" href="{{ sitemarkers['Profile'].url | escape }}">{{ snippets["Profile Link Text"] | default:resx["Profile_Text"] | escape }}</a></li>
+                  {% endif %}
+                  <!--<li class="divider" role="separator" aria-hidden="true"></li>-->
+                  <li role="none">
+                      <a aria-label="{{ snippets["links/logout"] | default:resx["Sign_Out"] | escape }}" href="{% if homeurl%}/{{ homeurl }}{% endif %}{{ website.sign_out_url_substitution }}" title="{{ snippets["links/logout"] | default:resx["Sign_Out"] | escape }}">
+                        {{ snippets["links/logout"] | default:resx["Sign_Out"] | escape }}
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            {% else %}
+              <li role="none">
+                <a aria-label="{{ snippets["links/login"] | default:resx["Sign_In"] | escape }}" href="{% if homeurl%}/{{ homeurl }}{% endif %}{{ website.sign_in_url_substitution }}">
+     {{ snippets["links/login"] | default:resx["Sign_In"] | escape }}
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+          {% editable primary_nav %}
+        </nav>
+      {% endif %}
+      <div class="navbar-right hidden-xs">
+        {% editable snippets 'Navbar Right' type: 'html' %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% substitution %}
+  {% assign current_page = page.id %}
+  {% assign sr_page = sitemarkers["Search"].id %}
+  {% assign forum_page = sitemarkers["Forums"].id %}
+  {% if current_page %}
+  {% if current_page == sr_page or current_page == forum_page %}
+    {% assign section_class = "section-landing-search" %}
+    {% if current_page == forum_page %}
+      {% assign section_class = "section-landing-forums" %}
+    {% endif %}
+    <section class="page_section {{ section_class | h }} color-inverse">
+      <div class="container" style="height: 80px;">
+        <div class="row ">
+          <div class="col-md-12 text-center">
+            {% if current_page == sr_page %}
+              <h1 id="mainContent" class="section-landing-heading">{% editable snippets 'Search/Title' default: resx["Discover_Contoso"] %}</h1>
+              {% include 'Search' search_id:'search_control' %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </section>
+  {% endif %}
+  {% endif %}
+{% endsubstitution %}
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+<script type="text/javascript">
+$('#licart').after('<li id="menu-item-28" style="position: relative;" class="give-btn-dropdown desktop-display menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-28"><a style="background-color: #0f82c5; width: 50px !important; height: 60px;"href="#" data-ps2id-api="true" id=""><i id="anchorgivenowpages"class="fa fa-angle-down" style="font-size:36px; color: white;"></i></a><ul class="sub-menu"><li id="menu-item-245" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-245"><a rel="noopener" href="https://portaldev-familylegacy.powerappsportals.com/sponsor_a_child/" data-ps2id-api="true">Sponsor A Child</a><hr></li><li id="menu-item-181" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-181"><a rel="noopener" href="https://portaldev-familylegacy.powerappsportals.com/give-monthly/" data-ps2id-api="true">Give Monthly</a><hr></li><li id="menu-item-181" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-181"><a rel="noopener" href="https://portaldev-familylegacy.powerappsportals.com/ambassador/" data-ps2id-api="true">Ambassador</a><hr></li></ul></li>');
+$('#licart').after('<li <button id="givenowbtn" type="button" class="btn" style="padding-top: 15px;height:60px;width:250px; background-color: #0F82C5; color: white; font-weight: 600; font-size: 20px; text-align:center">GIVE NOW</button>');
+           //$('<li <button id="givenowbtn" type="button" class="btn" style="padding-top: 15px;height:60px;width:250px; background-color: #0F82C5; color: white; font-weight: 600; font-size: 20px; text-align:center">GIVE NOW</button>').insertBefore($('.dropdown:last'));
+          //  $('<li style="margin-left: 5px;" id="givenowli"><select  onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);"; id="givenowselect" class="form-control" id="sel1"><option value=" "></option><option value="https://portaldev-familylegacy.powerappsportals.com/sponsor_a_child/">SPONSOR A CHILD</option><option value="https://portaldev-familylegacy.powerappsportals.com/give-monthly/">GIVE MONTHLY</option></select> </li>').insertBefore($('.dropdown:first'));
+          //$('<li id="menu-item-28" style="position: relative;" class="give-btn-dropdown desktop-display menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-28"><a style="background-color: #0f82c5; width: 50px !important; height: 60px;"href="#" data-ps2id-api="true" id=""><i id="anchorgivenowpages"class="fa fa-angle-down" style="font-size:36px; color: white;"></i></a><ul class="sub-menu"><li id="menu-item-245" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-245"><a rel="noopener" href="https://portaldev-familylegacy.powerappsportals.com/sponsor_a_child/" data-ps2id-api="true">Sponsor A Child</a><hr></li><li id="menu-item-181" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-181"><a rel="noopener" href="https://portaldev-familylegacy.powerappsportals.com/give-monthly/" data-ps2id-api="true">Give Monthly</a><hr></li></ul></li>').insertBefore($('.dropdown:last'));
+          
+
+            $(document).ready(function(){
+             var roles = "{{ user.roles }}";
+              //alert(roles);
+
+          //add llink intp profile navigation
+          var letterrole = '{{permissionletter}}';
+          // console.log()
+          if(letterrole == 'yes'){
+            $('<li class="divider" role="separator" aria-hidden="true"></li>').insertBefore("#signinMenu li:first");
+            $('<li><a href="/sponsorlettoer/" >MY LETTERS</a></li>').insertBefore("#signinMenu li:first");
+            $('<li><a href="/user-my-giving/" >MY GIVING</a></li>').insertBefore("#signinMenu li:first");
+            
+          
+            var roles = "{{ user.roles }}";
+            console.log(roles);
+            if(roles.contains("Administrators") > 0)
+            alert("I am Admin");
+
+           //$("#signinMenu").append('<li><a href="https://portaldev-familylegacy.powerappsportals.com/sponsorlettoer/" >MY LETTERS</a></li>');
+           //$("#signinMenu").append('<li><a href="https://portaldev-familylegacy.powerappsportals.com/user-my-giving/" >MY GIVINGS</a></li>');
+            //  alert("I am letter");
+         }
+            });
+
+           //function for showing 'GiveNow' weblinks when hover on li
+           $('.weblinks #menu-item-28').on('mouseenter', function () {
+           $('.sub-menu').css("display","inline");
+          });
+          $('.weblinks #menu-item-28').on('mouseleave', function () {
+           $('.sub-menu').css("display","none");
+          });
+          $('#givenowbtn').on('mouseenter', function () {
+           $('.sub-menu').css("display","inline");
+          });
+          $('#givenowbtn').on('mouseleave', function () {
+           $('.sub-menu').css("display","none");
+          });
+         window.onload = function() {
+            if(window.navigator.appName == "Microsoft Internet Explorer" || window.navigator.userAgent.indexOf("Trident") > 0){
+                var searchElement = document.getElementById("search");
+                if (searchElement != null) searchElement.setAttribute("href", "");
+            }
+          };
+
+          function setHeight(){
+           var windowHeight = window.innerHeight - 140;
+           var navbar = document.getElementById("navbar");
+           if (navbar) {
+            navbar.style.maxHeight = windowHeight + "px";
+   }
+          }
+
+          window.addEventListener('resize', function (event) {
+           setHeight();
+          });
+</script>

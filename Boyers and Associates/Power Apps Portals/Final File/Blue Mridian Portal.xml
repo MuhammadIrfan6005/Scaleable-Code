@@ -1,0 +1,117 @@
+<entities >
+  <entity name="rfdi_redi_members" displayname="REDI Member" etc="11059" primaryidfield="rfdi_redi_membersid" primarynamefield="rfdi_name" disableplugins="false">
+    <fields>
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created By (Delegate)" name="createdonbehalfby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Gender Board Member" name="rfdi_gender_board_member" type="string" customfield="true" />
+      <field displayname="Gender Identity Cetegories" name="rfdi_gender_identity_cetegories" type="optionsetvaluecollection" customfield="true" />
+      <field displayname="Gender Leadership Member" name="rfdi_gender_leadership_member" type="string" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Member Name" name="rfdi_member_name" type="string" customfield="true" />
+      <field displayname="Member Type" name="rfdi_member_type" type="optionsetvalue" customfield="true" />
+      <field displayname="Modified By" name="modifiedby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Modified By (Delegate)" name="modifiedonbehalfby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Modified On" name="modifiedon" type="datetime" />
+      <field displayname="Name" name="rfdi_name" type="string" customfield="true" />
+      <field displayname="Owner" name="ownerid" type="owner" />
+      <field displayname="Owning Business Unit" name="owningbusinessunit" type="entityreference" lookupType="businessunit" />
+      <field displayname="Owning Team" name="owningteam" type="entityreference" lookupType="team" />
+      <field displayname="Owning User" name="owninguser" type="entityreference" lookupType="systemuser" />
+      <field displayname="Racial Identity Categories" name="rfdi_racial_identity_categories" type="optionsetvaluecollection" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="REDI Member" name="rfdi_redi_membersid" type="guid" primaryKey="true" />
+      <field displayname="RI Board Member" name="rfdi_racial_board_member" type="string" customfield="true" />
+      <field displayname="RI Leadership Member" name="rfdi_racial_leadership_member" type="string" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Survey Name" name="rfdi_redi_survey_members" type="entityreference" lookupType="rfdi_redisurvey" customfield="true" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+    </fields>
+  </entity>
+  <entity name="rfdi_redisurvey" displayname="REDI Survey" etc="10547" primaryidfield="rfdi_redisurveyid" primarynamefield="rfdi_redisurvey" disableplugins="false">
+    <fields>
+      <field displayname="Account RFDI" name="rfdi_account_rfdi" type="entityreference" lookupType="account" customfield="true" />
+      <field displayname="Additional Categories Information Captured" name="rfdi_additionalcategories_information_captured" type="string" customfield="true" />
+      <field displayname="Additional Collect Identity Info" name="rfdi_additional_collect_identity_info" type="optionsetvalue" customfield="true" />
+      <field displayname="Additional Demographic Info Collected" name="rfdi_additional_demographicinfo_collected" type="string" customfield="true" />
+      <field displayname="Additional ethnicity identities Used" name="rfdi_additional_ethnicity_identities_used" type="string" customfield="true" />
+      <field displayname="Additional Gender Identities Staff Info" name="rfdi_additional_genderidentities_staff_info" type="string" customfield="true" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created By (Delegate)" name="createdonbehalfby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Due Date" name="rfdi_due_date" type="datetime" customfield="true" />
+      <field displayname="Feedback Comments" name="rfdi_feedback_comments" type="string" customfield="true" />
+      <field displayname="Gender Board cisgender" name="rfdi_gender_board_cisgender" type="number" customfield="true" />
+      <field displayname="Gender Board Identities" name="rfdi_gender_board_identities" type="optionsetvaluecollection" customfield="true" />
+      <field displayname="Gender Board Member Name" name="rfdi_gender_board_member_name" type="string" customfield="true" />
+      <field displayname="Gender Board other" name="rfdi_gender_board_other" type="number" customfield="true" />
+      <field displayname="Gender Board transgender" name="rfdi_gender_board_transgender" type="number" customfield="true" />
+      <field displayname="Gender Board Unknown" name="rfdi_gender_board_unknown" type="number" customfield="true" />
+      <field displayname="Gender CEO Identity" name="rfdi_gender_ceo_identity" type="optionsetvaluecollection" customfield="true" />
+      <field displayname="Gender CEO Identity Category" name="rfdi_gender_ceo_identity_category" type="optionsetvaluecollection" customfield="true" />
+      <field displayname="Gender Identity Demographics Note" name="rfdi_gender_identity_demographics_note" type="string" customfield="true" />
+      <field displayname="Gender Leadership cisgender" name="rfdi_gender_leadership_cisgender" type="number" customfield="true" />
+      <field displayname="Gender Leadership Member identity" name="rfdi_gender_leadership_member_identity" type="optionsetvaluecollection" customfield="true" />
+      <field displayname="Gender Leadership Member Name" name="rfdi_gender_leadership_member_name" type="string" customfield="true" />
+      <field displayname="Gender Leadership Other" name="rfdi_gender_leadership_other" type="number" customfield="true" />
+      <field displayname="Gender Leadership Transgender" name="rfdi_gender_leadership_transgender" type="number" customfield="true" />
+      <field displayname="Gender Leadership unknown" name="rfdi_gender_leadership_unknown" type="number" customfield="true" />
+      <field displayname="Gender Staff Cisgender" name="rfdi_gender_staff_cisgender" type="number" customfield="true" />
+      <field displayname="Gender Staff Other Gender" name="rfdi_gender_staff_other_gender" type="number" customfield="true" />
+      <field displayname="Gender Staff Transgender" name="rfdi_gender_staff_transgender" type="number" customfield="true" />
+      <field displayname="Gender Staff Unknown" name="rfdi_gender_staff_unknown" type="number" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Investee Board Members" name="rfdi_investee_board_members" type="number" customfield="true" />
+      <field displayname="Investee Filling Survey Abort" name="rfdi_investee_continue_or_abort" type="bool" customfield="true" />
+      <field displayname="Investee Leadership Member" name="rfdi_investee_leadership_member" type="number" customfield="true" />
+      <field displayname="Investee Reason for abort" name="rfdi_investee_reason_for_abort" type="string" customfield="true" />
+      <field displayname="Investee Staff Members" name="rfdi_investee_staff_members" type="number" customfield="true" />
+      <field displayname="Modified By" name="modifiedby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Modified By (Delegate)" name="modifiedonbehalfby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Modified On" name="modifiedon" type="datetime" />
+      <field displayname="Owner" name="ownerid" type="owner" />
+      <field displayname="Owning Business Unit" name="owningbusinessunit" type="entityreference" lookupType="businessunit" />
+      <field displayname="Owning Team" name="owningteam" type="entityreference" lookupType="team" />
+      <field displayname="Owning User" name="owninguser" type="entityreference" lookupType="systemuser" />
+      <field displayname="Racial Board Dispersed" name="rfdi_racial_board_dispersed" type="number" customfield="true" />
+      <field displayname="Racial Board Group excluded" name="rfdi_racial_board_group_excluded" type="number" customfield="true" />
+      <field displayname="Racial Board Group Included" name="rfdi_racial_board_group_included" type="number" customfield="true" />
+      <field displayname="Racial Board Identities" name="rfdi_racial_board_identities" type="optionsetvaluecollection" customfield="true" />
+      <field displayname="Racial Board Member Name" name="rfdi_racial_board_member_name" type="string" customfield="true" />
+      <field displayname="Racial Board not answered" name="rfdi_racial_board_not_answered" type="number" customfield="true" />
+      <field displayname="Racial CEO Group Member" name="rfdi_racial_ceo_group_member" type="optionsetvalue" customfield="true" />
+      <field displayname="Racial CEO/ED Group Identities" name="rfdi_racial_ceo_group_identities" type="optionsetvaluecollection" customfield="true" />
+      <field displayname="Racial Leadership answer dispersed" name="rfdi_racial_leadership_answer_dispersed" type="number" customfield="true" />
+      <field displayname="Racial Leadership group excluded" name="rfdi_racial_leadership_group_excluded" type="number" customfield="true" />
+      <field displayname="Racial Leadership group included" name="rfdi_racial_leadership_group_included" type="number" customfield="true" />
+      <field displayname="Racial Leadership Identities" name="rfdi_racial_leadership_identities" type="optionsetvaluecollection" customfield="true" />
+      <field displayname="Racial Leadership Member Name" name="rfdi_racial_leadership_member_name" type="string" customfield="true" />
+      <field displayname="Racial Leadership not answered" name="rfdi_racial_leadership_not_answered" type="number" customfield="true" />
+      <field displayname="Racial Staff Dispersed" name="rfdi_racial_staff_dispersed" type="number" customfield="true" />
+      <field displayname="Racial Staff Group Excluded" name="rfdi_racial_staff_group_excluded" type="number" customfield="true" />
+      <field displayname="Racial staff group included" name="rfdi_racial_staff_group_included" type="number" customfield="true" />
+      <field displayname="Racial Staff Not Answered" name="rfdi_racial_staff_not_answered" type="number" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="REDI Status Reason" name="rfdi_redi_status_reason" type="optionsetvalue" customfield="true" />
+      <field displayname="Redi Survey" name="rfdi_redisurvey" type="string" customfield="true" />
+      <field displayname="REDI Survey" name="rfdi_redisurveyid" type="guid" primaryKey="true" />
+      <field displayname="Self Answered Slightly" name="rfdi_self_answered_slightly" type="string" customfield="true" />
+      <field displayname="Self Answered Slightly Design and Delivery" name="rfdi_selfanswered_slightly_design_and_delivery" type="string" customfield="true" />
+      <field displayname="Self Answered Slightly learning evaluation" name="rfdi_selfanswered_slightly_learning_evaluation" type="string" customfield="true" />
+      <field displayname="Self Answered Slightly Talent" name="rfdi_self_answered_slightly_talent" type="string" customfield="true" />
+      <field displayname="Self Design and Delivery of Programs" name="rfdi_self_design_and_deliveryof_programs" type="optionsetvalue" customfield="true" />
+      <field displayname="Self learning evaluation measurement" name="rfdi_selflearning_evaluation_measurement" type="optionsetvalue" customfield="true" />
+      <field displayname="Self REDI Principles" name="rfdi_self_redi_principles" type="optionsetvalue" customfield="true" />
+      <field displayname="Self REDI Talent" name="rfdi_self_redi_talent" type="optionsetvalue" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Time Zone Rule Version Number" name="timezoneruleversionnumber" type="number" />
+      <field displayname="UTC Conversion Time Zone Code" name="utcconversiontimezonecode" type="number" />
+      <field displayname="Version Number" name="versionnumber" type="bigint" />
+    </fields>
+    <relationships />
+  </entity>
+</entities>

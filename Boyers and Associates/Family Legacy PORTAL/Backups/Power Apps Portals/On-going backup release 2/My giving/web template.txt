@@ -1,0 +1,268 @@
+<link rel='stylesheet'
+  href='https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/css/dataTables.bootstrap.min.css'>
+
+<div class="container" id="transaction_available" style="margin-top: 70px">
+
+  <div id="statisticsRow" class="row" style="margin-left: 160px">
+    {% fetchxml thismonth %}
+    <fetch>
+      <entity name="msnfp_paymentschedule">
+        <attribute name="msnfp_totalamount" />
+        <filter  type="and">
+          <condition attribute="msnfp_customerid" operator="eq" value="{{user.id}}" />
+          <condition attribute="createdon" operator="this-month" />
+        </filter>
+      </entity>
+    </fetch>
+    {% endfetchxml %}
+    {% assign total_thisMonth_giving = 0 %}
+
+    {% for thismonthGiving in thismonth.results.entities %}
+    {% assign total_thisMonth_giving = total_thisMonth_giving | plus: thismonthGiving.msnfp_totalamount %}
+
+    {%- endfor -%}
+    <div class="col-sm-4 col-md-4 col-lg-4 stat">
+      <div class="module-card">
+        <div class="module-title-holder">
+          <h5>This Month</h5>
+        </div>
+        <div class="module-card-block">
+          <h1 id="thismonth_giving" class="featured-amount">$0</h1>
+        </div>
+      </div>
+    </div>
+
+    {% fetchxml lastmonth %}
+    <fetch>
+      <entity name="msnfp_paymentschedule">
+        <attribute name="msnfp_totalamount" />
+        <filter type="and">
+          <condition attribute="msnfp_customerid" operator="eq" value="{{user.id}}" />
+          <condition attribute="createdon" operator="last-month" />
+        </filter>
+      </entity>
+    </fetch>
+    {% endfetchxml %}
+    {% assign total_LASTMonth_giving = 0 %}
+
+    {% for lastmonthGiving in lastmonth.results.entities %}
+    {% assign total_LASTMonth_giving = total_LASTMonth_giving | plus: lastmonthGiving.msnfp_totalamount %}
+
+    {%- endfor -%}
+    <div class="col-sm-4 col-md-4 col-lg-4 stat">
+      <div class="module-card">
+        <div class="module-title-holder">
+          <h5>Last Month</h5>
+        </div>
+        <div class="module-card-block">
+          <h1 id="lastmonth_giving" class="featured-amount">$0</h1>
+        </div>
+      </div>
+    </div>
+
+    {% fetchxml yeartodate %}
+    <fetch>
+      <entity name="msnfp_paymentschedule">
+        <attribute name="msnfp_totalamount" />
+        <filter type="and">
+          <condition attribute="msnfp_customerid" operator="eq" value="{{user.id}}" />
+          <condition attribute="createdon" operator="this-year" />
+        </filter>
+      </entity>
+    </fetch>
+    {% endfetchxml %}
+
+    {% assign total_yeartodate_giving = 0 %}
+
+    {% for yeartodateGiving in yeartodate.results.entities %}
+    {% assign total_yeartodate_giving = total_yeartodate_giving | plus: yeartodateGiving.msnfp_totalamount %}
+
+    {%- endfor -%}
+
+    <div class="col-sm-4 col-md-4 col-lg-4 stat">
+
+      <div class="module-card">
+        <div class="module-title-holder">
+          <h5>Year To Date</h5>
+        </div>
+        <div class="module-card-block">
+          <h1 id="thisyear_giving" class="featured-amount">$0</h1>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <div id="givenowDescription" class="row" style="margin: 50px 0 20px -20px">
+    <h5>Yearly giving statements are currently unavailable in the portal. Please contact us if you need a statement for
+      your records.</h5>
+  </div>
+  <div class="row" style="margin: 50px 0 20px -20px">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <div class="module-card">
+        <div class="module-title-holder">Recurring Gifts</div>
+        <div class="module-card-block">
+        </div>
+      </div>
+
+    </div>
+  </div>
+  {% fetchxml RecurringGifts %}
+   <fetch>
+  <entity name="msnfp_paymentschedule">
+    <attribute name="msnfp_recurringamount" />
+    <attribute name="msnfp_designationid" />
+    <attribute name="bna_childcontact" />
+    <attribute name="statuscode" />
+    <filter>
+      <condition attribute="msnfp_customerid" operator="eq" value="{{user.id}}" />
+    </filter>
+    <link-entity name="contact" from="contactid" to="bna_childcontact" link-type="inner" alias="con">
+      <attribute name="fullname" />
+    </link-entity>
+    <link-entity name="msnfp_designation" from="msnfp_designationid" to="msnfp_designationid" link-type="inner" alias="des">
+      <attribute name="msnfp_name" />
+    </link-entity>
+  </entity>
+</fetch>
+  {% endfetchxml %}
+  <table class="table responsive" id="Recurring_Gifts">
+    <thead>
+      <tr>
+        <th scope="col">Designation</th>
+        <th scope="col">child contacts</th>
+        <th scope="col">Recurring Amount</th>
+        <th scope="col">Recurrence Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for items in RecurringGifts.results.entities %}
+        <tr>
+        <td>{{items["des.msnfp_name"]}}</td>
+        <td>{{items["con.fullname"]}}</td>
+        <td>{{items.msnfp_recurringamount}}</td>
+        <td>{{items.statuscode.label}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="row" style="margin: 50px 0 20px -20px">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <div class="module-card">
+        <div class="module-title-holder">My Gifts</div>
+        <div class="module-card-block">
+        </div>
+      </div>
+    </div>
+  </div>
+  {% fetchxml MyGifts %}
+    <fetch>
+      <entity name="msnfp_paymentschedule">
+        <attribute name="msnfp_designationid" />
+        <attribute name="bna_childcontact" />
+        <attribute name="statuscode" />
+        <attribute name="msnfp_totalamount" />
+        <filter>
+          <condition attribute="msnfp_customerid" operator="eq" value="{{user.id}}" />
+        </filter>
+        <link-entity name="contact" from="contactid" to="bna_childcontact" link-type="inner" alias="con">
+          <attribute name="fullname" />
+        </link-entity>
+        <link-entity name="msnfp_designation" from="msnfp_designationid" to="msnfp_designationid" link-type="inner" alias="des">
+          <attribute name="msnfp_name" />
+        </link-entity>
+      </entity>
+    </fetch>
+  {% endfetchxml %}
+  <table class="table responsive" id="My_Gifts">
+    <thead>
+      <tr>
+        <th scope="col">Designation</th>
+        <th scope="col">child contacts</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for gifts in MyGifts.results.entities %}
+      <tr>
+        <td>{{gifts["des.msnfp_name"]}}</td>
+        <td>{{gifts["con.fullname"]}}</td>
+        <td>{{gifts.msnfp_totalamount}}</td>
+        <td>{{gifts.statuscode.label}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="filter-by-holder" id="filterByHolder" style="display:none">
+    <h3 class="grid-filters-label available-filters-label">Filters <a href="#"><i></i><span> Clear all</span></a><a
+        href="#"><i></i><span> Reset all</span></a>
+      <div class="saved-view-holder"><label class="saved-views inline">Saved View</label>
+        <div class="btn-group grid-saved-view"><button type="button" class="btn btn-primary dropdown-toggle"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select</button>
+          <div class="dropdown-menu dropdown-menu-right">
+            <div class="no-view"> No Saved Views </div>
+            <div class="create-view"><a class="create-view-btn" href="#">+ Create a New Saved View</a></div>
+          </div>
+        </div>
+      </div>
+    </h3>
+  </div>
+</div>
+
+<div class="container" id="transaction_Notavailable" style="margin-top: 70px; display:none">
+  <div class="alert alert-success">
+    <h3> We are not able to find any <strong>givings</strong> form you.<h3>
+        <div id='navigatedropdown'>
+          <h4>You can <a style="text-decoration:underline;"
+              href="https://portaldev-familylegacy.powerappsportals.com/sponsor_a_child/">Sponsor a child</a> to view
+            your givings</h4>
+        </div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js'></script>
+<script>
+
+  var thismonth = '{{total_thisMonth_giving}}';
+  console.log("thismonth"+ thismonth);
+  if (thismonth != 0) {
+    $("#thismonth_giving").text("$" + thismonth);
+  }
+
+  var lastmonth = '{{total_LASTMonth_giving}}';
+  console.log("lastmonth"+ lastmonth);
+  if (lastmonth != 0) {
+    $("#lastmonth_giving").text("$" + lastmonth);
+  }
+
+  var thisyear = '{{total_yeartodate_giving}}';
+  console.log("thisyear"+ thisyear);
+  if (thisyear != 0) {
+    $("#thisyear_giving").text("$" + thisyear);
+  }
+
+  //check if login user is having any transaction or not. 
+  if (thismonth == "0" && lastmonth == "0" && thisyear == "0") {
+    $("#transaction_available").hide();
+    $("#transaction_Notavailable").show();
+  }
+
+  $(document).ready(function () {
+    $("#Recurring_Gifts").DataTable({
+      columnDefs: [
+        { type: 'date', targets: [3] }
+      ],
+    });
+    $("#My_Gifts").DataTable({
+      columnDefs: [
+        { type: 'date', targets: [3] }
+      ],
+    });
+  })
+</script>

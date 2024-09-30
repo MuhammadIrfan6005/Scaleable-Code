@@ -1,0 +1,113 @@
+
+{{ snippets["Desire/Breadcrumb"] }}
+
+{% assign reference = '__' %}
+{% assign labelurl = '__' %}
+{% assign getMaxInsuranceAmount = "5000" %}
+
+{% if user %}
+    {% fetchxml myFetchQuery %}
+    <fetch top="1">
+      <entity name="ed_recycleexchange">
+          <attribute name="ed_name" />          
+          <attribute name="ed_postlabelurl" />          
+          <order attribute="createdon" descending="true" />
+      </entity>
+    </fetch>
+    {% endfetchxml %}
+
+    {% if myFetchQuery.results.entities.size > 0 %}
+        
+
+        {% assign reference = myFetchQuery.results.entities[0]['ed_name'] %}
+        {% assign labelurl = myFetchQuery.results.entities[0]['ed_postlabelurl'] %}
+    {% endif %}
+
+
+{% fetchxml getMaxInsuranceAmount %}
+<fetch count="1">
+  <entity name="ed_configuration">
+    <attribute name="ed_value" />
+    <attribute name="ed_valuestring" />
+    <filter>
+      <condition attribute="ed_name" operator="in">
+        <value>Maximum Insurance Amount</value>
+      </condition>
+    </filter>
+  </entity>
+</fetch>
+{% endfetchxml %}
+{% if getMaxInsuranceAmount.results.entities.size > 0 %}
+    {% assign getMaxInsuranceAmount = getMaxInsuranceAmount.results.entities[0].ed_value | plus: 0 | integer %}  
+{% endif %}
+
+{% endif %}
+
+
+<div class="p-3 pt-5 pb-5 bg-white text-black">
+    <div class="mb-5">
+        <h2 class="mb-3">Formal quote</h2>
+        <p class="mb-3">Step 4. Pack and send</p>
+        <div class="progress" style="height: 12px">
+            <div class="progress-bar" style="width:100%"></div>
+        </div>
+        <p>We have recieved your quote. Please follow the following steps to finish the process.<p/>
+    </div>
+    <ul class="stepper stepper-vertical m-0 p-0 pb-3">
+        <li class="">
+            <div>
+                <span class="circle"></span>  
+                <span class="label">Place your items inside the secured package</span> 
+                <p class="step-content"></p>              
+            </div>
+        </li>
+        <li class="">
+            <div class="text-start">
+                <span class="circle"></span>
+                <span class="label">Download, print and attach label</span>
+                <div class="step-content">
+                    <div id="referencelabel" style="border: 1px dashed #000000;" class="p-6 text-center mb-3">
+                        <div class="text-md mb-3">Reference Number</div>
+                        <div class="text-lg mb-3">#{{ reference }}</div>
+                        <a href='{{ labelurl }}' target="_blank" class="btn btn-outline-primary w-100 d-flex">
+                            <span class="material-icons-outlined px-2">file_download</span>
+                            <span>Download Post Label</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li class="">
+            <div class="text-start mb-3">
+                <span class="circle"></span>
+                <span class="label mb-0">Write your postage reference number on the</span>
+                <p class="step-content"> slip provided and place inside the package</p>
+            </div>
+        </li>
+        <li class="">
+            <div class="text-start">
+                <span class="circle"></span>
+                <span class="label">Drop off your package at your nearest post</span>
+                <span class="label">office</span>
+<!--                <p class="step-content">office</p>-->
+            </div>            
+        </li>
+    </ul>
+
+    <div class="d-flex pb-5">
+        <div class="ds-house-icon mt-1 px-4" style="margin-left: 32px;"></div>
+        <div class="">
+            Need help finding your nearest post-options? <a href="https://auspost.com.au/locate/" class="text-primary">Auspost here </a>
+        </div>
+    </div>
+
+    <p>The package in front of you includes a return label and is insured for ${{ getMaxInsuranceAmount }}. 
+    </p>
+    <p class="pb-2"> Once your items are packed, drop it off at your nearest post office and we’ll take care of the rest. 
+        Once it’s on it’s way to us, you’ll be able to view the status of your request in <a href="/account">your account.</a>  
+    </p>
+    <p class="pb-5">
+        Michael Hill aims to have a formal quote sent to you within <span class="text-primary"> 14 days </span> of receiving the package.
+    </p>
+
+</div>

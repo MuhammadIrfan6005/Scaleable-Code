@@ -1,0 +1,295 @@
+ <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/css/dataTables.bootstrap.min.css'>
+
+ <div class="container">
+    <div class="row" id="btnrow">
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <div class="tpl-buttons-holder">
+          <a class="tpl-button tpl-button-first" href="/user/my-campaigns" target="_self">MY CAMPAIGNS</a>
+        </div>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <div class="tpl-buttons-holder">
+          <a class="tpl-button tpl-button-first" href="/user/edit-profile" target="_self">MY PROFILE</a>
+        </div>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <div class="tpl-buttons-holder">
+          <a class="tpl-button tpl-button-first" href="/users/logout?redirectUrl=/login" target="_self">LOGOUT</a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12 margincls">
+        <h1 class="tpl-title">
+          2021 Contribution Statement
+        </h1>
+        <div class="tpl-summary">
+          To download your 2021 Contribution Statement, click the button below (if you do not see the button
+          displayed, please refresh your browser to make it appear):
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12 margincls">
+        <div class="tpl-content-inner tpl-cell">
+          <h1 class="tpl-title">
+            Contribution Statements from Other Years
+          </h1>
+          <div class="tpl-summary">
+            To access contribution statements from the current year to date or&nbsp;from previous years, click&nbsp;<a
+              href="https://give.familylegacy.com/user/contribution-statements">here</a>. If you have questions
+            regarding your giving, please contact our Accounting team at 972-620-2020 ext. 2 or&nbsp;<a
+              href="mailto:accounting@familylegacy.com">accounting@familylegacy.com</a>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-left: 160px">
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <div class="module-card">
+          <div class="module-title-holder">
+            <h5>This Month</h5>
+          </div>
+          <div class="module-card-block">
+            <h1 class="featured-amount">$0</h1>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+
+        <div class="module-card">
+          <div class="module-title-holder">
+            <h5>Last Month</h5>
+          </div>
+          <div class="module-card-block">
+            <h1 class="featured-amount">$0</h1>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+
+        <div class="module-card">
+          <div class="module-title-holder">
+            <h5>Year To Date</h5>
+          </div>
+          <div class="module-card-block">
+            <h1 class="featured-amount">$0</h1>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row" style="margin: 60px 0 0 30px">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="tpl-content-inner tpl-cell">
+          <h1 class="tpl-title">Update Payment Method</h1>
+
+          <div class="tpl-summary">
+            <strong>To update your payment method for a recurring gift below:</strong><br>
+            <ol>
+              <li>Click the Edit button (far right) next to the gift</li>
+              <li>Under Payment Method, click the "+" button to add a new payment method</li>
+              <li>Once the payment method is added, click the Save Gift button</li>
+            </ol>
+            <p>You can then edit any other recurring gifts to use the same payment method.<br><br>If you need
+              assistance, please call 972-620-2020.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="margin: 50px 0 20px 30px">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="module-card">
+          <div class="module-title-holder">Recurring Gifts</div>
+          <div class="module-card-block">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="grid-buttons text-right">
+          <span><a name="showfilters" class="btn btn-success" role="button">Show Filters</a></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" id="recuringfilters" style="display: none;">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="grid-filters">
+          <div class="available-columns-holder">
+            <h3 class="grid-filters-label available-columns-label">Available Columns</h3>
+            <div class="available-columns-checkboxes">
+              <div class="checkbox-holder checkbox-holder-ContributionRecurring.campaign_name"><label
+                  class="c-input c-checkbox disabled"><input class="filtercheckbox" type="checkbox" checked=""><span
+                    class="c-indicator"></span><span class="c-label">Designation</span></label></div>
+              <div class="checkbox-holder checkbox-holder-ContributionRecurring.amount"><label
+                  class="c-input c-checkbox"><input class="filtercheckbox" type="checkbox" checked=""><span class="c-indicator"></span><span
+                    class="c-label">Amount</span></label></div>
+              <div class="checkbox-holder checkbox-holder-ContributionRecurringBatch.next_run_date"><label
+                  class="c-input c-checkbox"><input class="filtercheckbox" type="checkbox" checked=""><span class="c-indicator"></span><span
+                    class="c-label">Next Run</span></label></div>
+              <div class="checkbox-holder checkbox-holder-ContributionRecurringBatch.active"><label
+                  class="c-input c-checkbox"><input class="filtercheckbox" type="checkbox" checked=""><span class="c-indicator"></span><span
+                    class="c-label">Status</span></label></div>
+              <div class="checkbox-holder checkbox-holder-ContributionRecurringBatch.recurring_end_date"><label
+                  class="c-input c-checkbox"><input class="filtercheckbox" type="checkbox" checked=""><span class="c-indicator"></span><span
+                    class="c-label">End Date</span></label></div>
+              <div class="checkbox-holder checkbox-holder-ContributionRecurringBatch.recurring_type"><label
+                  class="c-input c-checkbox"><input class="filtercheckbox" type="checkbox" checked=""><span class="c-indicator"></span><span
+                    class="c-label">Type</span></label></div>
+              <div class="checkbox-holder checkbox-holder-Person.fullname"><label class="c-input c-checkbox"><input
+                    type="checkbox" class="filtercheckbox" checked=""><span class="c-indicator"></span><span
+                    class="c-label">Group</span></label></div>
+              <div class="checkbox-holder checkbox-holder-ContributionRecurringBatch.tribute_type"><label
+                  class="c-input c-checkbox"><input class="filtercheckbox" type="checkbox" checked=""><span class="c-indicator"></span><span
+                    class="c-label">Tribute Type</span></label></div>
+              <div class="checkbox-holder checkbox-holder-ContributionRecurringBatch.tribute_note"><label
+                  class="c-input c-checkbox"><input class="filtercheckbox" type="checkbox"><span class="c-indicator"></span><span
+                    class="c-label">Tribute Note</span></label></div>
+              <div class="checkbox-holder checkbox-holder-TributeRecipientPerson.fullname"><label
+                  class="c-input c-checkbox"><input class="filtercheckbox" type="checkbox" checked=""><span class="c-indicator"></span><span
+                    class="c-label">Tribute Recipient Person</span></label></div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <table class="table responsive" id="sort">
+	<thead>
+		<tr>
+			<th scope="col">Designation</th>
+			<th scope="col">Amount</th>
+			<th scope="col">Status</th>
+			<th scope="col">End Date</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td data-table-header="Title">End of Year Giving 2020</td>
+			<td data-table-header="Authors">25000.00</td>
+			<td data-table-header="Journal">Active</td>
+			<td data-table-header="Date">Dec 25, 2020</td>
+		</tr>
+		<tr>
+			<td data-table-header="Title">Give Monthly</td>
+			<td data-table-header="Authors">10000.00</td>
+			<td data-table-header="Journal">Canceled</td>
+			<td data-table-header="Date">Dec 3, 2020</td>
+		</tr>
+        <tr>
+			<td data-table-header="Title">Abraham Lincolin Monthly</td>
+			<td data-table-header="Authors">10000.00</td>
+			<td data-table-header="Journal">Active</td>
+			<td data-table-header="Date">Dec 3, 2020</td>
+		</tr>
+		</tbody>
+</table>
+
+<div class="row" style="margin: 50px 0 20px 30px">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="module-card">
+          <div class="module-title-holder">My Gifts</div>
+          <div class="module-card-block">
+          </div>
+        </div>
+      </div>
+</div>
+<div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="grid-buttons text-right">
+          <span><a name="showfiltersGifts" class="btn btn-success" role="button">Show Filters</a></span>
+        </div>
+      </div>
+</div>
+
+<div class="row" id="giftfilters" style="display: none;">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="grid-filters">
+          <div class="available-columns-holder">
+            <h3 class="grid-filters-label available-columns-label">Available Columns</h3>
+            <div class="available-columns-checkboxes">
+              <div class="checkbox-holder checkbox-holder-ContributionRecurring.campaign_name"><label
+                  class="c-input c-checkbox disabled"><input class="filtercheckbox" type="checkbox" checked=""><span
+                    class="c-indicator"></span><span class="c-label">Gift</span></label></div>
+              <div class="checkbox-holder checkbox-holder-ContributionRecurring.amount"><label
+                  class="c-input c-checkbox"><input class="filtercheckbox" type="checkbox" checked=""><span class="c-indicator"></span><span
+                    class="c-label">Child</span></label></div>
+              <div class="checkbox-holder checkbox-holder-ContributionRecurringBatch.next_run_date"><label
+                  class="c-input c-checkbox"><input class="filtercheckbox" type="checkbox" checked=""><span class="c-indicator"></span><span
+                    class="c-label">Amount</span></label></div>
+              <div class="checkbox-holder checkbox-holder-ContributionRecurringBatch.active"><label
+                  class="c-input c-checkbox"><input class="filtercheckbox" type="checkbox" checked=""><span class="c-indicator"></span><span
+                    class="c-label">Received</span></label></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <div class="filter-by-holder" id="filterByHolder" style="display:none">
+    <h3 class="grid-filters-label available-filters-label">Filters <a href="#"><i></i><span> Clear all</span></a><a
+        href="#"><i></i><span> Reset all</span></a>
+      <div class="saved-view-holder"><label class="saved-views inline">Saved View</label>
+        <div class="btn-group grid-saved-view"><button type="button" class="btn btn-primary dropdown-toggle"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select</button>
+          <div class="dropdown-menu dropdown-menu-right">
+            <div class="no-view"> No Saved Views </div>
+            <div class="create-view"><a class="create-view-btn" href="#">+ Create a New Saved View</a></div>
+          </div>
+        </div>
+      </div>
+    </h3>
+  </div>
+
+  </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js'></script>
+  <script>
+  $('#sort_wrapper').css("margin-top", "30px");
+    
+
+    $(document).on("click", "a[name='showfilters']", function (e) {
+      if (this.innerHTML === "Show Filters") {
+        this.innerHTML = "Hide Filters";
+       $('#recuringfilters').show();
+      } else {
+        this.innerHTML = "Show Filters";
+$('#recuringfilters').hide();
+      }
+
+    });
+
+    $(document).on("click", "a[name='showfiltersGifts']", function (e) {
+      if (this.innerHTML === "Show Filters") {
+        this.innerHTML = "Hide Filters";
+        $('#giftfilters').show();
+        $('#filterByHolder').show();
+      } else {
+        this.innerHTML = "Show Filters";
+     $('#giftfilters').hide();
+      $('#filterByHolder').hide();
+      }
+
+    });
+
+    $(document).ready(function() {
+   $("#sort").DataTable({
+      columnDefs : [
+    { type : 'date', targets : [3] }
+    ],  
+   });
+   })
+  </script>

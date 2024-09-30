@@ -1,0 +1,71 @@
+.footer-bottom .xrm-attribute-value {
+    margin: 20px 0px 20px -200px;
+}
+@media only screen and (max-width: 600px) {
+  .footer-bottom .xrm-attribute-value{
+    margin: 0;
+  }
+  #footersection1 {
+    margin-left: -40px;
+  }
+  .btn-jaman{
+    margin-left: 0px !important;
+  }
+}
+@media screen and (min-device-width: 600px) and (max-device-width: 913px) { 
+    #footersection1, #footersection2, #footersection3, .footerh6{
+      width: 50%;
+      margin-left: 300px;
+    }
+     #footersection2, #footersection3, .footerh6{
+      margin-left: 300px;
+    }
+    #footersection1{
+      margin-left: 260px;
+    }
+    
+}
+
+table {
+  table-layout: fixed;
+}
+
+.font{
+      font-family: 'Montserrat';
+}
+.my_camp_life {
+    text-align: center !important;
+    padding-top: 30px;
+    font-family: 'Montserrat';
+}
+.btn-jaman {
+  background-color: transparent;
+  border-color: #cc338b;
+  color: #cc338b;
+  padding: 10px;
+  font-size: 15px;
+  margin-left: 530px
+}
+.btn-blue {
+  background-color: transparent;
+  border-color: #0096FF;
+  color: #0096FF;
+  padding: 10px;
+  font-size: 15px;
+  float:right;
+}
+.table{
+  margin-top: 25px;
+  box-shadow: 0 8px 16px rgba(0,0,0,.15)!important;
+}
+.table th {
+    color: black;
+    font-weight: 500;
+    background-color: transparent;
+    
+}
+.fixed td { overflow: hidden; }
+
+#footer-middle, #footersection3, #footer-section-4 li a {
+    font-weight: 500;
+}
